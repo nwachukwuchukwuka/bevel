@@ -24,8 +24,6 @@ export const ExercisePreviewSheet = forwardRef<BottomSheetModal, ExercisePreview
         []
     );
 
-    // IMPORTANT: We must NOT return null before the BottomSheetModal,
-    // otherwise the ref never attaches and present() won't work.
     return (
         <BottomSheetModal
             ref={ref}
@@ -33,7 +31,7 @@ export const ExercisePreviewSheet = forwardRef<BottomSheetModal, ExercisePreview
             backdropComponent={renderBackdrop}
             handleIndicatorStyle={{ backgroundColor: '#D1D5DB' }}
             enableDynamicSizing={false}
-            stackBehavior="push" // ensures this layers on top without dismissing sheets below it
+            stackBehavior="push"
         >
             <BottomSheetView className="flex-1 px-5 pt-2">
                 {exercise ? (
@@ -56,7 +54,7 @@ export const ExercisePreviewSheet = forwardRef<BottomSheetModal, ExercisePreview
                         </View>
 
                         {/* Details */}
-                        <View className="gap-6">
+                        <View className="flex-1 gap-6">
                             <View>
                                 <Text className="text-gray-400 font-bold text-xs mb-2">Equipment</Text>
                                 <View className="flex-row items-center gap-2">
@@ -83,7 +81,7 @@ export const ExercisePreviewSheet = forwardRef<BottomSheetModal, ExercisePreview
                         </View>
 
                         {/* Footer Action */}
-                        <View className="absolute bottom-10 left-5 right-5">
+                        <View className="pb-10 pt-4">
                             <TouchableOpacity className="border border-gray-200 py-4 rounded-xl flex-row justify-center items-center gap-2 bg-white shadow-sm">
                                 <Ionicons name="bulb-outline" size={18} color="#4B5563" />
                                 <Text className="font-bold text-gray-700">How to log</Text>
@@ -99,4 +97,4 @@ export const ExercisePreviewSheet = forwardRef<BottomSheetModal, ExercisePreview
             </BottomSheetView>
         </BottomSheetModal>
     );
-});
+});

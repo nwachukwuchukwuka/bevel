@@ -16,7 +16,7 @@ export default function ExerciseDetailsScreen() {
 
     // Fallback if not found (e.g. for custom exercises or if we want to handle missing id)
     const displayName = name || exercise?.name || "Exercise Details";
-    const displayType = type || exercise?.type || "Standard"; 
+    const displayType = type || exercise?.type || "Standard";
 
     const [activeTab, setActiveTab] = useState<'About' | 'Guide'>('About');
     const howToLogRef = useRef<BottomSheetModal>(null);

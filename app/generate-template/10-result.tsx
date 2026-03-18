@@ -191,15 +191,40 @@ export default function ResultScreen() {
             if (exists) return prev.map(e => e.id === savedEx.id ? savedEx : e);
             return [...prev, savedEx];
         });
-        // Also auto-add to the current workout list
-        // handleAddExercise(savedEx as Exercise);
-        handleAddExercise({
+
+        const newExerciseData = {
             ...savedEx,
             type: savedEx.equipment,
             sets: 3,
             setTypes: ['normal', 'normal', 'normal']
-        } as Exercise);
+        } as Exercise;
+
+        setExercises(prev => {
+            const existsInList = prev.find(ex => ex.id === savedEx.id);
+            if (existsInList) {
+                // If editing an exercise already in the workout, update it in place
+                return prev.map(ex => ex.id === savedEx.id ? { ...ex, ...newExerciseData, sets: ex.sets } : ex);
+            }
+            // If it's a brand new exercise, add it to the bottom
+            return [...prev, newExerciseData];
+        });
     };
+
+    // const handleSaveCustom = (savedEx: CustomExercise) => {
+    //     setCustomLibrary(prev => {
+    //         const exists = prev.find(e => e.id === savedEx.id);
+    //         if (exists) return prev.map(e => e.id === savedEx.id ? savedEx : e);
+    //         return [...prev, savedEx];
+    //     });
+    //     // Also auto-add to the current workout list
+    //     // handleAddExercise(savedEx as Exercise);
+    //     handleAddExercise({
+    //         ...savedEx,
+    //         type: savedEx.equipment,
+    //         sets: 3,
+    //         setTypes: ['normal', 'normal', 'normal']
+    //     } as Exercise);
+    // };
 
     const handleDeleteCustom = (id: string) => {
         setCustomLibrary(prev => prev.filter(e => e.id !== id));
