@@ -10,133 +10,98 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function FitnessScreen() {
     const router = useRouter();
 
-    // States
     const [strengthMetric, setStrengthMetric] = useState('Total Volume');
     const [isListView, setIsListView] = useState(false);
 
-    // Refs
     const syncSheetRef = useRef<SyncWatchSheetRef>(null);
 
     return (
         <MenuProvider>
-            <View className="flex-1 bg-[#F9FAFB]">
+            <View className="flex-1 bg-[#090D16]">
                 <SafeAreaView edges={['top']} className="flex-1">
 
-                    {/* Header */}
-                    <View className="flex-row items-center justify-between px-5 py-2 mb-4">
+                    {/* Left-Aligned Bold Header */}
+                    <View className="flex-row items-center justify-between px-5 pt-4 pb-6">
                         <View>
-                            <Text className="text-[24px] font-bold text-gray-900">Fitness</Text>
-                            <Text className="text-[13px] font-bold text-gray-400">Last 30 days</Text>
+                            <Text className="text-2xl font-bold text-slate-100">Fitness insights</Text>
+                            <Text className="text-xs text-slate-400 mt-1"> log of the last 30 days</Text>
                         </View>
-                        <TouchableOpacity className="w-8 h-8 bg-white border border-gray-200 rounded-full items-center justify-center shadow-sm">
-                            <Ionicons name="add" size={20} color="#4B5563" />
+                        <TouchableOpacity className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center">
+                            <Ionicons name="add" size={22} color="#4DB9F2" />
                         </TouchableOpacity>
                     </View>
 
-                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
 
-                        {/* Calendar Mock */}
-                        <View className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5 mb-6">
-                            <View className="flex-row justify-between mb-4">
-                                <View><Text className="text-[14px] font-bold text-gray-900 mb-2">Aug 2025</Text><Text className="text-[10px] font-bold text-gray-300">S  M  T  W  T  F  S</Text></View>
-                                <View><Text className="text-[14px] font-bold text-gray-900 mb-2">Sep 2025</Text><Text className="text-[10px] font-bold text-gray-300">S  M  T  W  T  F  S</Text></View>
-                            </View>
-                            {/* Grid Dots Mock */}
-                            <View className="flex-row justify-between mb-4">
-                                <View className="gap-2">
-                                    <View className="flex-row gap-1.5"><View className="w-4 h-2 rounded-full bg-green-400" /><View className="w-4 h-2 rounded-full bg-green-500" /><View className="w-4 h-2 rounded-full bg-gray-200" /><View className="w-4 h-2 rounded-full bg-gray-200" /></View>
-                                    <View className="flex-row gap-1.5"><View className="w-4 h-2 rounded-full bg-green-400" /><View className="w-4 h-2 rounded-full bg-green-400" /><View className="w-4 h-2 rounded-full bg-gray-200" /><View className="w-4 h-2 rounded-full bg-gray-200" /></View>
+                        {/* Top Performance Metrics - Grid Layout */}
+                        <View className="flex-row gap-4 px-5 mt-6">
+                            <TouchableOpacity
+                                onPress={() => router.push('/fitness/activity-summary')}
+                                activeOpacity={0.8}
+                                className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5"
+                            >
+                                <View className="flex-row justify-between items-center mb-4">
+                                    <Text className="text-xs font-semibold text-slate-400">Total duration</Text>
+                                    <Ionicons name="bar-chart-outline" size={16} color="#4DB9F2" />
                                 </View>
-                                <View className="gap-2">
-                                    <View className="flex-row gap-1.5"><View className="w-4 h-2 rounded-full bg-green-400" /><View className="w-4 h-2 rounded-full bg-blue-500" /><View className="w-4 h-2 rounded-full bg-gray-200" /><View className="w-4 h-2 rounded-full bg-gray-200" /></View>
-                                    <View className="flex-row gap-1.5"><View className="w-4 h-2 rounded-full bg-gray-200" /><View className="w-4 h-2 rounded-full bg-gray-200" /><View className="w-4 h-2 rounded-full bg-gray-200" /><View className="w-4 h-2 rounded-full bg-gray-200" /></View>
-                                </View>
-                            </View>
-                            {/* Legend */}
-                            <View className="flex-row gap-4">
-                                <View className="flex-row items-center gap-1"><View className="w-2 h-2 rounded-full bg-green-400" /><Text className="text-[10px] font-medium text-gray-500">1 activity</Text></View>
-                                <View className="flex-row items-center gap-1"><View className="w-2 h-2 rounded-full bg-green-500" /><Text className="text-[10px] font-medium text-gray-500">2 activities</Text></View>
-                                <View className="flex-row items-center gap-1"><View className="w-2 h-2 rounded-full bg-blue-500" /><Text className="text-[10px] font-medium text-gray-500">3+ activities</Text></View>
-                            </View>
-                        </View>
-
-                        {/* Activity Summary Link Card */}
-                        <TouchableOpacity onPress={() => router.push('/fitness/activity-summary')} className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5 mb-8">
-                            <View className="flex-row items-center justify-between mb-4">
-                                <View className="flex-row items-center gap-2"><Ionicons name="bar-chart" size={16} color="#9CA3AF" /><Text className="text-[15px] font-bold text-gray-500">Activity Summary</Text></View>
-                                <Ionicons name="arrow-forward" size={16} color="#D1D5DB" />
-                            </View>
-                            <View className="flex-row justify-between items-end mb-4">
-                                <View><Text className="text-[28px] font-bold text-gray-900 tracking-tight">15h 47m</Text><Text className="text-[12px] font-medium text-gray-400 mt-1">15 Aug - 14 Sep 2025</Text></View>
-                                <View className="flex-row items-center gap-1"><Ionicons name="arrow-down-circle" size={14} color="#9CA3AF" /><Text className="text-[14px] font-bold text-gray-500">33m</Text></View>
-                            </View>
-                            {/* Tiny Line Chart Mock */}
-                            <View className="h-20 relative justify-end pb-2 border-b border-gray-100">
-                                <View className="absolute bottom-2 left-0 right-0 h-[60%] border-t-2 border-red-400" />
-                                <View className="absolute right-4 bottom-10 w-2 h-2 rounded-full bg-white border-2 border-red-500 shadow-sm" />
-                            </View>
-                        </TouchableOpacity>
-
-                        {/* Cardio Section */}
-                        <Text className="text-[16px] font-bold text-gray-900 mb-3">Cardio</Text>
-                        <View className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5 mb-3">
-                            <View className="flex-row justify-between items-center mb-6">
-                                <View className="flex-row items-center gap-2"><Ionicons name="pulse" size={16} color="#9CA3AF" /><Text className="text-[14px] font-bold text-gray-500">Cardio Load</Text></View>
-                                <Ionicons name="arrow-forward" size={16} color="#D1D5DB" />
-                            </View>
-                            <View className="flex-row justify-between items-end">
-                                <View><Text className="text-[24px] font-bold text-gray-900">13</Text><Text className="text-[13px] font-bold text-pink-500">Overtraining</Text></View>
-                                {/* Sparkline */}
-                                <View className="w-32 h-10 border-b-2 border-purple-200 relative items-end justify-end pb-1">
-                                    <View className="w-10 border-t-2 border-purple-400 transform -rotate-[60deg] translate-y-3 -translate-x-2" />
-                                    <View className="w-2 h-2 rounded-full border border-purple-500 bg-white" />
-                                </View>
-                            </View>
-                        </View>
-
-                        <View className="flex-row gap-3 mb-8">
-                            <TouchableOpacity onPress={() => router.push('/fitness/cardio-focus')} className="flex-1 bg-white rounded-[20px] p-4 border border-gray-100 shadow-sm shadow-black/5">
-                                <View className="flex-row items-center justify-between mb-4">
-                                    <View className="flex-row items-center gap-1.5"><Ionicons name="layers" size={14} color="#9CA3AF" /><Text className="text-[12px] font-bold text-gray-500">Cardio Focus</Text></View>
-                                    <Ionicons name="arrow-forward" size={14} color="#D1D5DB" />
-                                </View>
-                                <Text className="text-[18px] font-bold text-gray-900">Low Aerobic</Text>
-                                <Text className="text-[13px] font-bold text-teal-400 mb-4">100%</Text>
-                                <View className="h-1.5 bg-teal-400 rounded-full w-full mb-1" />
-                                <View className="h-1.5 bg-gray-100 rounded-full w-full mb-1" />
-                                <View className="h-1.5 bg-gray-100 rounded-full w-full" />
+                                <Text className="text-2xl font-bold text-slate-100">15h 47m</Text>
+                                <Text className="text-xs text-slate-500 mt-1.5">Last 30 days</Text>
                             </TouchableOpacity>
-                            <View className="flex-1 bg-white rounded-[20px] p-4 border border-gray-100 shadow-sm shadow-black/5">
-                                <View className="flex-row items-center justify-between mb-4">
-                                    <View className="flex-row items-center gap-1.5"><Ionicons name="heart" size={14} color="#9CA3AF" /><Text className="text-[12px] font-bold text-gray-500">HRR</Text></View>
-                                    <Ionicons name="arrow-forward" size={14} color="#D1D5DB" />
+
+                            <View className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5">
+                                <View className="flex-row justify-between items-center mb-4">
+                                    <Text className="text-xs font-semibold text-slate-400">Cardio load</Text>
+                                    <Ionicons name="pulse-outline" size={16} color="#EF4444" />
                                 </View>
-                                <Text className="text-[18px] font-bold text-gray-900">69 <Text className="text-[13px] font-medium text-gray-500">bpm</Text></Text>
-                                <Text className="text-[13px] font-bold text-indigo-500 mb-4">Superior</Text>
-                                <View className="h-6 justify-end relative">
-                                    <Ionicons name="pulse" size={24} color="#818CF8" />
-                                    <View className="absolute right-0 top-2 w-2 h-2 rounded-full border border-indigo-500 bg-white" />
+                                <Text className="text-2xl font-bold text-slate-100">13 score</Text>
+                                <View className="bg-pink-950/30 self-start px-2.5 py-0.5 rounded-lg border border-red-500/20 mt-1.5">
+                                    <Text className="text-[10px] font-bold text-red-500">Overtraining</Text>
                                 </View>
                             </View>
                         </View>
 
-                        {/* Strength Section */}
-                        <Text className="text-[16px] font-bold text-gray-900 mb-3">Strength</Text>
-                        <View className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5 mb-3">
-                            <View className="flex-row justify-between items-center mb-6">
-                                <View className="flex-row items-center gap-2"><Ionicons name="barbell" size={16} color="#9CA3AF" /><Text className="text-[14px] font-bold text-gray-500">{strengthMetric}</Text></View>
+                        {/* Cardio Focus & Recovery - Grid Layout */}
+                        <View className="flex-row gap-4 px-5 mt-4">
+                            <TouchableOpacity
+                                onPress={() => router.push('/fitness/cardio-focus')}
+                                activeOpacity={0.8}
+                                className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5"
+                            >
+                                <Text className="text-xs font-semibold text-slate-400 mb-2">Cardio focus</Text>
+                                <Text className="text-lg font-bold text-slate-100">Low Aerobic</Text>
+                                <Text className="text-xs font-bold text-emerald-400 mt-1">100% target</Text>
+                                <View className="h-1 bg-[#1E293B] rounded-full w-full mt-3 overflow-hidden">
+                                    <View className="h-full bg-emerald-400" style={{ width: '100%' }} />
+                                </View>
+                            </TouchableOpacity>
 
-                                {/* Popup Menu for Selecting Strength Metric */}
+                            <View className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5">
+                                <Text className="text-xs font-semibold text-slate-400 mb-2">Heart recovery</Text>
+                                <Text className="text-lg font-bold text-slate-100">69 bpm</Text>
+                                <Text className="text-xs font-bold text-blue-400 mt-1">Superior rate</Text>
+                                <View className="h-1 bg-[#1E293B] rounded-full w-full mt-3 overflow-hidden">
+                                    <View className="h-full bg-blue-400" style={{ width: '85%' }} />
+                                </View>
+                            </View>
+                        </View>
+
+                        {/* Strength Section with Custom Muscle Load Breakdown */}
+                        <View className="px-5 mt-8">
+                            <View className="flex-row justify-between items-center mb-4">
+                                <Text className="text-lg font-bold text-white">Muscular telemetry</Text>
                                 <Menu>
                                     <MenuTrigger customStyles={{ TriggerTouchableComponent: TouchableOpacity }}>
-                                        <View className="p-1"><Ionicons name="chevron-down" size={16} color="#D1D5DB" /></View>
+                                        <View className="flex-row items-center gap-1.5 bg-[#1E293B] px-3 py-1.5 rounded-xl border border-[#2D3748]">
+                                            <Text className="text-xs font-semibold text-slate-400">{strengthMetric}</Text>
+                                            <Ionicons name="chevron-down" size={12} color="#94A3B8" />
+                                        </View>
                                     </MenuTrigger>
-                                    <MenuOptions customStyles={{ optionsContainer: { borderRadius: 14, width: 220, paddingVertical: 4 } }}>
+                                    <MenuOptions customStyles={{ optionsContainer: { borderRadius: 14, width: 220, backgroundColor: '#1E1E1E', borderWidth: 1, borderColor: '#2C2C2C', paddingVertical: 4 } }}>
                                         {['Total Volume', 'Workout Frequency', 'Muscular Load'].map(opt => (
                                             <MenuOption key={opt} onSelect={() => setStrengthMetric(opt)}>
                                                 <View className="flex-row items-center justify-between px-4 py-3">
-                                                    <Text className="text-[15px] font-medium text-gray-900">{opt}</Text>
-                                                    {strengthMetric === opt && <Ionicons name="checkmark" size={18} color="#111827" />}
+                                                    <Text className="text-[15px] font-medium text-white">{opt}</Text>
+                                                    {strengthMetric === opt && <Ionicons name="checkmark" size={18} color="#4DB9F2" />}
                                                 </View>
                                             </MenuOption>
                                         ))}
@@ -144,120 +109,170 @@ export default function FitnessScreen() {
                                 </Menu>
                             </View>
 
-                            {/* Concentric Circle Mock */}
-                            <View className="items-center justify-center my-6 h-48">
-                                <Text className="absolute top-0 text-[12px] font-bold text-yellow-500 text-center">2,01K kg{'\n'}<Text className="text-[10px] font-medium text-gray-400">Chest</Text></Text>
-                                <Text className="absolute left-0 top-[20%] text-[12px] font-bold text-green-500 text-center">3,42K kg{'\n'}<Text className="text-[10px] font-medium text-gray-400">Arms</Text></Text>
-                                <Text className="absolute right-0 top-[20%] text-[12px] font-bold text-green-500 text-center">2,36K kg{'\n'}<Text className="text-[10px] font-medium text-gray-400">Back</Text></Text>
-                                <Text className="absolute left-0 bottom-[10%] text-[12px] font-bold text-yellow-500 text-center">690 kg{'\n'}<Text className="text-[10px] font-medium text-gray-400">Core</Text></Text>
-                                <Text className="absolute right-0 bottom-[10%] text-[12px] font-bold text-teal-400 text-center">8,44K kg{'\n'}<Text className="text-[10px] font-medium text-gray-400">Legs</Text></Text>
-                                <Text className="absolute bottom-[-10] text-[12px] font-bold text-yellow-500 text-center">1,91K kg{'\n'}<Text className="text-[10px] font-medium text-gray-400">Shoulders</Text></Text>
-
-                                {/* Center Rings */}
-                                <View className="w-24 h-24 rounded-full border-[10px] border-green-200 justify-center items-center">
-                                    <View className="w-16 h-16 rounded-full border-[8px] border-yellow-300 justify-center items-center">
-                                        <View className="w-8 h-8 rounded-full border-[4px] border-teal-200 bg-white" />
+                            <View className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 gap-4">
+                                {[
+                                    { label: 'Chest', value: '2,01k kg', color: 'bg-amber-500' },
+                                    { label: 'Arms', value: '3,42k kg', color: 'bg-emerald-500' },
+                                    { label: 'Back', value: '2,36k kg', color: 'bg-emerald-500' },
+                                    { label: 'Core', value: '690 kg', color: 'bg-amber-500' },
+                                    { label: 'Legs', value: '8,44k kg', color: 'bg-blue-500' },
+                                    { label: 'Shoulders', value: '1,91k kg', color: 'bg-amber-500' },
+                                ].map(group => (
+                                    <View key={group.label} className="flex-row justify-between items-center">
+                                        <View className="flex-row items-center gap-2.5">
+                                            <View className={`w-2.5 h-2.5 rounded-full ${group.color}`} />
+                                            <Text className="text-sm font-semibold text-slate-300">{group.label}</Text>
+                                        </View>
+                                        <Text className="text-sm font-bold text-white">{group.value}</Text>
                                     </View>
+                                ))}
+                            </View>
+                        </View>
+
+                        {/* Strength Progression List */}
+                        <View className="px-5 mt-8">
+                            <TouchableOpacity
+                                onPress={() => router.push('/fitness/strength-progression')}
+                                activeOpacity={0.8}
+                                className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5"
+                            >
+                                <View className="flex-row justify-between items-center mb-6">
+                                    <Text className="text-lg font-bold text-white">Strength progression</Text>
+                                    <Ionicons name="arrow-forward" size={18} color="#4DB9F2" />
+                                </View>
+                                <View className="gap-4">
+                                    {STRENGTH_PROGRESSION.map((ex, idx) => {
+                                        const isLast = idx === STRENGTH_PROGRESSION.length - 1;
+                                        return (
+                                            <View
+                                                key={ex.id}
+                                                className={`flex-row justify-between items-center pb-4 ${!isLast ? 'border-b border-[#1E293B]' : ''
+                                                    }`}
+                                            >
+                                                <View>
+                                                    <Text className="text-base font-semibold text-white">{ex.name}</Text>
+                                                    <Text className="text-xs text-slate-400 mt-0.5">{ex.type} • {ex.sessions} sessions</Text>
+                                                </View>
+                                                <View className="bg-[#1E293B] px-3 py-1.5 rounded-xl border border-[#2D3748]">
+                                                    <Text className="text-xs font-bold text-[#4DB9F2]">Tracked</Text>
+                                                </View>
+                                            </View>
+                                        );
+                                    })}
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* Workout Templates Section */}
+                        <View className="px-5 mt-8">
+                            <View className="flex-row items-center justify-between mb-4">
+                                <Text className="text-lg font-bold text-white">Workout templates</Text>
+                                <View className="flex-row gap-2.5">
+                                    <Menu>
+                                        <MenuTrigger customStyles={{ TriggerTouchableComponent: TouchableOpacity }}>
+                                            <View className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-xl items-center justify-center">
+                                                <Ionicons name="ellipsis-horizontal" size={18} color="#94A3B8" />
+                                            </View>
+                                        </MenuTrigger>
+                                        <MenuOptions customStyles={{ optionsContainer: { borderRadius: 14, width: 200, backgroundColor: '#1E1E1E', borderWidth: 1, borderColor: '#2C2C2C', paddingVertical: 4 } }}>
+                                            <MenuOption onSelect={() => router.push('/fitness/edit-pins')}>
+                                                <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#2C2C2C]">
+                                                    <Text className="text-[15px] font-medium text-white">Edit pins</Text>
+                                                    <Ionicons name="pin" size={18} color="#4DB9F2" />
+                                                </View>
+                                            </MenuOption>
+                                            <MenuOption onSelect={() => setIsListView(!isListView)}>
+                                                <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#2C2C2C]">
+                                                    <Text className="text-[15px] font-medium text-white">{isListView ? 'Card view' : 'List view'}</Text>
+                                                    <Ionicons name={isListView ? "grid" : "list"} size={18} color="#4DB9F2" />
+                                                </View>
+                                            </MenuOption>
+                                            <MenuOption onSelect={() => syncSheetRef.current?.present()}>
+                                                <View className="flex-row items-center justify-between px-4 py-3">
+                                                    <Text className="text-[15px] font-medium text-white">Sync to watch</Text>
+                                                    <Ionicons name="sync" size={18} color="#4DB9F2" />
+                                                </View>
+                                            </MenuOption>
+                                        </MenuOptions>
+                                    </Menu>
+
+                                    <TouchableOpacity className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-xl items-center justify-center">
+                                        <Ionicons name="add" size={20} color="#4DB9F2" />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+
+                            {isListView ? (
+                                <View className="gap-3">
+                                    {WORKOUT_TEMPLATES_FITNESS.map(template => (
+                                        <View key={template.id} className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 flex-row justify-between items-center">
+                                            <View>
+                                                <Text className="text-base font-bold text-white mb-1">{template.title}</Text>
+                                                <Text className="text-xs text-slate-400">{template.exercises} exercises, {template.sets} sets</Text>
+                                            </View>
+                                            <TouchableOpacity hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                                                <Ionicons name="ellipsis-horizontal" size={18} color="#94A3B8" />
+                                            </TouchableOpacity>
+                                        </View>
+                                    ))}
+                                </View>
+                            ) : (
+                                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
+                                    {WORKOUT_TEMPLATES_FITNESS.map(template => (
+                                        <View key={template.id} className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 w-48">
+                                            <Text className="text-base font-bold text-white mb-1" numberOfLines={1}>{template.title}</Text>
+                                            <Text className="text-xs text-slate-400 mb-4">{template.exercises} exercises, {template.sets} sets</Text>
+                                            <View className="flex-row items-center gap-1.5">
+                                                {template.load.map((num, i) => (
+                                                    <View key={i} className="bg-[#1E293B] border border-[#2D3748] rounded-lg w-7 h-9 items-center justify-center">
+                                                        <Text className="font-bold text-white">{num}</Text>
+                                                    </View>
+                                                ))}
+                                                <Text className="text-xs text-slate-400 ml-1">kg</Text>
+                                            </View>
+                                        </View>
+                                    ))}
+                                </ScrollView>
+                            )}
+                        </View>
+
+                        {/* Calendar Consistency Block - Swapped to the Bottom */}
+                        <View className="px-5 mt-8 mb-8">
+                            <Text className="text-lg font-bold text-white mb-4">Training consistency</Text>
+                            <View className="bg-[#151E33] rounded-2xl p-5 border border-[#1E293B]">
+                                <View className="flex-row justify-between mb-4">
+                                    <View><Text className="text-sm font-bold text-white mb-1">Aug 2025</Text><Text className="text-xs text-slate-500">S M T W T F S</Text></View>
+                                    <View><Text className="text-sm font-bold text-white mb-1">Sep 2025</Text><Text className="text-xs text-slate-500">S M T W T F S</Text></View>
+                                </View>
+
+                                <View className="flex-row justify-between mb-5">
+                                    <View className="gap-2">
+                                        <View className="flex-row gap-1.5"><View className="w-4 h-2 rounded-full bg-emerald-400" /><View className="w-4 h-2 rounded-full bg-emerald-500" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /></View>
+                                        <View className="flex-row gap-1.5"><View className="w-4 h-2 rounded-full bg-emerald-400" /><View className="w-4 h-2 rounded-full bg-emerald-400" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /></View>
+                                    </View>
+                                    <View className="gap-2">
+                                        <View className="flex-row gap-1.5"><View className="w-4 h-2 rounded-full bg-emerald-400" /><View className="w-4 h-2 rounded-full bg-blue-500" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /></View>
+                                        <View className="flex-row gap-1.5"><View className="w-4 h-2 rounded-full bg-[#1E293B]" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /><View className="w-4 h-2 rounded-full bg-[#1E293B]" /></View>
+                                    </View>
+                                </View>
+
+                                <View className="flex-row gap-4 border-t border-[#1E293B] pt-4">
+                                    <View className="flex-row items-center gap-1.5"><View className="w-2.5 h-2.5 rounded-full bg-emerald-400" /><Text className="text-xs text-slate-400">1 session</Text></View>
+                                    <View className="flex-row items-center gap-1.5"><View className="w-2.5 h-2.5 rounded-full bg-emerald-500" /><Text className="text-xs text-slate-400">2 sessions</Text></View>
+                                    <View className="flex-row items-center gap-1.5"><View className="w-2.5 h-2.5 rounded-full bg-blue-500" /><Text className="text-xs text-slate-400">3+ sessions</Text></View>
                                 </View>
                             </View>
                         </View>
 
-                        <TouchableOpacity onPress={() => router.push('/fitness/strength-progression')} className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5 mb-8 gap-4">
-                            <View className="flex-row items-center justify-between mb-2">
-                                <View className="flex-row items-center gap-2"><Ionicons name="barbell" size={16} color="#9CA3AF" /><Text className="text-[14px] font-bold text-gray-500">Strength Progression</Text></View>
-                                <Ionicons name="arrow-forward" size={16} color="#D1D5DB" />
-                            </View>
-                            {STRENGTH_PROGRESSION.map(ex => (
-                                <View key={ex.id} className="flex-row justify-between items-center">
-                                    <View><Text className="text-[15px] font-bold text-gray-900">{ex.name}</Text><Text className="text-[12px] font-medium text-gray-500">{ex.type} • {ex.sessions} sessions</Text></View>
-                                    <View className="w-16 h-8 border-b-2 border-blue-200 relative items-end justify-end pb-1">
-                                        <View className="w-full border-t-2 border-blue-300 transform -rotate-12 translate-y-1" />
-                                        <View className="w-2 h-2 rounded-full border border-blue-500 bg-white" />
-                                    </View>
-                                </View>
-                            ))}
-                        </TouchableOpacity>
-
-                        {/* --- WORKOUT TEMPLATES SECTION --- */}
-                        <View className="flex-row items-center justify-between mb-4 mt-6">
-                            <Text className="text-[16px] font-bold text-gray-900">Workout Templates</Text>
-                            <View className="flex-row gap-2">
-
-                                {/* POPUP MENU FOR ELLIPSIS */}
-                                <Menu>
-                                    <MenuTrigger customStyles={{ TriggerTouchableComponent: TouchableOpacity }}>
-                                        <View className="w-8 h-8 bg-white border border-gray-200 rounded-full items-center justify-center shadow-sm">
-                                            <Ionicons name="ellipsis-horizontal" size={16} color="#6B7280" />
-                                        </View>
-                                    </MenuTrigger>
-                                    <MenuOptions customStyles={{ optionsContainer: { borderRadius: 14, width: 200, marginTop: 35, paddingVertical: 4 } }}>
-                                        <MenuOption onSelect={() => router.push('/fitness/edit-pins')}>
-                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                                <Text className="text-[15px] font-medium text-gray-900">Edit pins</Text>
-                                                <Ionicons name="pin" size={18} color="#111827" />
-                                            </View>
-                                        </MenuOption>
-                                        <MenuOption onSelect={() => setIsListView(!isListView)}>
-                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                                <Text className="text-[15px] font-medium text-gray-900">{isListView ? 'Card view' : 'List view'}</Text>
-                                                <Ionicons name={isListView ? "grid" : "list"} size={18} color="#111827" />
-                                            </View>
-                                        </MenuOption>
-                                        <MenuOption onSelect={() => syncSheetRef.current?.present()}>
-                                            <View className="flex-row items-center justify-between px-4 py-3">
-                                                <Text className="text-[15px] font-medium text-gray-900">Sync to watch</Text>
-                                                <Ionicons name="sync" size={18} color="#111827" />
-                                            </View>
-                                        </MenuOption>
-                                    </MenuOptions>
-                                </Menu>
-
-                                <TouchableOpacity className="w-8 h-8 bg-white border border-gray-200 rounded-full items-center justify-center shadow-sm">
-                                    <Ionicons name="add" size={20} color="#6B7280" />
-                                </TouchableOpacity>
-                            </View>
+                        <View className="px-5 mb-10">
+                            <TouchableOpacity className="bg-[#151E33] border border-[#1E293B] rounded-2xl h-14 items-center justify-center">
+                                <Text className="text-white font-bold text-base">Edit metrics layout</Text>
+                            </TouchableOpacity>
                         </View>
-
-                        {/* TOGGLE RENDER: LIST VIEW OR CARD VIEW */}
-                        {isListView ? (
-                            <View className="gap-3 mb-8">
-                                {WORKOUT_TEMPLATES_FITNESS.map(template => (
-                                    <View key={template.id} className="bg-white border border-gray-100 rounded-[20px] p-4 flex-row justify-between items-center shadow-sm shadow-black/5">
-                                        <View>
-                                            <Text className="text-[15px] font-bold text-gray-900 mb-1">{template.title}</Text>
-                                            <Text className="text-[12px] font-medium text-gray-500">{template.exercises} exercises, {template.sets} sets</Text>
-                                        </View>
-                                        <TouchableOpacity hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                                            <Ionicons name="ellipsis-horizontal" size={20} color="#D1D5DB" />
-                                        </TouchableOpacity>
-                                    </View>
-                                ))}
-                            </View>
-                        ) : (
-                            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-8">
-                                {WORKOUT_TEMPLATES_FITNESS.map(template => (
-                                    <View key={template.id} className="bg-white border border-gray-100 rounded-[20px] p-5 w-48 shadow-sm shadow-black/5 mr-3">
-                                        <Text className="text-[14px] font-bold text-gray-900 mb-1" numberOfLines={1}>{template.title}</Text>
-                                        <Text className="text-[11px] font-medium text-gray-400 mb-4">{template.exercises} exercises, {template.sets} sets</Text>
-                                        <View className="flex-row items-center gap-1">
-                                            {template.load.map((num, i) => (
-                                                <View key={i} className="bg-gray-50 border border-gray-100 rounded-md w-6 h-8 items-center justify-center"><Text className="font-bold text-gray-900">{num}</Text></View>
-                                            ))}
-                                            <Text className="text-[12px] font-medium text-gray-400 ml-1">kg</Text>
-                                        </View>
-                                    </View>
-                                ))}
-                            </ScrollView>
-                        )}
-
-                        <TouchableOpacity className="bg-white border border-gray-200 rounded-[16px] h-[56px] items-center justify-center shadow-sm shadow-black/5">
-                            <Text className="text-gray-900 font-bold text-[16px]">Edit Fitness</Text>
-                        </TouchableOpacity>
 
                     </ScrollView>
                 </SafeAreaView>
 
-                {/* BOTTOM SHEET FOR SYNCING */}
                 <SyncWatchSheet ref={syncSheetRef} />
 
             </View>

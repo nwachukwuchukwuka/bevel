@@ -2,17 +2,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import Animated, { FadeIn, FadeInUp, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 export default function ProcessingFoodModal() {
     const router = useRouter();
     const [status, setStatus] = useState<'processing' | 'ready'>('processing');
 
-    // Simulate API processing time
     useEffect(() => {
         const timer = setTimeout(() => {
             setStatus('ready');
-        }, 2500); // 2.5 seconds delay
+        }, 2500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -21,82 +20,91 @@ export default function ProcessingFoodModal() {
     };
 
     const handleGoToLog = () => {
-        // Replace prevents going back to the processing screen
         router.replace('/log-food');
     };
 
     return (
-        <View className="flex-1 bg-black/60 justify-end">
-            {/* The Bottom Sheet Card */}
-            <Animated.View
-                entering={FadeIn.duration(500)}
-                className="bg-[#F8F9FD] rounded-t-[32px] p-6 pb-12 min-h-[45%]"
-            >
-                {/* Drag Handle */}
-                <View className="w-full items-center mb-8">
-                    <View className="w-10 h-1 bg-gray-300 rounded-full" />
-                </View>
+        <View className="flex-1 bg-[#090D16]/90 justify-center px-5">
 
+            <Animated.View
+                entering={FadeIn.duration(400)}
+                className="bg-[#151E33] border border-[#1E293B] rounded-[32px] p-6 min-h-[360px] flex-col"
+            >
                 {status === 'processing' ? (
-                    <Animated.View exiting={FadeOut} className="items-center justify-center flex-1 gap-6">
-                        {/* Icon Placeholder */}
-                        <View className="w-32 h-32 items-center justify-center relative">
-                            <Ionicons name="scan-outline" size={80} color="#E5E7EB" />
-                            <View className="absolute">
-                                <Ionicons name="restaurant" size={40} color="#4B5563" />
+                    <Animated.View exiting={FadeOut.duration(300)} className="flex-1 items-center justify-center gap-8">
+
+                        {/* Technical Processing Radar Graphic */}
+                        <View className="w-32 h-32 relative items-center justify-center">
+                            <View className="absolute inset-0 border-2 border-dashed border-[#4DB9F2] rounded-full opacity-30 animate-spin" />
+                            <View className="absolute inset-4 border border-[#4DB9F2] rounded-full opacity-50" />
+                            <View className="w-16 h-16 bg-[#1E293B] rounded-full border border-[#2D3748] items-center justify-center">
+                                <Ionicons name="scan" size={28} color="#4DB9F2" />
+                            </View>
+                            <View className="absolute bottom-0 right-0 bg-[#090D16] border border-[#4DB9F2] px-2 py-1 rounded">
+                                <Text className="text-[9px] font-bold text-[#4DB9F2]">ANALYZING</Text>
                             </View>
                         </View>
 
-                        <View className="items-center gap-2">
-                            <Text className="text-xl font-bold text-gray-900">Processing your foods</Text>
-                            <Text className="text-center text-gray-500 px-8 leading-5">
+                        <View className="items-center w-full px-4">
+                            <Text className="text-xl font-bold text-white mb-2 text-center">Processing visual data</Text>
+                            <Text className="text-sm text-slate-400 text-center leading-6">
                                 We'll notify you once your food items finish processing and are ready for review.
                             </Text>
                         </View>
 
                         <TouchableOpacity
                             onPress={handleDismiss}
-                            className="w-full bg-[#1A1A1A] py-4 rounded-full items-center mt-4"
+                            activeOpacity={0.7}
+                            className="w-full mt-auto bg-[#1E293B] border border-[#2D3748] h-12 rounded-xl items-center justify-center"
                         >
-                            <Text className="text-white font-bold">Done</Text>
+                            <Text className="text-white font-bold text-sm">Cancel operation</Text>
                         </TouchableOpacity>
+
                     </Animated.View>
                 ) : (
-                    <Animated.View entering={FadeIn.duration(400)} className="items-center justify-center flex-1 gap-6">
-                        {/* Icon Placeholder */}
-                        <View className="w-32 h-32 items-center justify-center bg-white rounded-3xl   mb-2">
-                            <View className="items-start gap-3 w-full px-6 opacity-30">
-                                <View className="w-full h-2 bg-blue-200 rounded-full" />
-                                <View className="w-2/3 h-2 bg-blue-200 rounded-full" />
-                                <View className="w-full h-2 bg-blue-200 rounded-full" />
+                    <Animated.View entering={FadeIn.duration(400)} className="flex-1 items-center justify-center gap-8">
+
+                        <View className="w-32 h-32 relative items-center justify-center">
+                            <View className="absolute inset-0 border-2 border-[#10B981] rounded-full opacity-30" />
+                            <View className="absolute inset-4 border border-[#10B981] rounded-full opacity-50" />
+                            <View className="w-16 h-16 bg-emerald-950/40 rounded-full border border-emerald-500/50 items-center justify-center">
+                                <Ionicons name="checkmark-done" size={28} color="#10B981" />
                             </View>
-                            <View className="absolute -bottom-2 -right-2 bg-white rounded-full p-2  ">
-                                <Ionicons name="search" size={32} color="#D1D5DB" />
+                            <View className="absolute bottom-0 right-0 bg-[#090D16] border border-[#10B981] px-2 py-1 rounded">
+                                <Text className="text-[9px] font-bold text-[#10B981]">COMPLETE</Text>
                             </View>
                         </View>
 
-                        <View className="items-center gap-2">
-                            <Text className="text-xl font-bold text-gray-900">Your foods are ready to review!</Text>
-                            <Text className="text-center text-gray-500 px-8 leading-5">
+                        <View className="items-center w-full px-4">
+                            <Text className="text-xl font-bold text-white mb-2 text-center">Data ready for review</Text>
+                            <Text className="text-sm text-slate-400 text-center leading-6">
                                 Review and adjust your food items before adding them to your food log.
                             </Text>
                         </View>
 
-                        <View className="w-full gap-3 mt-4">
+                        <View className="w-full flex-col gap-3 mt-auto">
                             <TouchableOpacity
                                 onPress={handleGoToLog}
-                                className="w-full bg-[#1A1A1A] py-4 rounded-full items-center shadow-lg shadow-black/20"
+                                activeOpacity={0.8}
+                                className="w-full bg-[#10B981] border border-[#10B981] h-14 rounded-2xl items-center justify-center flex-row gap-2"
                             >
-                                <Text className="text-white font-bold">Go to food log</Text>
+                                <Text className="text-[#090D16] font-bold text-base">Proceed to staging</Text>
+                                <Ionicons name="arrow-forward" size={18} color="#090D16" />
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={handleDismiss} className="py-3 items-center">
-                                <Text className="text-gray-500 font-semibold">Dismiss</Text>
+                            <TouchableOpacity
+                                onPress={handleDismiss}
+                                activeOpacity={0.7}
+                                className="w-full h-12 rounded-xl items-center justify-center"
+                            >
+                                <Text className="text-slate-500 font-semibold text-sm">Dismiss</Text>
                             </TouchableOpacity>
                         </View>
+
                     </Animated.View>
                 )}
             </Animated.View>
+
         </View>
     );
 }

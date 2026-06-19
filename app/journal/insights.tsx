@@ -8,61 +8,62 @@ export default function InsightsModal() {
     const [tab, setTab] = useState<'Recovery' | 'Sleep'>('Sleep'); // Default to Sleep to match screenshot
 
     return (
-        <View className="flex-1 bg-[#F9FAFB]">
+        <View className="flex-1 bg-[#090D16]">
             {/* Dynamic Background Image Mock */}
             <LinearGradient
-                colors={tab === 'Recovery' ? ['#FDE047', '#E0F2FE', '#F9FAFB'] : ['#1E1B4B', '#1E3A8A', '#F9FAFB']}
-                style={{ position: 'absolute', width: '100%', height: 350, top: 0 }}
+                colors={tab === 'Recovery' ? ['#064E3B', '#090D16', '#090D16'] : ['#1E1B4B', '#090D16', '#090D16']}
+                style={{ position: 'absolute', width: '100%', height: 400, top: 0, opacity: 0.6 }}
             />
 
             {/* Stars/Moon Mock for Sleep Tab */}
             {tab === 'Sleep' && (
-                <View className="absolute top-10 right-10 w-6 h-6 border-l-2 border-b-2 border-white rounded-full -rotate-45" />
+                <View className="absolute top-12 right-10 w-8 h-8 border-l-4 border-b-4 border-[#F1F5F9] rounded-full -rotate-45 opacity-80" />
             )}
 
             <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: 60, paddingBottom: 40 }}>
 
-                <View className="flex-row items-center gap-1.5 mb-2">
-                    <Ionicons name="sparkles" size={16} color="white" />
-                    <Text className="text-[13px] font-bold text-white">Insights</Text>
+                <View className="flex-row items-center gap-2 mb-3">
+                    <View className="w-8 h-8 bg-[#0F172A] border border-[#1E2D4A] rounded-[10px] items-center justify-center">
+                        <Ionicons name="sparkles" size={16} color="#4DB9F2" />
+                    </View>
+                    <Text className="text-[15px]  text-[#F1F5F9]">Insights</Text>
                 </View>
 
-                <Text className="text-[28px] font-bold text-white mb-2 ">{tab} score</Text>
-                <Text className="text-[14px] text-white/90 leading-5 mb-10 pr-10">An analysis of how your daily behaviors and habits affect your {tab.toLowerCase()}.</Text>
+                <Text className="text-[32px]  text-[#F1F5F9] mb-3">{tab} score</Text>
+                <Text className="text-[15px] text-[#94A3B8] leading-6 mb-10 pr-10 font-medium">An analysis of how your daily behaviors and habits affect your {tab.toLowerCase()}.</Text>
 
                 {/* Tabs */}
-                <View className="flex-row gap-2 mb-10">
-                    <TouchableOpacity onPress={() => setTab('Recovery')} className={`flex-1 py-3 rounded-full items-center ${tab === 'Recovery' ? 'bg-white ' : 'bg-white/20'}`}>
-                        <Text className={`text-[15px] font-bold ${tab === 'Recovery' ? 'text-gray-900' : 'text-white/60'}`}>Recovery</Text>
+                <View className="flex-row bg-[#151E33] p-1.5 rounded-[16px] border border-[#1E2D4A] mb-10">
+                    <TouchableOpacity onPress={() => setTab('Recovery')} className={`flex-1 py-3 rounded-[12px] items-center ${tab === 'Recovery' ? 'bg-[#4DB9F2]' : 'bg-transparent'}`}>
+                        <Text className={`text-[15px]  ${tab === 'Recovery' ? 'text-[#090D16]' : 'text-[#64748B]'}`}>Recovery</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setTab('Sleep')} className={`flex-1 py-3 rounded-full items-center ${tab === 'Sleep' ? 'bg-white ' : 'bg-white/20'}`}>
-                        <Text className={`text-[15px] font-bold ${tab === 'Sleep' ? 'text-gray-900' : 'text-white/60'}`}>Sleep</Text>
+                    <TouchableOpacity onPress={() => setTab('Sleep')} className={`flex-1 py-3 rounded-[12px] items-center ${tab === 'Sleep' ? 'bg-[#4DB9F2]' : 'bg-transparent'}`}>
+                        <Text className={`text-[15px]  ${tab === 'Sleep' ? 'text-[#090D16]' : 'text-[#64748B]'}`}>Sleep</Text>
                     </TouchableOpacity>
                 </View>
 
                 {/* Content */}
-                <Text className="text-[16px] font-bold text-gray-900 mb-1">Locked tags</Text>
-                <Text className="text-[13px] text-gray-500 mb-6">Record at least 5 yes's and 5 no's in the last 90 days to unlock impact analysis.</Text>
+                <Text className="text-[18px]  text-[#F1F5F9] mb-2">Locked tags</Text>
+                <Text className="text-[14px] font-medium text-[#64748B] mb-8 leading-5">Record at least 5 yes's and 5 no's in the last 90 days to unlock impact analysis.</Text>
 
-                <View className="gap-3">
+                <View className="gap-4">
                     {INSIGHTS_LOCKED_TAGS.map(tag => (
-                        <View key={tag.id} className="bg-white rounded-[20px] p-4 flex-row items-center justify-between border border-gray-100 ">
-                            <View className="flex-row items-center gap-3">
-                                <Ionicons name={tag.icon as any} size={20} color={tag.id === '1' ? '#3B82F6' : tag.id === '2' ? '#8B5CF6' : tag.id === '3' ? '#EF4444' : '#111827'} />
-                                <Text className="text-[14px] font-bold text-gray-900">{tag.label}</Text>
-                            </View>
-                            <View className="flex-row gap-4">
-                                <View className="flex-row items-center gap-1.5">
-                                    <View className="w-6 h-6 bg-red-50 rounded-md items-center justify-center border border-red-100">
-                                        <Ionicons name="close" size={14} color="#EF4444" />
-                                    </View>
-                                    <Text className="text-[14px] font-bold text-gray-500">{tag.id === '3' ? 6 : tag.noCount}</Text>
+                        <View key={tag.id} className="bg-[#151E33] rounded-[24px] p-5 flex-row items-center justify-between border border-[#1E2D4A]">
+                            <View className="flex-row items-center gap-4">
+                                <View className="w-12 h-12 bg-[#0F172A] rounded-[14px] items-center justify-center border border-[#1E2D4A]">
+                                    <Ionicons name={tag.icon as any} size={24} color="#4DB9F2" />
                                 </View>
-                                <View className="flex-row items-center gap-1.5">
-                                    <View className={`w-6 h-6 rounded-md items-center justify-center ${tag.id === '3' ? 'bg-blue-50 border border-blue-100' : 'bg-blue-400'}`}>
-                                        <Ionicons name="checkmark" size={14} color={tag.id === '3' ? '#93C5FD' : 'white'} />
-                                    </View>
-                                    <Text className="text-[14px] font-bold text-gray-900">{tag.id === '2' ? 7 : tag.id === '3' ? 0 : 6}</Text>
+                                <Text className="text-[16px]  text-[#F1F5F9]">{tag.label}</Text>
+                            </View>
+
+                            <View className="flex-row gap-2">
+                                <View className="flex-row items-center gap-1.5 bg-[#0F172A] px-3 py-2 rounded-[12px] border border-[#1E2D4A]">
+                                    <Ionicons name="close" size={14} color="#F87171" />
+                                    <Text className="text-[14px]  text-[#F1F5F9]">{tag.id === '3' ? 6 : tag.noCount}</Text>
+                                </View>
+                                <View className="flex-row items-center gap-1.5 bg-[#0F172A] px-3 py-2 rounded-[12px] border border-[#1E2D4A]">
+                                    <Ionicons name="checkmark" size={14} color="#4DB9F2" />
+                                    <Text className="text-[14px]  text-[#F1F5F9]">{tag.id === '2' ? 7 : tag.id === '3' ? 0 : 6}</Text>
                                 </View>
                             </View>
                         </View>

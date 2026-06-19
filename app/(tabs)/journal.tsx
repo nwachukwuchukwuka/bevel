@@ -8,148 +8,189 @@ import { Menu, MenuOption, MenuOptions, MenuProvider, MenuTrigger } from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DATES = [
-    { day: 'Sun', date: '7', status: 'checked' },
-    { day: 'Mon', date: '8', status: 'checked' },
-    { day: 'Tue', date: '9', status: 'checked' },
-    { day: 'Wed', date: '10', status: 'checked' },
-    { day: 'Thu', date: '11', status: 'checked' },
-    { day: 'Fri', date: '12', status: 'active' },
-    { day: 'Sat', date: '13', status: 'empty' },
+    { day: 'S', date: '7', status: 'checked' },
+    { day: 'M', date: '8', status: 'checked' },
+    { day: 'T', date: '9', status: 'checked' },
+    { day: 'W', date: '10', status: 'checked' },
+    { day: 'T', date: '11', status: 'checked' },
+    { day: 'F', date: '12', status: 'active' },
+    { day: 'S', date: '13', status: 'empty' },
 ];
+
+const TOGGLE_COLORS = {
+    0: { bg: '#3B0F0F', icon: '#F87171', iconName: 'close' },
+    1: { bg: '#111827', icon: '#374151', iconName: 'remove' },
+    2: { bg: '#022C22', icon: '#34D399', iconName: 'checkmark' },
+};
 
 export default function JournalScreen() {
     const router = useRouter();
     const { items } = useJournal();
 
-    // States for toggles: 0 = No, 1 = Skip/Dash, 2 = Yes
     const [toggleStates, setToggleStates] = useState<Record<string, number>>({
-        '糖': 2, // sugar (not in list yet)
-        '7': 1, // Reading in bed
-        '1': 1, // Alcohol (just for demonstration if we had a toggle)
+        '糖': 2,
+        '7': 1,
+        '1': 1,
     });
-
-    const ToggleControl = ({ value, onChange }: { value: number, onChange: (val: number) => void }) => (
-        <View className="flex-row bg-gray-50 rounded-xl p-1 border border-gray-100">
-            <TouchableOpacity
-                onPress={() => onChange(0)}
-                className={`w-10 h-8 items-center justify-center rounded-lg ${value === 0 ? 'bg-red-400 ' : ''}`}
-            >
-                <Ionicons name="close" size={18} color={value === 0 ? 'white' : '#D1D5DB'} />
-            </TouchableOpacity>
-            <View className="w-[1px] h-full bg-gray-200" />
-            <TouchableOpacity
-                onPress={() => onChange(1)}
-                className={`w-10 h-8 items-center justify-center rounded-lg ${value === 1 ? 'bg-gray-200 ' : ''}`}
-            >
-                <View className={`w-3 h-0.5 ${value === 1 ? 'bg-gray-500' : 'bg-gray-300'}`} />
-            </TouchableOpacity>
-            <View className="w-[1px] h-full bg-gray-200" />
-            <TouchableOpacity
-                onPress={() => onChange(2)}
-                className={`w-10 h-8 items-center justify-center rounded-lg ${value === 2 ? 'bg-blue-400 ' : ''}`}
-            >
-                <Ionicons name="checkmark" size={18} color={value === 2 ? 'white' : '#D1D5DB'} />
-            </TouchableOpacity>
-        </View>
-    );
 
     const PinnedItems = items.filter(i => i.active && i.isPinned);
     const DaytimeItems = items.filter(i => i.active && (!i.logTime || i.logTime === 'Daytime'));
     const NighttimeItems = items.filter(i => i.active && i.logTime === 'Nighttime');
 
-    const JournalRow = ({ item }: { item: any }) => {
+    const toggleNext = (id: string) => {
+        setToggleStates(prev => ({ ...prev, [id]: ((prev[id] ?? 1) + 1) % 3 }));
+    };
+
+    // Compact chip toggle — tap cycles through states
+    const ChipToggle = ({ id }: { id: string }) => {
+        const val = toggleStates[id] ?? 1;
+        const cfg = TOGGLE_COLORS[val as keyof typeof TOGGLE_COLORS];
+        return (
+            <TouchableOpacity
+                onPress={() => toggleNext(id)}
+                style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: cfg.bg, alignItems: 'center', justifyContent: 'center' }}
+            >
+                <Ionicons name={cfg.iconName as any} size={14} color={cfg.icon} />
+            </TouchableOpacity>
+        );
+    };
+
+    // Horizontal spec badge for interactive items
+    const SpecBadge = ({ label, color }: { label: string; color: string }) => (
+        <View style={{ backgroundColor: '#0D1526', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
+            <Text style={{ fontSize: 11, fontWeight: '700', color, }}>{label}</Text>
+        </View>
+    );
+
+    // Card used in the 2-column grid
+    const ItemCard = ({ item }: { item: any }) => {
         const isInteractive = ['Alcohol', 'Caffeine', 'Daily mood', 'Hydration'].includes(item.label);
 
+        let badge: React.ReactNode = null;
+        let route = '';
+        if (item.label === 'Alcohol') {
+            badge = <SpecBadge label="0.0 drinks" color="#F87171" />;
+            route = '/journal/alcohol';
+        } else if (item.label === 'Caffeine') {
+            badge = <SpecBadge label="90 mg" color="#34D399" />;
+            route = '/journal/caffeine';
+        } else if (item.label === 'Daily mood') {
+            badge = <SpecBadge label="Unpleasant" color="#A78BFA" />;
+            route = '/journal/mood';
+        } else if (item.label === 'Hydration') {
+            badge = <SpecBadge label="1,900 ml" color="#60A5FA" />;
+            route = '/journal/hydration';
+        }
+
+        const content = (
+            <View style={{
+                backgroundColor: '#0E1623',
+                borderRadius: 14,
+                borderWidth: 1,
+                borderColor: '#1C2A3F',
+                padding: 12,
+                flex: 1,
+                minHeight: 90,
+                justifyContent: 'space-between',
+            }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 22 }}>{item.emoji || '❓'}</Text>
+                    {isInteractive
+                        ? <Ionicons name="chevron-forward" size={13} color="#2D3F55" />
+                        : <ChipToggle id={item.id} />
+                    }
+                </View>
+                <View style={{ marginTop: 8 }}>
+                    <Text style={{ fontSize: 12, fontWeight: '600', color: '#94A3B8', lineHeight: 16 }} numberOfLines={1}>
+                        {item.label}
+                    </Text>
+                    {badge && <View style={{ marginTop: 5 }}>{badge}</View>}
+                </View>
+            </View>
+        );
+
         if (isInteractive) {
-            const route = `/journal/${item.label.toLowerCase().replace('daily ', '')}`;
-            let rightContent;
-
-            if (item.label === 'Alcohol') {
-                rightContent = <View className="flex-row items-center gap-2"><Text className="text-[14px] font-bold text-red-500">0,0 drink</Text><View className="w-6 h-6 bg-red-500 rounded-md items-center justify-center"><Ionicons name="close" size={14} color="white" /></View><Ionicons name="chevron-forward" size={18} color="#D1D5DB" /></View>;
-            } else if (item.label === 'Caffeine') {
-                rightContent = <View className="flex-row items-center gap-2"><Text className="text-[14px] font-bold text-teal-500">90,0 mg</Text><View className="w-6 h-6 bg-teal-400 rounded-md items-center justify-center"><Ionicons name="checkmark" size={14} color="white" /></View><Ionicons name="chevron-forward" size={18} color="#D1D5DB" /></View>;
-            } else if (item.label === 'Daily mood') {
-                rightContent = <View className="flex-row items-center gap-2"><Text className="text-[14px] text-gray-500 font-medium">Very unpleasant</Text><Ionicons name="chevron-forward" size={18} color="#D1D5DB" /></View>;
-            } else if (item.label === 'Hydration') {
-                rightContent = <View className="flex-row items-center gap-2"><Text className="text-[14px] font-bold text-teal-500">1.900,0 ml</Text><View className="w-6 h-6 rounded-full border-2 border-teal-100 border-t-teal-400 -rotate-45" /><Ionicons name="chevron-forward" size={18} color="#D1D5DB" /></View>;
-            }
-
             return (
-                <TouchableOpacity onPress={() => router.push(route as any)} className="flex-row items-center justify-between bg-white rounded-[20px] p-3 border border-gray-100 mb-3">
-                    <View className="flex-row items-center gap-3">
-                        <Text className="text-[18px]">{item.emoji || '❓'}</Text>
-                        <Text className="text-[15px] font-bold text-gray-900">{item.label}</Text>
-                    </View>
-                    {rightContent}
+                <TouchableOpacity onPress={() => router.push(route as any)} style={{ flex: 1 }}>
+                    {content}
                 </TouchableOpacity>
             );
         }
+        return <View style={{ flex: 1 }}>{content}</View>;
+    };
 
+    // 2-column grid renderer
+    const CardGrid = ({ items: gridItems }: { items: any[] }) => {
+        const rows: any[][] = [];
+        for (let i = 0; i < gridItems.length; i += 2) {
+            rows.push(gridItems.slice(i, i + 2));
+        }
         return (
-            <View className="flex-row items-center justify-between bg-white rounded-[20px] p-3 border border-gray-100 mb-3">
-                <View className="flex-row items-center gap-3">
-                    <Text className="text-[18px]">{item.emoji || '❓'}</Text>
-                    <Text className="text-[15px] font-bold text-gray-900">{item.label}</Text>
-                </View>
-                <ToggleControl
-                    value={toggleStates[item.id] ?? 1}
-                    onChange={(val) => setToggleStates({ ...toggleStates, [item.id]: val })}
-                />
+            <View style={{ gap: 8, marginBottom: 24 }}>
+                {rows.map((row, ri) => (
+                    <View key={ri} style={{ flexDirection: 'row', gap: 8 }}>
+                        {row.map((item) => <ItemCard key={item.id} item={item} />)}
+                        {row.length === 1 && <View style={{ flex: 1 }} />}
+                    </View>
+                ))}
             </View>
         );
     };
 
+    // Slim section header with a colored left pip
+    const SectionHead = ({ label, pip, sub }: { label: string; pip: string; sub?: string }) => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <View style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: pip }} />
+            <Text style={{ fontSize: 10, fontWeight: '700', color: '#475569' }}>{label}</Text>
+            {sub && <Text style={{ marginLeft: 'auto', fontSize: 10, color: '#334155' }}>{sub}</Text>}
+        </View>
+    );
+
     return (
         <MenuProvider>
-            <View className="flex-1 bg-[#F9FAFB]">
-                <SafeAreaView edges={['top']} className="flex-1">
-                    {/* Header */}
-                    <View className="flex-row items-center justify-between px-5 pt-2 mb-6">
-                        <View>
-                            <Text className="text-[24px] font-bold text-gray-900">Journal</Text>
-                            <Text className="text-[13px] font-bold text-gray-400">Sep 2025</Text>
+            <View style={{ flex: 1, backgroundColor: '#07101C' }}>
+                <SafeAreaView edges={['top']} style={{ flex: 1 }}>
+
+                    {/* ── Top bar ── */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 18, paddingTop: 10, paddingBottom: 14 }}>
+                        {/* Left: month label stacked above large day number */}
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ fontSize: 10, fontWeight: '600', color: '#4F46E5', }}>September 2025</Text>
+                            <Text style={{ fontSize: 28, fontWeight: '600', color: '#E2E8F0', lineHeight: 42, marginTop: 2 }}>Friday 12</Text>
                         </View>
-                        <View className="flex-row gap-2">
-                            <TouchableOpacity onPress={() => router.push('/journal/insights')} className="flex-row items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1.5">
-                                <Ionicons name="sparkles" size={14} color="#6B7280" />
-                                <Text className="text-[13px] font-bold text-gray-700">Insights</Text>
+
+                        {/* Right: actions */}
+                        <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
+                            <TouchableOpacity
+                                onPress={() => router.push('/journal/insights')}
+                                style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: '#13192E', borderWidth: 1, borderColor: '#1E293B', alignItems: 'center', justifyContent: 'center' }}
+                            >
+                                <Ionicons name="sparkles" size={15} color="#818CF8" />
                             </TouchableOpacity>
 
                             <Menu>
-                                <MenuTrigger customStyles={{ TriggerTouchableComponent: TouchableOpacity, triggerTouchable: { activeOpacity: 0.8 } }}>
-                                    <View className="w-8 h-8 bg-white border border-gray-200 rounded-full items-center justify-center">
-                                        <Ionicons name="ellipsis-horizontal" size={16} color="#6B7280" />
+                                <MenuTrigger customStyles={{ TriggerTouchableComponent: TouchableOpacity, triggerTouchable: { activeOpacity: 0.7 } }}>
+                                    <View style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: '#13192E', borderWidth: 1, borderColor: '#1E293B', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Ionicons name="ellipsis-horizontal" size={15} color="#64748B" />
                                     </View>
                                 </MenuTrigger>
-                                <MenuOptions customStyles={{ optionsContainer: { borderRadius: 14, width: 220, marginTop: 35, paddingVertical: 4 } }}>
+                                <MenuOptions customStyles={{ optionsContainer: { borderRadius: 14, width: 210, marginTop: 42, paddingVertical: 4, backgroundColor: '#13192E', borderWidth: 1, borderColor: '#1E293B' } }}>
                                     <MenuOption onSelect={() => router.push('/journal/customize')}>
-                                        <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                            <Text className="text-[13px] font-medium text-gray-900">Customize journal</Text>
-                                            <Ionicons name="settings" size={18} color="#111827" />
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#1E293B' }}>
+                                            <Text style={{ fontSize: 13, color: '#CBD5E1' }}>Customize journal</Text>
+                                            <Ionicons name="settings" size={16} color="#475569" />
                                         </View>
                                     </MenuOption>
-                                    {/* <MenuOption>
-                                        <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                            <Text className="text-[13px] font-medium text-gray-900">Set default entries</Text>
-                                            <Ionicons name="add" size={20} color="#111827" />
-                                        </View>
-                                    </MenuOption>
-                                    <MenuOption>
-                                        <View className="flex-row items-center justify-between px-4 py-3">
-                                            <Text className="text-[13px] font-medium text-gray-900">Pinned tags</Text>
-                                            <Ionicons name="pin" size={18} color="#111827" />
-                                        </View>
-                                    </MenuOption> */}
                                     <MenuOption onSelect={() => router.push('/journal/default-entries')}>
-                                        <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                            <Text className="text-[15px] font-medium text-gray-900">Set default entries</Text>
-                                            <Ionicons name="add" size={20} color="#111827" />
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#1E293B' }}>
+                                            <Text style={{ fontSize: 13, color: '#CBD5E1' }}>Default entries</Text>
+                                            <Ionicons name="add" size={18} color="#475569" />
                                         </View>
                                     </MenuOption>
                                     <MenuOption onSelect={() => router.push('/journal/pinned-tags')}>
-                                        <View className="flex-row items-center justify-between px-4 py-3">
-                                            <Text className="text-[15px] font-medium text-gray-900">Pinned tags</Text>
-                                            <Ionicons name="pin" size={18} color="#111827" />
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 }}>
+                                            <Text style={{ fontSize: 13, color: '#CBD5E1' }}>Pinned tags</Text>
+                                            <Ionicons name="pin" size={16} color="#475569" />
                                         </View>
                                     </MenuOption>
                                 </MenuOptions>
@@ -157,77 +198,103 @@ export default function JournalScreen() {
                         </View>
                     </View>
 
-                    {/* Calendar Strip */}
-                    <View className="flex-row justify-between px-5 mb-6 border-b border-gray-100 pb-4">
-                        {DATES.map((item, idx) => (
-                            <View key={idx} className="items-center gap-2">
-                                <Text className={`text-[11px] font-bold ${item.status === 'active' ? 'text-teal-500' : 'text-gray-400'}`}>{item.day}</Text>
-                                <Text className={`text-[15px] font-bold ${item.status === 'active' ? 'text-teal-500' : 'text-gray-900'}`}>{item.date}</Text>
-                                <View className={`w-5 h-5 rounded-full items-center justify-center border ${item.status === 'checked' ? 'bg-yellow-400 border-yellow-400' : item.status === 'active' ? 'bg-teal-400 border-teal-400' : 'border-gray-200'}`}>
-                                    {item.status !== 'empty' && <Ionicons name="checkmark" size={12} color="white" />}
+                    {/* ── Horizontal week bar — just dots + date numbers, no boxes ── */}
+                    <View style={{ flexDirection: 'row', paddingHorizontal: 18, marginBottom: 20, alignItems: 'flex-end', gap: 0 }}>
+                        {DATES.map((item, idx) => {
+                            const isActive = item.status === 'active';
+                            const isChecked = item.status === 'checked';
+                            return (
+                                <View key={idx} style={{ flex: 1, alignItems: 'center', gap: 4 }}>
+                                    {/* Completion bar */}
+                                    <View style={{
+                                        width: 3,
+                                        height: isChecked ? 20 : isActive ? 28 : 8,
+                                        borderRadius: 2,
+                                        backgroundColor: isActive ? '#4F46E5' : isChecked ? '#0F9B6A' : '#1A2540',
+                                    }} />
+                                    <Text style={{ fontSize: 11, fontWeight: isActive ? '700' : '400', color: isActive ? '#C7D2FE' : isChecked ? '#334155' : '#1E293B' }}>
+                                        {item.date}
+                                    </Text>
+                                    <Text style={{ fontSize: 9, color: isActive ? '#6366F1' : '#1E2D44', fontWeight: '600' }}>{item.day}</Text>
                                 </View>
-                            </View>
-                        ))}
+                            );
+                        })}
                     </View>
 
-                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 110 }}>
 
-                        <View className="mb-6">
-                            <Text className="text-[16px] font-bold text-gray-900 mb-1">Today's Entries</Text>
-                            <Text className="text-[13px] text-gray-500 leading-5">Your entries today will contribute to the 90-day rolling data for tomorrow's insights.</Text>
+                        {/* Progress summary strip */}
+                        <View style={{ flexDirection: 'row', gap: 8, marginBottom: 24 }}>
+                            {[
+                                { label: 'Logged', value: '5', color: '#34D399' },
+                                { label: 'Skipped', value: '2', color: '#64748B' },
+                                { label: 'Pending', value: '3', color: '#4F46E5' },
+                            ].map(s => (
+                                <View key={s.label} style={{ flex: 1, backgroundColor: '#0E1623', borderRadius: 12, borderWidth: 1, borderColor: '#1C2A3F', paddingVertical: 10, alignItems: 'center' }}>
+                                    <Text style={{ fontSize: 18, fontWeight: '800', color: s.color }}>{s.value}</Text>
+                                    <Text style={{ fontSize: 10, color: '#475569', marginTop: 2, fontWeight: '500' }}>{s.label}</Text>
+                                </View>
+                            ))}
                         </View>
 
-                        {/* Pinned Section */}
+                        {/* ── Pinned ── */}
                         {PinnedItems.length > 0 && (
                             <>
-                                <Text className="text-[13px] font-bold text-gray-500 mb-3">Pinned</Text>
-                                <View className="mb-5">
-                                    {PinnedItems.map(item => <JournalRow key={item.id} item={item} />)}
-                                </View>
+                                <SectionHead label="Pinned" pip="#F59E0B" />
+                                <CardGrid items={PinnedItems} />
                             </>
                         )}
 
-                        {/* Daytime Section */}
-                        <Text className="text-[13px] font-bold text-gray-500 mb-3">Daytime</Text>
-                        <View className="mb-5">
-                            {DaytimeItems.map(item => <JournalRow key={item.id} item={item} />)}
-                        </View>
+                        {/* ── Daytime ── */}
+                        <SectionHead label="Daytime" pip="#38BDF8" />
+                        <CardGrid items={DaytimeItems} />
 
-                        {/* Nighttime Section */}
+                        {/* ── Nighttime ── */}
                         {NighttimeItems.length > 0 && (
                             <>
-                                <View className="flex-row items-center justify-between mb-3">
-                                    <Text className="text-[13px] font-bold text-gray-500">Nighttime</Text>
-                                    <Text className="text-[11px] font-medium text-gray-400">12 Sep - 13 Sep</Text>
-                                </View>
-                                <View className="mb-5">
-                                    {NighttimeItems.map(item => <JournalRow key={item.id} item={item} />)}
-                                </View>
+                                <SectionHead label="Nighttime" pip="#818CF8" sub="12 → 13 Sep" />
+                                <CardGrid items={NighttimeItems} />
                             </>
                         )}
 
-                        {/* Automatic Section */}
-                        <Text className="text-[13px] font-bold text-gray-500 mb-3">Automatic</Text>
-                        <View className="gap-3 mb-8">
+                        {/* ── Automatic ── */}
+                        <SectionHead label="Automatic" pip="#475569" />
+                        <View style={{ gap: 6, marginBottom: 24 }}>
                             {JOURNAL_AUTO.map((item) => (
-                                <View key={item.id} className="flex-row items-center justify-between bg-white rounded-[20px] p-4 border border-gray-100">
-                                    <View className="flex-row items-center gap-3">
-                                        <Ionicons name={item.icon as any} size={20} color={item.color} />
-                                        <Text className="text-[14px] font-bold text-gray-900">{item.title}</Text>
+                                <View key={item.id} style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    backgroundColor: '#0E1623',
+                                    borderRadius: 12,
+                                    borderWidth: 1,
+                                    borderColor: '#1C2A3F',
+                                    paddingHorizontal: 14,
+                                    paddingVertical: 11,
+                                }}>
+                                    {/* Icon */}
+                                    <View style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: '#07101C', alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
+                                        <Ionicons name={item.icon as any} size={13} color={item.color} />
                                     </View>
-                                    <View className="flex-row items-center gap-3">
-                                        {item.value ? <Text className="text-[12px] font-medium text-gray-400">{item.value}</Text> : null}
+
+                                    {/* Label */}
+                                    <Text style={{ flex: 1, fontSize: 13, color: '#64748B', fontWeight: '500' }}>{item.title}</Text>
+
+                                    {/* Value + status */}
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                                        {item.value ? <Text style={{ fontSize: 11, color: '#334155', fontWeight: '600' }}>{item.value}</Text> : null}
                                         {item.isSkipped ? (
-                                            <View className="w-6 h-6 rounded-full border-2 border-gray-200 items-center justify-center"><View className="w-2.5 h-0.5 bg-gray-300" /></View>
+                                            <View style={{ width: 22, height: 22, borderRadius: 6, backgroundColor: '#111827', alignItems: 'center', justifyContent: 'center' }}>
+                                                <View style={{ width: 8, height: 2, backgroundColor: '#374151', borderRadius: 1 }} />
+                                            </View>
                                         ) : item.isComplete ? (
-                                            <View className="flex-row items-center gap-1">
-                                                <Ionicons name="sparkles" size={14} color={item.isNegative ? '#EF4444' : '#10B981'} />
-                                                <View className={`w-6 h-6 rounded-md items-center justify-center ${item.isNegative ? 'bg-red-500' : 'bg-teal-400'}`}>
-                                                    <Ionicons name={item.isNegative ? "close" : "checkmark"} size={14} color="white" />
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                                                <Ionicons name="sparkles" size={10} color={item.isNegative ? '#F87171' : '#34D399'} />
+                                                <View style={{ width: 22, height: 22, borderRadius: 6, backgroundColor: item.isNegative ? '#3B0F0F' : '#022C22', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <Ionicons name={item.isNegative ? 'close' : 'checkmark'} size={12} color={item.isNegative ? '#F87171' : '#34D399'} />
                                                 </View>
                                             </View>
                                         ) : (
-                                            <View className="w-6 h-6 rounded-full border-4 border-gray-100 border-t-teal-400 -rotate-45" />
+                                            <View style={{ width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: '#1E293B', borderTopColor: '#3B82F6', transform: [{ rotate: '-45deg' }] }} />
                                         )}
                                     </View>
                                 </View>

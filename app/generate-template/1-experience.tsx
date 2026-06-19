@@ -22,21 +22,38 @@ export default function ExperienceScreen() {
             isNextEnabled={!!selected}
             onNext={() => router.push('/generate-template/2-location')}
         >
-            <View className="gap-3">
-                {OPTIONS.map(opt => (
-                    <TouchableOpacity
-                        key={opt.id} onPress={() => setSelected(opt.id)}
-                        // className={`bg-white p-5 rounded-2xl border-[1.5px] flex-row justify-between items-center ${selected === opt.id ? 'border-black' : 'border-transparent'}`}
-                        className={`bg-white p-5 rounded-2xl border-[1.5px] flex-row justify-between items-center ${selected === opt.id ? 'border-black' : 'border-transparent'}`}
-                    >
-                        <View className="flex-1 pr-4">
-                            <Ionicons name={opt.icon as any} size={20} color="#4B5563" className="mb-2" />
-                            <Text className="font-bold text-gray-900 text-base mb-1">{opt.title}</Text>
-                            <Text className="text-gray-500 text-sm leading-5">{opt.desc}</Text>
-                        </View>
-                        {selected === opt.id && <Ionicons name="checkmark" size={24} color="black" />}
-                    </TouchableOpacity>
-                ))}
+            <View className="gap-4">
+                {OPTIONS.map(opt => {
+                    const isSelected = selected === opt.id;
+                    return (
+                        <TouchableOpacity
+                            key={opt.id}
+                            onPress={() => setSelected(opt.id)}
+                            className={`flex-row items-center p-4 rounded-[20px] border ${isSelected ? 'bg-[#15233A] border-[#38BDF8]' : 'bg-[#151E33] border-[#1E2D4A]'}`}
+                        >
+                            <View className={`w-12 h-12 rounded-[12px] items-center justify-center border ${isSelected ? 'bg-[#1C2F4D] border-[#38BDF8]/30' : 'bg-[#0F172A] border-[#1E2D4A]'}`}>
+                                <Ionicons name={opt.icon as any} size={22} color={isSelected ? '#38BDF8' : '#64748B'} />
+                            </View>
+
+                            <View className="flex-1 ml-4">
+                                <Text className={`text-[16px] font-bold mb-1 ${isSelected ? 'text-[#F1F5F9]' : 'text-[#CBD5E1]'}`}>
+                                    {opt.title}
+                                </Text>
+                                <Text className="text-[13px] text-[#64748B] leading-5 font-medium">
+                                    {opt.desc}
+                                </Text>
+                            </View>
+
+                            <View className="ml-2 w-6 h-6 items-center justify-center">
+                                {isSelected ? (
+                                    <Ionicons name="radio-button-on" size={24} color="#38BDF8" />
+                                ) : (
+                                    <Ionicons name="radio-button-off" size={24} color="#334155" />
+                                )}
+                            </View>
+                        </TouchableOpacity>
+                    );
+                })}
             </View>
         </StepLayout>
     );

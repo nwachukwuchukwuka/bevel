@@ -3,41 +3,47 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
+import { ScrollView } from 'react-native';
+
 export const TimelineSection = () => {
     return (
-        <View className="mb-8">
-            <View className="gap-3">
+        <View className="mb-6">
+            <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 20, gap: 16 }}
+            >
                 {TIMELINE_EVENTS.map((item) => (
-                    <TouchableOpacity
-                        key={item.id}
-                        activeOpacity={0.7}
-                        className="flex-row items-center bg-white rounded-[20px] p-4 shadow-sm shadow-black/5 border border-gray-50"
-                    >
-                        {/* Emoji/Icon with Optional Badge */}
-                        <View className="relative mr-4">
-                            <View className="w-[52px] h-[52px] bg-gray-50 rounded-[16px] items-center justify-center border border-gray-100">
-                                <Text className="text-[26px]">{item.emoji}</Text>
-                            </View>
-                            {item.score && (
-                                <View className={`absolute -bottom-1 -right-2 border border-white rounded-full px-1.5 py-0.5 ${item.scoreType === 'purple' ? 'bg-purple-100' : 'bg-blue-100'}`}>
-                                    <Text className={`text-[10px] font-extrabold ${item.scoreType === 'purple' ? 'text-purple-500' : 'text-blue-500'}`}>
-                                        {item.score}
+                    <View key={item.id} className="w-48 relative">
+                        {/* Event Details Card */}
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            className="w-full bg-[#151E33] rounded-2xl p-4 border border-slate-800/80 gap-2"
+                        >
+                            <View className="flex-row items-center justify-between">
+                                <View className="flex-row items-center flex-1 mr-1 gap-1.5">
+                                    <Text className="text-[15px]">{item.emoji}</Text>
+                                    <Text className="font-bold text-[13px] text-slate-100 flex-1" numberOfLines={1}>
+                                        {item.title}
                                     </Text>
                                 </View>
-                            )}
-                        </View>
-
-                        {/* Text Info */}
-                        <View className="flex-1 gap-1">
-                            <Text className="font-bold text-[15px] text-gray-900" numberOfLines={1}>{item.title}</Text>
-                            <Text className="text-[12px] font-medium text-gray-400">{item.time}</Text>
-                        </View>
-
-                        {/* Chevron */}
-                        <Ionicons name="chevron-forward" size={18} color="#D1D5DB" />
-                    </TouchableOpacity>
+                                {item.score && (
+                                    <View className={`px-2 py-0.5 rounded-full ${item.scoreType === 'purple' ? 'bg-purple-950/60 border border-purple-800/30' : 'bg-blue-950/60 border border-blue-800/30'}`}>
+                                        <Text className={`text-[8px] font-bold ${item.scoreType === 'purple' ? 'text-purple-400' : 'text-blue-400'}`}>
+                                            {item.score}
+                                        </Text>
+                                    </View>
+                                )}
+                            </View>
+                            <Text className="text-[10px] font-medium text-slate-400">{item.time.split(' at ')[1] || item.time}</Text>
+                            <View className="flex-row items-center gap-1 mt-1 justify-end">
+                                <Text className="text-[10px] font-bold text-blue-400">View</Text>
+                                <Ionicons name="chevron-forward" size={10} color="#3B82F6" />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 ))}
-            </View>
+            </ScrollView>
         </View>
     );
-};
+};

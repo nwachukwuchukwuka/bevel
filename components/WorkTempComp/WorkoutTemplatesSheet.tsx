@@ -25,7 +25,7 @@ export const WorkoutTemplatesSheet = forwardRef<WorkoutTemplatesSheetRef, Workou
                 {...backdropProps}
                 disappearsOnIndex={-1}
                 appearsOnIndex={0}
-                opacity={0.4}
+                opacity={0.6}
             />
         ),
         []
@@ -65,16 +65,16 @@ export const WorkoutTemplatesSheet = forwardRef<WorkoutTemplatesSheetRef, Workou
             index={0}
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
-            handleIndicatorStyle={{ backgroundColor: '#D1D5DB', width: 36, height: 4 }}
-            backgroundStyle={{ backgroundColor: '#FFFFFF', borderRadius: 24 }}
+            handleIndicatorStyle={{ backgroundColor: '#1E2D4A', width: 40, height: 4 }}
+            backgroundStyle={{ backgroundColor: '#090D16', borderRadius: 24 }}
             enableDynamicSizing={false}
         >
             <BottomSheetView
                 style={{ paddingBottom: insets.bottom + 20 }}
-                className="flex-1 px-5 pt-2"
+                className="flex-1 px-5 pt-4"
             >
-                <MenuProvider>
-                    <Text className="text-center font-semibold text-[15px] text-gray-800 mb-6">
+                <MenuProvider skipInstanceCheck>
+                    <Text className="text-center font-bold text-[16px] text-[#F1F5F9] mb-6">
                         Workout Templates
                     </Text>
 
@@ -82,12 +82,12 @@ export const WorkoutTemplatesSheet = forwardRef<WorkoutTemplatesSheetRef, Workou
                         <TouchableOpacity
                             onPress={handleAddNew}
                             activeOpacity={0.6}
-                            className="flex-row items-center p-4 border border-dashed border-gray-300 rounded-[20px] bg-white"
+                            className="flex-row items-center p-4 border border-dashed border-[#1E2D4A] rounded-[20px] bg-[#151E33]"
                         >
-                            <View className="w-[42px] h-[42px] border border-gray-200 rounded-2xl items-center justify-center mr-4">
-                                <Ionicons name="add" size={20} color="#4B5563" />
+                            <View className="w-[42px] h-[42px] bg-[#0F172A] border border-[#1E2D4A] rounded-[14px] items-center justify-center mr-4">
+                                <Ionicons name="add" size={20} color="#38BDF8" />
                             </View>
-                            <Text className="font-semibold text-[15px] text-gray-700">
+                            <Text className="font-semibold text-[15px] text-[#38BDF8]">
                                 Add new workout
                             </Text>
                         </TouchableOpacity>
@@ -95,23 +95,22 @@ export const WorkoutTemplatesSheet = forwardRef<WorkoutTemplatesSheetRef, Workou
                         {templates.map((template) => (
                             <View
                                 key={template.id}
-                                className="flex-row items-center justify-between p-[18px] bg-white rounded-[20px] border border-gray-50"
-                                style={styles.cardShadow}
+                                className="flex-row items-center justify-between p-4 bg-[#151E33] rounded-[20px] border border-[#1E2D4A]"
                             >
-                                <View className="gap-1">
-                                    <Text className="font-bold text-[15px] text-gray-900 tracking-tight">
+                                <View className="gap-1.5 flex-1">
+                                    <Text className="font-bold text-[16px] text-[#F1F5F9]">
                                         {template.title}
                                     </Text>
-                                    <Text className="font-medium text-[13px] text-gray-400">
+                                    <Text className="font-medium text-[13px] text-[#64748B]">
                                         {template.exercisesCount} exercises, {template.setsCount} sets
                                     </Text>
                                 </View>
 
                                 <Menu>
                                     {/* The Trigger (Dots icon) */}
-                                    <MenuTrigger customStyles={{ triggerWrapper: { padding: 8, marginRight: -8 } }}>
-                                        <View className="w-8 h-8 rounded-full bg-gray-100 items-center justify-center">
-                                            <Ionicons name="ellipsis-horizontal" size={16} color="#9CA3AF" />
+                                    <MenuTrigger customStyles={{ triggerWrapper: { padding: 4 } }}>
+                                        <View className="w-9 h-9 rounded-[10px] bg-[#0F172A] border border-[#1E2D4A] items-center justify-center">
+                                            <Ionicons name="ellipsis-horizontal" size={16} color="#94A3B8" />
                                         </View>
                                     </MenuTrigger>
 
@@ -120,25 +119,25 @@ export const WorkoutTemplatesSheet = forwardRef<WorkoutTemplatesSheetRef, Workou
 
                                         {/* Edit Option */}
                                         <MenuOption onSelect={() => console.log('Edit clicked')}>
-                                            <View className="flex-row items-center justify-between px-4 py-3.5 border-b border-gray-100">
-                                                <Text className="text-[15px] text-gray-900">Edit workout</Text>
-                                                <Ionicons name="pencil-outline" size={18} color="#111827" />
+                                            <View className="flex-row items-center justify-between px-4 py-3.5 border-b border-[#334155]/50">
+                                                <Text className="text-[15px] font-medium text-[#F1F5F9]">Edit workout</Text>
+                                                <Ionicons name="pencil-outline" size={18} color="#94A3B8" />
                                             </View>
                                         </MenuOption>
 
                                         {/* Duplicate Option */}
                                         <MenuOption onSelect={() => handleDuplicate(template)}>
-                                            <View className="flex-row items-center justify-between px-4 py-3.5 border-b border-gray-100">
-                                                <Text className="text-[15px] text-gray-900">Duplicate</Text>
-                                                <Ionicons name="copy-outline" size={18} color="#111827" />
+                                            <View className="flex-row items-center justify-between px-4 py-3.5 border-b border-[#334155]/50">
+                                                <Text className="text-[15px] font-medium text-[#F1F5F9]">Duplicate</Text>
+                                                <Ionicons name="copy-outline" size={18} color="#94A3B8" />
                                             </View>
                                         </MenuOption>
 
                                         {/* Delete Option */}
                                         <MenuOption onSelect={() => handleDelete(template.id)}>
                                             <View className="flex-row items-center justify-between px-4 py-3.5">
-                                                <Text className="text-[15px] text-red-500">Delete</Text>
-                                                <Ionicons name="trash-outline" size={18} color="#EF4444" />
+                                                <Text className="text-[15px] font-medium text-[#F87171]">Delete</Text>
+                                                <Ionicons name="trash-outline" size={18} color="#F87171" />
                                             </View>
                                         </MenuOption>
 
@@ -150,29 +149,16 @@ export const WorkoutTemplatesSheet = forwardRef<WorkoutTemplatesSheetRef, Workou
                     </View>
                 </MenuProvider>
             </BottomSheetView>
-
         </BottomSheetModal>
     );
 });
 
 const styles = StyleSheet.create({
-    cardShadow: {
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.04,
-        shadowRadius: 12,
-        elevation: 2,
-    },
-    // --- Change 9: Added custom styling for the popup  container to match the design ---
     menuOptionsContainer: {
-        borderRadius: 14,
+        borderRadius: 16,
         width: 200,
-        backgroundColor: '#FFFFFF',
-        marginTop: 34, // Push down below the trigger
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.1,
-        shadowRadius: 14,
-        elevation: 6,
+        backgroundColor: '#1E2D4A',
+        borderColor: '#334155',
+        borderWidth: 1,
     }
 });

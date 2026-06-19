@@ -11,10 +11,8 @@ export default function ExerciseDetailsScreen() {
     const router = useRouter();
     const { id, name, type } = useLocalSearchParams<{ id: string, name: string, type: string }>();
 
-    // Find exercise in LIBRARY
     const exercise = LIBRARY.flatMap(section => section.items).find(item => item.id === id);
 
-    // Fallback if not found (e.g. for custom exercises or if we want to handle missing id)
     const displayName = name || exercise?.name || "Exercise Details";
     const displayType = type || exercise?.type || "Standard";
 
@@ -31,89 +29,102 @@ export default function ExerciseDetailsScreen() {
 
     return (
         <BottomSheetModalProvider>
-            <SafeAreaView className="flex-1 bg-white" edges={['top']}>
+            <SafeAreaView className="flex-1 bg-[#090D16]" edges={['top']}>
 
-                {/* Native Modal Drag Handle Mock */}
-                <View className="w-full items-center pt-3 pb-2">
-                    <View className="w-10 h-1.5 bg-gray-300 rounded-full" />
+                <View className="w-full items-center pt-3 pb-6">
+                    <View className="w-12 h-1.5 bg-[#2D3748] rounded-full" />
                 </View>
 
-                {/* Header Info */}
-                <View className="px-5 mb-4">
-                    <Text className="text-2xl font-bold text-gray-900 mb-1">{displayName}</Text>
-                    <Text className="text-gray-400 font-medium">{displayType}</Text>
+                <View className="px-5 mb-6">
+                    <Text className="text-3xl font-bold text-white mb-2">{displayName}</Text>
+                    <Text className="text-slate-400 font-medium text-base">{displayType}</Text>
                 </View>
 
-                {/* Image Placeholder */}
-                <View className="mx-5 h-56 bg-gray-50 rounded-2xl border border-gray-200 items-center justify-center mb-6">
-                    {/* Simulated image graphic */}
-                    <Ionicons name="body-outline" size={80} color="#D1D5DB" />
-                    <View className="absolute bg-orange-500/20 w-12 h-12 rounded-lg mt-4" />
+                <View className="mx-5 h-64 bg-[#151E33] border border-[#1E293B] rounded-3xl items-center justify-center mb-8 relative overflow-hidden">
+                    <View className="absolute left-[20%] w-[1px] h-full border-l border-dashed border-[#1E293B]" />
+                    <View className="absolute right-[20%] w-[1px] h-full border-l border-dashed border-[#1E293B]" />
+                    <View className="absolute top-[50%] w-full h-[1px] bg-[#1E293B]" />
+
+                    <View className="w-24 h-24 rounded-2xl bg-[#1E293B] border border-[#2D3748] items-center justify-center z-10">
+                        <Ionicons name="body-outline" size={48} color="#4DB9F2" />
+                    </View>
+
+                    <View className="absolute bottom-6 right-6 w-10 h-10 rounded-xl bg-[#F59E0B]/10 border border-[#F59E0B]/30 items-center justify-center z-10" />
                 </View>
 
-                {/* Tabs */}
-                <View className="flex-row mx-5 border-b border-gray-200 mb-6">
+                <View className="mx-5 bg-[#151E33] border border-[#1E293B] rounded-xl p-1.5 flex-row mb-6">
                     <TouchableOpacity
                         onPress={() => setActiveTab('About')}
-                        className={`flex-1 items-center pb-3 ${activeTab === 'About' ? 'border-b-[3px] border-gray-900' : ''}`}
+                        className={`flex-1 items-center justify-center py-2.5 rounded-lg ${activeTab === 'About' ? 'bg-[#1E293B] border border-[#2D3748]' : 'border border-transparent'}`}
                     >
-                        <Text className={`font-bold ${activeTab === 'About' ? 'text-gray-900' : 'text-gray-400'}`}>About</Text>
+                        <Text className={`font-semibold ${activeTab === 'About' ? 'text-white' : 'text-slate-500'}`}>About</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => setActiveTab('Guide')}
-                        className={`flex-1 items-center pb-3 ${activeTab === 'Guide' ? 'border-b-[3px] border-gray-900' : ''}`}
+                        className={`flex-1 items-center justify-center py-2.5 rounded-lg ${activeTab === 'Guide' ? 'bg-[#1E293B] border border-[#2D3748]' : 'border border-transparent'}`}
                     >
-                        <Text className={`font-bold ${activeTab === 'Guide' ? 'text-gray-900' : 'text-gray-400'}`}>Guide</Text>
+                        <Text className={`font-semibold ${activeTab === 'Guide' ? 'text-white' : 'text-slate-500'}`}>Guide</Text>
                     </TouchableOpacity>
                 </View>
 
                 <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}>
 
-                    {/* --- ABOUT TAB CONTENT --- */}
                     {activeTab === 'About' && (
-                        <View className="gap-5">
-                            <View>
-                                <Text className="text-gray-400 font-semibold text-xs mb-2">Equipment</Text>
-                                <View className="flex-row items-center gap-2">
-                                    <View className="bg-orange-100 p-1.5 rounded-md"><Ionicons name="desktop" size={16} color="#EA580C" /></View>
-                                    <Text className="font-bold text-gray-900 text-[15px]">{displayType}</Text>
+                        <View className="gap-4">
+
+                            <View className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 flex-row items-center justify-between">
+                                <Text className="text-slate-400 font-medium text-sm">Equipment</Text>
+                                <View className="flex-row items-center gap-3">
+                                    <View className="w-8 h-8 rounded-lg bg-[#F59E0B]/10 border border-[#F59E0B]/30 items-center justify-center">
+                                        <Ionicons name="desktop" size={14} color="#F59E0B" />
+                                    </View>
+                                    <Text className="font-semibold text-white text-base">{displayType}</Text>
                                 </View>
                             </View>
 
-                            <View>
-                                <Text className="text-gray-400 font-semibold text-xs mb-2">Primary muscles</Text>
-                                <View className="bg-[#1A1A1A] self-start px-3 py-1.5 rounded-lg">
-                                    <Text className="text-white font-bold text-[13px]">Abs</Text>
+                            <View className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 gap-6">
+                                <View>
+                                    <Text className="text-slate-400 font-medium text-sm mb-3">Primary muscles</Text>
+                                    <View className="self-start px-4 py-2 rounded-xl bg-[#4DB9F2]/10 border border-[#4DB9F2]/30">
+                                        <Text className="text-[#4DB9F2] font-semibold text-sm">Abs</Text>
+                                    </View>
+                                </View>
+
+                                <View className="w-full h-[1px] bg-[#1E293B]" />
+
+                                <View>
+                                    <Text className="text-slate-400 font-medium text-sm mb-3">Secondary muscles</Text>
+                                    <View className="self-start px-4 py-2 rounded-xl bg-[#1E293B] border border-[#2D3748]">
+                                        <Text className="text-slate-300 font-medium text-sm">Obliques</Text>
+                                    </View>
                                 </View>
                             </View>
 
-                            <View>
-                                <Text className="text-gray-400 font-semibold text-xs mb-2">Secondary muscles</Text>
-                                <View className="bg-white border border-gray-200 self-start px-3 py-1.5 rounded-lg shadow-sm">
-                                    <Text className="text-gray-800 font-bold text-[13px]">Obliques</Text>
-                                </View>
-                            </View>
-
-                            {/* Trigger for Bottom Sheet */}
                             <TouchableOpacity
                                 onPress={() => howToLogRef.current?.present()}
-                                className="mt-4 border border-dashed border-gray-300 rounded-xl py-3.5 flex-row justify-center items-center gap-2 bg-gray-50/50"
+                                className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 flex-row justify-between items-center mt-2"
                             >
-                                <Ionicons name="bulb-outline" size={16} color="#4B5563" />
-                                <Text className="font-bold text-gray-700">How to log</Text>
+                                <View className="flex-row items-center gap-4">
+                                    <View className="w-10 h-10 rounded-xl bg-[#4DB9F2]/10 border border-[#4DB9F2]/30 items-center justify-center">
+                                        <Ionicons name="bulb-outline" size={18} color="#4DB9F2" />
+                                    </View>
+                                    <Text className="font-semibold text-white text-base">How to log</Text>
+                                </View>
+                                <View className="w-8 h-8 rounded-lg bg-[#1E293B] border border-[#2D3748] items-center justify-center">
+                                    <Ionicons name="chevron-forward" size={16} color="#4DB9F2" />
+                                </View>
                             </TouchableOpacity>
                         </View>
                     )}
 
-                    {/* --- GUIDE TAB CONTENT --- */}
                     {activeTab === 'Guide' && (
-                        <View className="gap-4">
+                        <View className="gap-3">
                             {GUIDE_STEPS.map((step, index) => (
-                                <View key={index} className="flex-row items-start gap-4">
-                                    <View className="w-6 h-6 rounded-full border border-gray-200 items-center justify-center mt-0.5">
-                                        <Text className="text-gray-500 font-bold text-xs">{index + 1}</Text>
+                                <View key={index} className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 flex-row items-start gap-4">
+                                    <View className="w-8 h-8 rounded-xl bg-[#1E293B] border border-[#2D3748] items-center justify-center mt-0.5">
+                                        <Text className="text-[#4DB9F2] font-bold text-sm">{index + 1}</Text>
                                     </View>
-                                    <Text className="flex-1 font-semibold text-gray-800 leading-6 text-[15px]">
+                                    <Text className="flex-1 font-medium text-slate-300 leading-6 text-base">
                                         {step}
                                     </Text>
                                 </View>

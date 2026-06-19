@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { forwardRef, useCallback, useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -32,88 +32,142 @@ export const LibrarySheet = forwardRef<BottomSheetModal, LibrarySheetProps>(({ o
         setSelectedIds([]);
     };
 
-    const renderBackdrop = useCallback((props: any) => <BottomSheetBackdrop {...props} opacity={0.4} />, []);
+    const handleDismiss = () => {
+        (ref as any).current?.dismiss();
+        setSelectedIds([]);
+    };
+
+    const renderBackdrop = useCallback(
+        (props: any) => <BottomSheetBackdrop {...props} opacity={0.7} appearsOnIndex={0} disappearsOnIndex={-1} />,
+        []
+    );
+
+    const hasSelection = selectedIds.length > 0;
 
     return (
-        <BottomSheetModal ref={ref} snapPoints={['100%']} backdropComponent={renderBackdrop} handleIndicatorStyle={{ display: 'none' }} enableDynamicSizing={false}>
-            <BottomSheetView className="flex-1 pt-2">
-
-                {/* Header */}
-                <View className="flex-row justify-between items-center px-5 mb-4">
-                    <TouchableOpacity onPress={() => (ref as any).current?.dismiss()}>
-                        <Text className="text-gray-500 font-medium text-base">Cancel</Text>
-                    </TouchableOpacity>
-                    <Text className="font-bold text-gray-900 text-base">Library</Text>
-                    <TouchableOpacity onPress={handleExclude} disabled={selectedIds.length === 0}>
-                        <Text className={`font-bold text-base ${selectedIds.length > 0 ? 'text-gray-900' : 'text-gray-300'}`}>Exclude</Text>
-                    </TouchableOpacity>
+        <BottomSheetModal
+            ref={ref}
+            snapPoints={['95%']}
+            backdropComponent={renderBackdrop}
+            backgroundStyle={{ backgroundColor: '#090D16' }}
+            handleIndicatorStyle={{ backgroundColor: '#1E293B', width: 40 }}
+            enableDynamicSizing={false}
+        >
+            <View className="flex-1">
+                <View className="flex-row justify-between items-start px-5 pt-4 pb-2">
+                    <View className="flex-1 pr-4">
+                        <Text className="text-[28px] font-bold text-slate-100 mb-1">Library</Text>
+                        <Text className="text-[13px] font-medium text-slate-400">Select exercises to modify</Text>
+                    </View>
+                    <View className="flex-row items-center gap-3">
+                        <TouchableOpacity
+                            onPress={handleDismiss}
+                            className="w-12 h-12 bg-[#151E33] border border-[#1E293B] rounded-[16px] items-center justify-center"
+                        >
+                            <Ionicons name="close" size={20} color="#94A3B8" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={handleExclude}
+                            disabled={!hasSelection}
+                            className={`h-12 px-5 items-center justify-center rounded-[16px] border ${hasSelection
+                                ? 'bg-[#4DB9F2] border-[#4DB9F2]'
+                                : 'bg-[#151E33] border-[#1E293B]'
+                                }`}
+                        >
+                            <Text className={`font-bold text-[15px] ${hasSelection ? 'text-[#090D16]' : 'text-slate-500'
+                                }`}>
+                                Exclude {hasSelection ? `(${selectedIds.length})` : ''}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
-                {/* Search & Filters */}
-                <View className="px-5 mb-4">
-                    <View className="flex-row items-center bg-gray-50 rounded-xl px-4 py-3 mb-3">
-                        <Ionicons name="search" size={20} color="#9CA3AF" />
-                        <TextInput placeholder="Search" placeholderTextColor="#9CA3AF" className="flex-1 ml-2 font-medium text-gray-900 text-[15px]" />
+                {/* Compact Search & Filter Block */}
+                <View className="px-5 pt-2 pb-4 z-10">
+                    <View className="flex-row items-center bg-[#151E33] border border-[#1E293B] rounded-[16px] px-4 py-3.5 mb-3">
+                        <Ionicons name="search" size={20} color="#4DB9F2" />
+                        <TextInput
+                            placeholder="Search library..."
+                            placeholderTextColor="#64748B"
+                            className="flex-1 ml-3 font-medium text-slate-100 text-[15px]"
+                        />
                     </View>
-
                     <View className="flex-row gap-3">
-                        <TouchableOpacity className="flex-row items-center border border-gray-200 rounded-full px-4 py-2 bg-white ">
-                            <Ionicons name="options-outline" size={16} color="#4B5563" />
-                            <Text className="font-semibold text-gray-700 ml-2 mr-1">All groups</Text>
-                            <Ionicons name="chevron-forward" size={14} color="#9CA3AF" />
+                        <TouchableOpacity className="flex-1 flex-row items-center justify-between border border-[#1E293B] rounded-[12px] py-3 px-4 bg-[#151E33]">
+                            <Text className="font-semibold text-slate-300 text-[13px]">All groups</Text>
+                            <Ionicons name="chevron-down" size={14} color="#64748B" />
                         </TouchableOpacity>
-                        <TouchableOpacity className="flex-row items-center border border-gray-200 rounded-full px-4 py-2 bg-white ">
-                            <Ionicons name="options-outline" size={16} color="#4B5563" />
-                            <Text className="font-semibold text-gray-700 ml-2 mr-1">All equipment</Text>
-                            <Ionicons name="chevron-forward" size={14} color="#9CA3AF" />
+                        <TouchableOpacity className="flex-1 flex-row items-center justify-between border border-[#1E293B] rounded-[12px] py-3 px-4 bg-[#151E33]">
+                            <Text className="font-semibold text-slate-300 text-[13px]">All equipment</Text>
+                            <Ionicons name="chevron-down" size={14} color="#64748B" />
                         </TouchableOpacity>
                     </View>
                 </View>
 
-                {/* Custom Exercise Button */}
-                <View className="px-5 mb-2">
-                    <Text className="text-gray-400 font-bold text-xs uppercase mb-2">Custom</Text>
-                    <TouchableOpacity className="flex-row items-center gap-3 py-3">
-                        <View className="w-8 h-8 bg-gray-100 rounded-full items-center justify-center">
-                            <Ionicons name="add" size={18} color="#4B5563" />
+                {/* Vertical Scroll Area with Grid Layout */}
+                <BottomSheetScrollView className="flex-1" contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 60, paddingTop: 10 }}>
+
+                    {/* Custom Exercise Block */}
+                    <TouchableOpacity className="border border-dashed border-[#4DB9F2]/40 bg-[#4DB9F2]/5 rounded-[20px] p-4 flex-row items-center gap-4 mb-8">
+                        <View className="w-12 h-12 bg-[#4DB9F2]/10 rounded-[14px] items-center justify-center border border-[#4DB9F2]/20">
+                            <Ionicons name="add" size={24} color="#4DB9F2" />
                         </View>
-                        <Text className="font-semibold text-gray-700 text-[15px]">Add custom exercise</Text>
+                        <View>
+                            <Text className="font-bold text-[#4DB9F2] text-[16px] mb-0.5">Custom</Text>
+                            <Text className="font-medium text-[#4DB9F2]/70 text-[13px]">Add custom exercise</Text>
+                        </View>
                     </TouchableOpacity>
-                </View>
 
-                <View className="h-[1px] bg-gray-100 w-full mb-2" />
+                    <Text className="text-slate-500 font-bold text-[14px] mb-4">A</Text>
 
-                {/* List */}
-                <BottomSheetScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}>
-                    <Text className="text-gray-400 font-bold text-xs uppercase mb-3">A</Text>
-                    {DUMMY_EXERCISES.map((ex, index) => {
-                        const isSelected = selectedIds.includes(ex.id);
-                        return (
-                            <View key={ex.id} className={`flex-row items-center justify-between py-3 ${index !== DUMMY_EXERCISES.length - 1 ? 'border-b border-gray-50' : ''}`}>
-                                <View className="flex-row items-center gap-3">
-                                    <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center border border-gray-100">
-                                        <Text className="text-lg">{ex.icon}</Text>
+                    {/* New Grid Layout (2 Columns) */}
+                    <View className="flex-row flex-wrap justify-between">
+                        {DUMMY_EXERCISES.map((ex) => {
+                            const isSelected = selectedIds.includes(ex.id);
+
+                            return (
+                                <TouchableOpacity
+                                    key={ex.id}
+                                    onPress={() => toggleSelect(ex.id)}
+                                    activeOpacity={0.7}
+                                    className={`w-[48%] mb-4 p-4 rounded-[24px] border ${isSelected
+                                        ? 'bg-[#4DB9F2]/10 border-[#4DB9F2]/50'
+                                        : 'bg-[#151E33] border-[#1E293B]'
+                                        }`}
+                                >
+                                    <View className="flex-row justify-between items-start mb-6">
+                                        <View className="w-12 h-12 bg-[#1E293B] border border-[#2D3748] rounded-[14px] items-center justify-center">
+                                            <Text className="text-[20px]">{ex.icon}</Text>
+                                        </View>
+
+                                        <View
+                                            className={`w-6 h-6 rounded-full border items-center justify-center ${isSelected
+                                                ? 'bg-[#4DB9F2] border-[#4DB9F2]'
+                                                : 'bg-[#1E293B] border-[#2D3748]'
+                                                }`}
+                                        >
+                                            {isSelected && (
+                                                <Ionicons name="checkmark" size={14} color="#090D16" />
+                                            )}
+                                        </View>
                                     </View>
-                                    <View>
-                                        <Text className="font-bold text-gray-900 text-[15px]">{ex.name}</Text>
-                                        <Text className="text-gray-400 text-xs">{ex.type}</Text>
-                                    </View>
-                                </View>
 
-                                <View className="flex-row items-center gap-3">
-                                    <Ionicons name="information-circle-outline" size={20} color="#D1D5DB" />
-                                    <TouchableOpacity
-                                        onPress={() => toggleSelect(ex.id)}
-                                        className={`w-8 h-8 rounded-lg items-center justify-center border ${isSelected ? 'bg-gray-900 border-gray-900' : 'bg-white border-gray-200 '}`}
+                                    <Text
+                                        className="font-bold text-slate-100 text-[15px] mb-1.5 leading-5"
+                                        numberOfLines={2}
                                     >
-                                        <Ionicons name={isSelected ? "checkmark" : "add"} size={18} color={isSelected ? "white" : "#6B7280"} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        )
-                    })}
+                                        {ex.name}
+                                    </Text>
+                                    <Text className="text-slate-500 text-[12px] font-medium">
+                                        {ex.type}
+                                    </Text>
+                                </TouchableOpacity>
+                            )
+                        })}
+                    </View>
                 </BottomSheetScrollView>
-            </BottomSheetView>
+
+            </View>
         </BottomSheetModal>
     );
 });

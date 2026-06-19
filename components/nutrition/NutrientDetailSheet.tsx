@@ -38,7 +38,6 @@ export const NutrientDetailSheet = forwardRef<NutrientDetailSheetRef, Props>(({ 
         if (nutrient) {
             setGoalTarget(nutrient.target);
             setQuickAddAmount(nutrient.value);
-            // Detect intent based on nutrient label (mock logic for demo)
             if (['Cholesterol', 'Added Sugars', 'Limit Nutrients'].some(n => nutrient.label.includes(n))) {
                 setTrackingIntent('Limit');
             } else {
@@ -48,7 +47,7 @@ export const NutrientDetailSheet = forwardRef<NutrientDetailSheetRef, Props>(({ 
     }, [nutrient]);
 
     const renderBackdrop = useCallback((props: any) => (
-        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.4} />
+        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.6} />
     ), []);
 
     const handleAddQuick = () => {
@@ -86,8 +85,8 @@ export const NutrientDetailSheet = forwardRef<NutrientDetailSheetRef, Props>(({ 
     const isLimit = trackingIntent === 'Limit';
     const leftAmount = Math.abs(targetVal - currentAmount).toFixed(1).replace('.', ',');
     const leftText = currentAmount > targetVal
-        ? `${(currentAmount - targetVal).toFixed(1).replace('.', ',')}${nutrient.unit} over`
-        : `${(targetVal - currentAmount).toFixed(1).replace('.', ',')}${nutrient.unit} left`;
+        ? `${leftAmount}${nutrient.unit} over`
+        : `${leftAmount}${nutrient.unit} left`;
 
     return (
         <BottomSheetModal
@@ -95,118 +94,113 @@ export const NutrientDetailSheet = forwardRef<NutrientDetailSheetRef, Props>(({ 
             index={0}
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
-            handleIndicatorStyle={{ display: 'none' }}
-            backgroundStyle={{ backgroundColor: '#FFFFFF', borderRadius: 32 }}
+            handleIndicatorStyle={{ backgroundColor: '#1E2D4A', width: 40 }}
+            backgroundStyle={{ backgroundColor: '#090D16', borderRadius: 32 }}
             enableDynamicSizing={false}
             stackBehavior='push'
         >
             <BottomSheetView style={{ flex: 1, paddingBottom: insets.bottom }}>
                 {/* Sync Toast */}
                 {showSyncedToast && (
-                    <View className="absolute top-0 left-0 right-0 z-50 items-center px-5">
-                        <View className="bg-green-50 flex-row items-center gap-2 px-4 py-2 rounded-full border border-green-100">
-                            <View className="w-5 h-5 rounded-full bg-green-500 items-center justify-center">
-                                <Ionicons name="checkmark" size={12} color="white" />
+                    <View className="absolute top-4 left-0 right-0 z-50 items-center px-6">
+                        <View className="bg-[#15233A] flex-row items-center gap-3 px-4 py-3 rounded-[16px] border border-[#4DB9F2]/30 w-full shadow-md shadow-[#4DB9F2]/10">
+                            <View className="w-8 h-8 rounded-[10px] bg-[#0F172A] border border-[#4DB9F2] items-center justify-center">
+                                <Ionicons name="checkmark" size={16} color="#4DB9F2" />
                             </View>
-                            <Text className="text-green-700 font-bold text-[13px]">Synced at 11.11 AM on 14/09/25</Text>
+                            <Text className="text-[#F1F5F9] text-[14px]">Synced at 11.11 AM on 14/09/25</Text>
                         </View>
                     </View>
                 )}
 
                 {/* Header */}
-                <View className="flex-row items-center justify-between px-5 pt-2 pb-4">
-                    <TouchableOpacity onPress={() => (ref as any).current?.dismiss()}>
-                        <Ionicons name="close" size={24} color="#D1D5DB" />
+                <View className="flex-row items-center justify-between px-6 pt-4 pb-6">
+                    <TouchableOpacity onPress={() => (ref as any).current?.dismiss()} className="w-10 h-10 bg-[#151E33] border border-[#1E2D4A] rounded-[12px] items-center justify-center">
+                        <Ionicons name="close" size={20} color="#F1F5F9" />
                     </TouchableOpacity>
-                    <Text className="font-bold text-[15px] text-gray-900">{nutrient.label}</Text>
+                    <Text className="text-[18px] text-[#F1F5F9] font-bold">{nutrient.label}</Text>
                     <TouchableOpacity
                         onPress={handleOpenSetup}
-                        className="w-8 h-8 rounded-lg bg-gray-50 items-center justify-center border border-gray-100"
+                        className="w-10 h-10 bg-[#151E33] border border-[#1E2D4A] rounded-[12px] items-center justify-center"
                     >
-                        <Ionicons name="settings-sharp" size={16} color="#6B7280" />
+                        <Ionicons name="settings-outline" size={18} color="#F1F5F9" />
                     </TouchableOpacity>
                 </View>
 
-                <ScrollView className="flex-1 px-5">
+                <ScrollView className="flex-1 px-6">
                     {/* Progress Area */}
-                    <View className="bg-white rounded-[24px] p-6 mb-8 border border-gray-50 shadow-sm shadow-black/5">
+                    <View className="bg-[#151E33] border border-[#1E2D4A] rounded-[24px] p-6 mb-8">
                         <View className="flex-row justify-between mb-4">
-                            <Text className="text-[11px] font-bold text-gray-400">{currentAmount}/{goalTarget}{nutrient.unit}</Text>
-                            <Text className="text-[11px] font-bold text-gray-400">{progress}%</Text>
+                            <Text className="text-[14px] text-[#64748B] font-medium">{currentAmount}/{goalTarget}{nutrient.unit}</Text>
+                            <Text className="text-[14px] text-[#64748B] font-medium">{progress}%</Text>
                         </View>
 
-                        <View className="items-center mb-6">
-                            <View className="h-1 bg-gray-100 w-full rounded-full overflow-hidden relative">
-                                <View
-                                    className="h-full rounded-full absolute -top-1 w-3 h-3 border-2 border-white shadow-sm"
-                                    style={{
-                                        left: `${progress}%`,
-                                        backgroundColor: isLimit ? (currentAmount > targetVal ? '#EF4444' : '#10B981') : nutrient.color,
-                                        transform: [{ translateX: -6 }]
-                                    }}
-                                />
-                                <View
-                                    className="h-full rounded-full"
-                                    style={{
-                                        width: `${progress}%`,
-                                        backgroundColor: isLimit ? (currentAmount > targetVal ? '#EF4444' : '#10B981') : nutrient.color
-                                    }}
-                                />
-                            </View>
+                        <View className="flex-row items-baseline gap-1.5 mb-6">
+                            <Text className="text-[40px] text-[#F1F5F9] font-bold">
+                                {leftAmount}
+                            </Text>
+                            <Text className="text-[#94A3B8] text-[15px]">{nutrient.unit} {currentAmount > targetVal ? 'over' : 'left'}</Text>
                         </View>
 
-                        <View className="items-center">
-                            <Text className="text-[16px] font-bold text-gray-900">{leftText}</Text>
+                        <View className="w-full h-4 bg-[#0F172A] rounded-full overflow-hidden border border-[#1E2D4A] mb-3">
+                            <View
+                                className="h-full rounded-full"
+                                style={{ width: `${progress}%`, backgroundColor: isLimit ? (currentAmount > targetVal ? '#F87171' : '#34D399') : nutrient.color }}
+                            />
                         </View>
 
-                        <View className="flex-row justify-between mt-4">
-                            <Text className="text-[10px] font-bold text-gray-400">0</Text>
-                            <Text className="text-[10px] font-bold text-gray-400">{goalTarget}</Text>
+                        <View className="flex-row justify-between">
+                            <Text className="text-[12px] text-[#64748B]">0</Text>
+                            <Text className="text-[12px] text-[#64748B]">{goalTarget}</Text>
                         </View>
                     </View>
 
                     {/* Today's Entries */}
                     <View className="mb-8">
-                        <Text className="text-[15px] font-bold text-gray-900 mb-4">Today's Entries</Text>
-                        <Text className="text-[13px] text-gray-400 leading-5 mb-6">
-                            Entries that contributed to your <Text className="font-bold text-gray-700">{nutrient.label}</Text> goal. Detected by nutrition and manual log.
+                        <Text className="text-[18px] text-[#F1F5F9] mb-2 font-bold">Today's Entries</Text>
+                        <Text className="text-[14px] text-[#64748B] leading-5 mb-6">
+                            Entries that contributed to your <Text className="text-[#94A3B8]">{nutrient.label}</Text> goal. Detected by nutrition and manual log.
                         </Text>
 
-                        {entries.map((item, index) => (
-                            <View key={index} className="flex-row items-center justify-between bg-white border border-gray-100 rounded-2xl p-4 mb-3">
-                                <View className="flex-row items-center gap-3">
-                                    <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center">
-                                        <Text className="text-xl">🫙</Text>
+                        {/* Contribution List */}
+                        <View className="gap-4">
+                            {entries.map((item, index) => (
+                                <View key={index} className="flex-row items-center justify-between bg-[#151E33] border border-[#1E2D4A] rounded-[20px] p-4">
+                                    <View className="flex-row items-center gap-4">
+                                        <View className="w-12 h-12 bg-[#0F172A] border border-[#1E2D4A] rounded-[14px] items-center justify-center">
+                                            <Text className="text-[24px]">🫙</Text>
+                                        </View>
+                                        <View>
+                                            <Text className="text-[15px] text-[#F1F5F9]">{nutrient.label}</Text>
+                                            <Text className="text-[13px] text-[#64748B]">{item.time}</Text>
+                                        </View>
                                     </View>
-                                    <View>
-                                        <Text className="text-[14px] font-bold text-gray-900">{nutrient.label}</Text>
-                                        <Text className="text-[11px] text-gray-400">{item.time}</Text>
+                                    <View className="flex-row items-center gap-3">
+                                        <Text className="text-[15px] text-[#4DB9F2]">+{item.amount}{nutrient.unit}</Text>
+                                        <View className="w-8 h-8 rounded-[10px] bg-[#0F172A] items-center justify-center border border-[#1E2D4A]">
+                                            <Ionicons name="arrow-forward" size={14} color="#64748B" />
+                                        </View>
                                     </View>
                                 </View>
-                                <View className="flex-row items-center gap-2">
-                                    <Text className="text-[14px] font-bold text-gray-900">+{item.amount}{nutrient.unit}</Text>
-                                    <Ionicons name="arrow-forward" size={16} color="#D1D5DB" />
-                                </View>
-                            </View>
-                        ))}
+                            ))}
+                        </View>
                     </View>
                 </ScrollView>
 
                 {/* Footer Buttons */}
-                <View className="px-5 pt-4 pb-4 flex-row gap-3">
+                <View className="px-6 pt-4 pb-6 flex-row gap-4">
                     <TouchableOpacity
                         onPress={handleAddQuick}
-                        className="flex-1 bg-[#1A1A1A] h-[56px] rounded-xl flex-row items-center justify-center gap-2"
+                        className="flex-1 bg-[#4DB9F2] h-[56px] rounded-[16px] flex-row items-center justify-center gap-2"
                     >
-                        <Ionicons name="add" size={20} color="white" />
-                        <Text className="text-white font-bold text-[16px]">Add {quickAddAmount}{nutrient.unit}</Text>
+                        <Ionicons name="add" size={20} color="#090D16" />
+                        <Text className="text-[#090D16] text-[15px] font-medium">Add {quickAddAmount}{nutrient.unit}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={handleAddCustom}
-                        className="flex-1 bg-gray-100 h-[56px] rounded-xl flex-row items-center justify-center gap-2"
+                        className="flex-1 bg-[#151E33] border border-[#1E2D4A] h-[56px] rounded-[16px] flex-row items-center justify-center gap-2"
                     >
-                        <Ionicons name="add" size={20} color="#1A1A1A" />
-                        <Text className="text-gray-900 font-bold text-[16px]">Add custom</Text>
+                        <Ionicons name="create-outline" size={20} color="#F1F5F9" />
+                        <Text className="text-[#F1F5F9] text-[15px] font-medium">Add custom</Text>
                     </TouchableOpacity>
                 </View>
             </BottomSheetView>

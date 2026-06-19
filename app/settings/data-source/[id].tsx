@@ -6,7 +6,6 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useRef, useState } from 'react';
 import {
     ScrollView,
-    StyleSheet,
     Text,
     TouchableOpacity,
     View,
@@ -52,29 +51,37 @@ export default function DataSourceDetailScreen() {
             const index = getIndex();
 
             return (
-                <ScaleDecorator>
+                <ScaleDecorator activeScale={0.98}>
                     <TouchableOpacity
                         onLongPress={drag}
                         disabled={isActive}
                         activeOpacity={1}
-                        style={[
-                            styles.itemContainer,
-                            isActive && styles.itemActive,
-                        ]}
+                        className={`mx-5 mb-3 p-4 rounded-[20px] border flex-row items-center justify-between ${isActive
+                            ? 'bg-[#1E293B] border-[#4DB9F2]'
+                            : 'bg-[#151E33] border-[#1E293B]'
+                            }`}
                     >
-                        <View style={styles.itemLeft}>
-                            <Text style={styles.indexText}>
-                                {index !== undefined ? index + 1 : ''}
-                            </Text>
+                        <View className="flex-row items-center gap-4 flex-1">
+                            <View className={`w-10 h-10 rounded-[12px] border items-center justify-center ${isActive
+                                ? 'bg-[#4DB9F2]/10 border-[#4DB9F2]/30'
+                                : 'bg-[#090D16] border-[#2D3748]'
+                                }`}>
+                                <Text className={`font-bold text-[14px] ${isActive ? 'text-[#4DB9F2]' : 'text-slate-400'}`}>
+                                    {index !== undefined ? index + 1 : ''}
+                                </Text>
+                            </View>
 
-                            <View>
-                                <Text style={styles.itemTitle}>{item.name}</Text>
-                                <Text style={styles.itemSub}>{item.sub}</Text>
+                            <View className="flex-1 pr-4">
+                                <Text className="font-bold text-slate-100 text-[15px] mb-0.5">{item.name}</Text>
+                                <Text className="font-medium text-slate-500 text-[12px]">{item.sub}</Text>
                             </View>
                         </View>
 
-                        <TouchableOpacity onPressIn={drag}>
-                            <Ionicons name="menu" size={24} color="#D1D5DB" />
+                        <TouchableOpacity
+                            onPressIn={drag}
+                            className="w-12 h-12 items-center justify-center rounded-[12px] bg-[#090D16] border border-[#2D3748]"
+                        >
+                            <Ionicons name="reorder-two" size={20} color="#64748B" />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 </ScaleDecorator>
@@ -90,108 +97,121 @@ export default function DataSourceDetailScreen() {
 
     return (
         <BottomSheetModalProvider>
-            <SafeAreaView edges={['top']} style={styles.container}>
+            <SafeAreaView edges={['top']} className="flex-1 bg-[#090D16]">
 
-                {/* Toast */}
+                {/* System Toast Notification */}
                 {showToast && (
-                    <View style={styles.toast}>
-                        <Ionicons name="checkmark-circle" size={18} color="#22C55E" />
-                        <Text style={styles.toastText}>
+                    <View className="absolute top-16 left-5 right-5 z-50 bg-emerald-950/40 border border-emerald-500/30 rounded-[16px] px-4 py-3.5 flex-row items-center gap-3">
+                        <Ionicons name="checkmark-circle" size={20} color="#10B981" />
+                        <Text className="text-[14px] font-bold text-emerald-400 flex-1">
                             Synced at 10.54 PM on 14/09/25
                         </Text>
                     </View>
                 )}
 
-                {/* Header */}
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => router.back()}>
-                        <Ionicons name="chevron-back" size={24} color="#111827" />
-                    </TouchableOpacity>
-
-                    <Text style={styles.headerTitle}>
-                        {isEditing ? 'Reorder data sources' : id}
-                    </Text>
+                {/* Left-Aligned Structural Header */}
+                <View className="flex-row items-start justify-between px-5 pt-4 pb-6">
+                    <View className="flex-1 pr-4">
+                        <Text className="text-2xl font-bold text-slate-100 mb-1">
+                            {isEditing ? 'Reorder data sources' : id}
+                        </Text>
+                    </View>
+                    <View className="flex-row items-center gap-3">
+                        <TouchableOpacity
+                            onPress={() => router.back()}
+                            className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-[12px] items-center justify-center mt-1"
+                        >
+                            <Ionicons name="close" size={20} color="#94A3B8" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 {isEditing ? (
-                    <View style={styles.flex}>
+                    <View className="flex-1">
                         <DraggableFlatList
                             data={visibleSources}
                             onDragEnd={handleDragEnd}
                             keyExtractor={(item) => item.id}
                             renderItem={renderSourceItem}
-                            contentContainerStyle={styles.listContent}
-                            ListFooterComponent={
-                                <View style={styles.footer}>
-                                    <TouchableOpacity
-                                        onPress={handleSaveReorder}
-                                        style={styles.saveBtn}
-                                    >
-                                        <Text style={styles.saveText}>Save</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            }
+                            contentContainerStyle={{ paddingBottom: 20 }}
+                            showsVerticalScrollIndicator={false}
                         />
+
+                        {/* Persistent Bottom Save Action */}
+                        <View className="px-5 pt-4 pb-8 bg-[#090D16]">
+                            <TouchableOpacity
+                                onPress={handleSaveReorder}
+                                className="bg-[#4DB9F2] h-[56px] rounded-[16px] border border-[#4DB9F2] items-center justify-center"
+                            >
+                                <Text className="font-bold text-[16px] text-[#090D16]">Save</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 ) : (
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        contentContainerStyle={styles.scrollContent}
+                        contentContainerStyle={{ paddingBottom: 60 }}
                     >
                         {/* Title Row */}
-                        <View style={styles.rowBetween}>
-                            <Text style={styles.sectionTitle}>Data sources</Text>
-                            <TouchableOpacity onPress={() => setIsEditing(true)}>
-                                <Text style={styles.editText}>
-                                    Edit <Ionicons name="chevron-forward" size={12} />
-                                </Text>
+                        <View className="flex-row items-center justify-between px-5 mb-4 mt-2">
+                            <Text className="font-bold text-[16px] text-slate-100">Data sources</Text>
+                            <TouchableOpacity
+                                onPress={() => setIsEditing(true)}
+                                className="bg-[#151E33] border border-[#1E293B] px-3 py-1 rounded-[10px] flex-row items-center gap-1.5"
+                            >
+                                <Text className="font-bold text-[13px] text-[#4DB9F2]">Edit</Text>
                             </TouchableOpacity>
                         </View>
 
-                        {/* List */}
-                        <View style={styles.card}>
+                        {/* Separated List Cards */}
+                        <View className="px-5 mb-8 gap-3">
                             {visibleSources.map((s, idx) => (
                                 <View
                                     key={s.id}
-                                    style={[
-                                        styles.listItem,
-                                        idx !== visibleSources.length - 1 &&
-                                        styles.listItemBorder,
-                                    ]}
+                                    className="bg-[#151E33] border border-[#1E293B] p-4 rounded-[20px] flex-row items-center gap-4"
                                 >
-                                    <Text style={styles.indexText}>{idx + 1}</Text>
-
-                                    <View style={styles.iconBox}>
-                                        <Ionicons name="heart" size={10} color="#EF4444" />
+                                    <View className="w-10 h-10 bg-[#090D16] border border-[#2D3748] rounded-[12px] items-center justify-center">
+                                        <Text className="font-bold text-[14px] text-slate-400">{idx + 1}</Text>
                                     </View>
 
-                                    <View>
-                                        <Text style={styles.itemTitle}>{s.name}</Text>
-                                        <Text style={styles.itemSub}>{s.sub}</Text>
+                                    <View className="w-10 h-10 bg-rose-950/20 border border-rose-500/20 rounded-[12px] items-center justify-center">
+                                        <Ionicons name="heart" size={18} color="#EF4444" />
+                                    </View>
+
+                                    <View className="flex-1 pr-2">
+                                        <Text className="font-bold text-[15px] text-slate-100 mb-0.5">{s.name}</Text>
+                                        <Text className="font-medium text-[12px] text-slate-500">{s.sub}</Text>
                                     </View>
                                 </View>
                             ))}
                         </View>
 
-                        {/* Hide Sources */}
+                        {/* Hide Sources Action Card */}
                         <TouchableOpacity
                             onPress={() => hideSheetRef.current?.present()}
-                            style={styles.hideCard}
+                            className="mx-5 bg-[#1E293B] border border-[#2D3748] p-5 rounded-[20px] flex-row items-center justify-between mb-6"
                         >
-                            <Text style={styles.sectionTitle}>Hide data sources</Text>
-
-                            <View style={styles.row}>
-                                <Text style={styles.hiddenText}>
-                                    {hiddenCount} hidden
-                                </Text>
-                                <Ionicons name="chevron-forward" size={16} color="#D1D5DB" />
+                            <Text className="font-bold text-[15px] text-slate-100">Hide data sources</Text>
+                            <View className="flex-row items-center gap-3">
+                                <View className="bg-[#090D16] border border-[#1E293B] px-2.5 py-1 rounded-[8px]">
+                                    <Text className="font-bold text-[12px] text-slate-400">
+                                        {hiddenCount} hidden
+                                    </Text>
+                                </View>
+                                <Ionicons name="chevron-forward" size={16} color="#64748B" />
                             </View>
                         </TouchableOpacity>
 
-                        <Text style={styles.footerNote}>
-                            Bevel grabs data from all the sources above. If there's a
-                            conflict, it will prioritize the sources in the listed order.
-                        </Text>
+                        {/* Information Block */}
+                        <View className="mx-5 bg-[#151E33] border border-[#1E293B] rounded-[16px] p-4 flex-row gap-3">
+                            <View className="mt-0.5">
+                                <Ionicons name="information-circle" size={18} color="#4DB9F2" />
+                            </View>
+                            <Text className="flex-1 font-medium text-[13px] text-slate-400 leading-5 pr-2">
+                                Bevel grabs data from all the sources above. If there's a
+                                conflict, it will prioritize the sources in the listed order.
+                            </Text>
+                        </View>
                     </ScrollView>
                 )}
 
@@ -207,199 +227,3 @@ export default function DataSourceDetailScreen() {
         </BottomSheetModalProvider>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F9FAFB',
-        paddingTop: 16,
-    },
-    flex: { flex: 1 },
-
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        paddingBottom: 16,
-        marginBottom: 16,
-        borderBottomWidth: 1,
-        borderColor: '#F3F4F6',
-    },
-    headerTitle: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#111827',
-        flex: 1,
-        textAlign: 'center',
-        marginRight: 24,
-    },
-
-    itemContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 16,
-        borderRadius: 16,
-        marginBottom: 12,
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#F3F4F6',
-    },
-    itemActive: {
-        borderColor: '#BFDBFE',
-        zIndex: 10,
-    },
-
-    itemLeft: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 16,
-    },
-
-    indexText: {
-        fontSize: 14,
-        fontWeight: '700',
-        color: '#D1D5DB',
-        width: 20,
-    },
-
-    itemTitle: {
-        fontSize: 15,
-        fontWeight: '700',
-        color: '#111827',
-    },
-    itemSub: {
-        fontSize: 12,
-        color: '#6B7280',
-    },
-
-    scrollContent: {
-        paddingHorizontal: 20,
-        paddingBottom: 60,
-    },
-
-    listContent: {
-        paddingHorizontal: 20,
-        paddingBottom: 40,
-    },
-
-    rowBetween: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 16,
-    },
-
-    sectionTitle: {
-        fontSize: 15,
-        fontWeight: '700',
-        color: '#111827',
-    },
-
-    editText: {
-        fontSize: 13,
-        fontWeight: '700',
-        color: '#6B7280',
-    },
-
-    card: {
-        backgroundColor: '#fff',
-        borderRadius: 24,
-        borderWidth: 1,
-        borderColor: '#F3F4F6',
-        marginBottom: 24,
-        overflow: 'hidden',
-    },
-
-    listItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 16,
-    },
-    listItemBorder: {
-        borderBottomWidth: 1,
-        borderColor: '#F9FAFB',
-    },
-
-    iconBox: {
-        width: 20,
-        height: 20,
-        backgroundColor: '#FEF2F2',
-        borderRadius: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 12,
-    },
-
-    hideCard: {
-        backgroundColor: '#fff',
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#F3F4F6',
-        padding: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 24,
-    },
-
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 6,
-    },
-
-    hiddenText: {
-        fontSize: 14,
-        color: '#9CA3AF',
-    },
-
-    footerNote: {
-        fontSize: 11,
-        color: '#9CA3AF',
-        marginLeft: 4,
-        lineHeight: 16,
-    },
-
-    footer: {
-        marginTop: 32,
-        marginBottom: 40,
-    },
-
-    saveBtn: {
-        backgroundColor: '#1C1C1E',
-        height: 56,
-        borderRadius: 999,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-
-    saveText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: '600',
-    },
-
-    toast: {
-        position: 'absolute',
-        top: 56,
-        left: 20,
-        right: 20,
-        zIndex: 50,
-        backgroundColor: '#ECFDF5',
-        borderRadius: 999,
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-        borderWidth: 1,
-        borderColor: '#D1FAE5',
-    },
-
-    toastText: {
-        fontSize: 13,
-        fontWeight: '700',
-        color: '#16A34A',
-    },
-}); 

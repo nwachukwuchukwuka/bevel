@@ -8,33 +8,33 @@ export default function NameScreen() {
     const [name, setName] = useState('');
 
     return (
-        <View className="flex-1">
-            {/* Title */}
-            <View className="mt-6 mb-12 items-center">
-                <Text className="text-2xl font-bold text-center text-neutral-900">
+        <View className="flex-1 flex-col">
+
+            <View className="flex-1 px-1 pt-6">
+                <Text className="text-3xl font-bold text-white mb-8">
                     What's your first name?
                 </Text>
+
+                <View className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-4 flex-row items-center h-16">
+                    <TextInput
+                        className="flex-1 font-bold text-slate-100 h-full"
+                        placeholder="(e.g. John)"
+                        placeholderTextColor="#64748B"
+                        value={name}
+                        onChangeText={setName}
+                        autoFocus
+                        selectionColor="#4DB9F2"
+                    />
+                </View>
             </View>
 
-            {/* Input */}
-            <View className="flex-1 justify-center -mt-20">
-                <TextInput
-                    className="text-3xl font-semibold text-center text-neutral-900 pb-4 border-b border-neutral-200 placeholder:text-neutral-300"
-                    placeholder="(e.g. John)"
-                    value={name}
-                    onChangeText={setName}
-                    autoFocus
-                />
-            </View>
-
-            {/* Footer */}
-            <View className="mb-2">
+            <View className="mt-auto pt-4">
                 <ContinueButton
                     enabled={name.length > 0}
-                    // onPress={() => router.push('/onboarding/flow/health-focus')}
                     onPress={() => router.push('/onboarding/flow/welcome-interstitial')}
                 />
             </View>
+
         </View>
     );
 }

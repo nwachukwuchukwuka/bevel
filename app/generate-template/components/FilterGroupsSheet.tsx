@@ -31,12 +31,11 @@ export const FilterGroupsSheet = forwardRef<BottomSheetModal, FilterProps>(({ on
         (ref as any).current?.dismiss();
     };
 
-    // const renderBackdrop = useCallback((props: any) => <BottomSheetBackdrop {...props} opacity={0.4} />, []);
     const renderBackdrop = useCallback(
         (props: any) => (
             <BottomSheetBackdrop
                 {...props}
-                opacity={0.4}
+                opacity={0.6}
                 appearsOnIndex={0}
                 disappearsOnIndex={-1}
             />
@@ -49,19 +48,28 @@ export const FilterGroupsSheet = forwardRef<BottomSheetModal, FilterProps>(({ on
         : `Filter by "${selected.length} muscles"`;
 
     return (
-        <BottomSheetModal ref={ref} snapPoints={['75%']} backdropComponent={renderBackdrop} handleIndicatorStyle={{ display: 'none' }} enableDynamicSizing={false}>
-            <View className="flex-1 bg-white rounded-t-3xl pt-2">
-                <Text className="text-center font-bold text-gray-900 text-[13px] my-4 mb-6">Filter by muscle group</Text>
+        <BottomSheetModal
+            ref={ref}
+            snapPoints={['75%']}
+            backdropComponent={renderBackdrop}
+            handleIndicatorStyle={{ backgroundColor: '#2D3748', width: 48, height: 4 }}
+            backgroundStyle={{ backgroundColor: '#090D16', borderRadius: 32 }}
+            enableDynamicSizing={false}
+        >
+            <View className="flex-1 bg-[#090D16]">
+                <View className="px-5 pt-4 pb-6">
+                    <Text className="text-white font-bold text-2xl">Filter by muscle group</Text>
+                </View>
 
-                <BottomSheetScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100, gap: 10 }}>
+                <BottomSheetScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100, gap: 12 }}>
                     {/* All Groups Option */}
                     <TouchableOpacity
                         onPress={() => toggleGroup('All groups')}
-                        className={`flex-row justify-between items-center p-4 rounded-2xl border ${selected.includes('All groups') ? 'border-black bg-white' : 'border-gray-100 bg-gray-50/50'}`}
+                        className={`flex-row justify-between items-center p-4 rounded-2xl border ${selected.includes('All groups') ? 'border-[#4DB9F2] bg-[#4DB9F2]/10' : 'border-[#1E293B] bg-[#151E33]'}`}
                     >
-                        <Text className="font-bold text-gray-900">All groups</Text>
-                        <View className={`w-5 h-5 rounded items-center justify-center border ${selected.includes('All groups') ? 'bg-black border-black' : 'bg-white border-gray-300'}`}>
-                            {selected.includes('All groups') && <Ionicons name="checkmark" size={14} color="white" />}
+                        <Text className={`font-semibold text-base ${selected.includes('All groups') ? 'text-[#4DB9F2]' : 'text-slate-300'}`}>All groups</Text>
+                        <View className={`w-6 h-6 rounded-lg items-center justify-center border ${selected.includes('All groups') ? 'bg-[#4DB9F2] border-[#4DB9F2]' : 'bg-transparent border-[#2D3748]'}`}>
+                            {selected.includes('All groups') && <Ionicons name="checkmark" size={16} color="#090D16" />}
                         </View>
                     </TouchableOpacity>
 
@@ -71,11 +79,11 @@ export const FilterGroupsSheet = forwardRef<BottomSheetModal, FilterProps>(({ on
                         return (
                             <TouchableOpacity
                                 key={group} onPress={() => toggleGroup(group)}
-                                className={`flex-row justify-between items-center p-4 rounded-2xl border ${isSelected ? 'border-black bg-white' : 'border-gray-100 bg-gray-50/50'}`}
+                                className={`flex-row justify-between items-center p-4 rounded-2xl border ${isSelected ? 'border-[#4DB9F2] bg-[#4DB9F2]/10' : 'border-[#1E293B] bg-[#151E33]'}`}
                             >
-                                <Text className="font-bold text-gray-900">{group}</Text>
-                                <View className={`w-5 h-5 rounded items-center justify-center border ${isSelected ? 'bg-black border-black' : 'bg-white border-gray-300'}`}>
-                                    {isSelected && <Ionicons name="checkmark" size={14} color="white" />}
+                                <Text className={`font-semibold text-base ${isSelected ? 'text-[#4DB9F2]' : 'text-slate-300'}`}>{group}</Text>
+                                <View className={`w-6 h-6 rounded-lg items-center justify-center border ${isSelected ? 'bg-[#4DB9F2] border-[#4DB9F2]' : 'bg-transparent border-[#2D3748]'}`}>
+                                    {isSelected && <Ionicons name="checkmark" size={16} color="#090D16" />}
                                 </View>
                             </TouchableOpacity>
                         )
@@ -83,9 +91,9 @@ export const FilterGroupsSheet = forwardRef<BottomSheetModal, FilterProps>(({ on
                 </BottomSheetScrollView>
 
                 {/* Sticky Bottom Button */}
-                <View className="absolute bottom-0 w-full bg-white px-5 pt-4 pb-8 border-t border-white">
-                    <TouchableOpacity onPress={handleApply} className="bg-[#1A1A1A] py-4 rounded-full items-center">
-                        <Text className="text-white font-bold text-base">{buttonText}</Text>
+                <View className="absolute bottom-10 w-full bg-[#090D16] px-5 pt-4 pb-8]">
+                    <TouchableOpacity onPress={handleApply} className="bg-[#4DB9F2] py-4 rounded-xl items-center border border-[#4DB9F2]">
+                        <Text className="text-[#090D16] font-bold text-base">{buttonText}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

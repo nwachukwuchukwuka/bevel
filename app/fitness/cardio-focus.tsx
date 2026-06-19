@@ -10,157 +10,212 @@ export default function CardioFocusModal() {
     const [selectedType, setSelectedType] = useState('all');
     const [timeframe, setTimeframe] = useState('1M');
 
-    // Helper to get the display label for dynamically selected items
     const getSelectedLabel = () => {
         return FILTER_TYPES.find(t => t.id === selectedType)?.label || 'Selected';
     };
 
-    // Determine if the selected type is a custom one not in the default quick list
     const isCustomTypeSelected = selectedType !== 'all' && selectedType !== 'strength_training' && selectedType !== 'mixed_cardio';
 
     return (
         <BottomSheetModalProvider>
-            <View className="flex-1 bg-[#F9FAFB]">
-                {/* Drag Handle Mock */}
-                <View className="items-center py-3"><View className="w-10 h-1 bg-gray-300 rounded-full" /></View>
+            <View className="flex-1 bg-[#090D16]">
 
-                <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+                {/* Custom Modal Handle */}
+                <View className="items-center py-3">
+                    <View className="w-10 h-1 bg-[#1E293B] rounded-full" />
+                </View>
 
-                    <View className="flex-row items-center gap-2 mb-4">
-                        <Ionicons name="layers" size={18} color="#9CA3AF" />
-                        <Text className="text-[16px] font-bold text-gray-500">Cardio Focus</Text>
-                    </View>
-
-                    <View className="flex-row justify-between items-end mb-6">
-                        <View>
-                            <Text className="text-[32px] font-bold text-gray-900 tracking-tight">Low Aerobic</Text>
-                            <Text className="text-[13px] font-medium text-gray-500 mt-1">14 Sep 2025</Text>
+                {/* Custom Header */}
+                <View className="px-5 pb-5 flex-row items-center justify-between border-b border-[#1E293B]">
+                    <View className="flex-row items-center gap-3">
+                        <View className="w-10 h-10 bg-[#1E1E1E] rounded-xl items-center justify-center border border-[#2D3748]">
+                            <Ionicons name="layers-outline" size={18} color="#4DB9F2" />
                         </View>
-                        <Text className="text-[16px] font-bold text-teal-400">100%</Text>
+                        <Text className="text-xl font-bold text-slate-100">Cardio focus</Text>
+                    </View>
+                </View>
+
+                <View className="px-5 py-4 bg-[#151E33] border-b border-[#1E293B] flex-row items-center justify-between">
+                    <View className="flex-row gap-2 bg-[#090D16] p-1 rounded-xl border border-[#1E293B]">
+                        {['1M', '3M', '6M', '1Y'].map((t) => {
+                            const isActive = timeframe === t;
+                            return (
+                                <TouchableOpacity
+                                    key={t}
+                                    onPress={() => setTimeframe(t)}
+                                    className={`px-3 py-1.5 rounded-lg border ${isActive ? 'bg-[#1E1E1E] border-[#2C2C2C]' : 'border-transparent'
+                                        }`}
+                                >
+                                    <Text className={`text-xs font-bold ${isActive ? 'text-[#4DB9F2]' : 'text-slate-400'}`}>
+                                        {t}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
                     </View>
 
-                    {/* Interactive Filter Strip */}
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-8">
+                    <View className="flex-row gap-2">
+                        <TouchableOpacity className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2D3748] items-center justify-center">
+                            <Ionicons name="chevron-back" size={16} color="#94A3B8" />
+                        </TouchableOpacity>
+                        <TouchableOpacity className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2D3748] items-center justify-center">
+                            <Ionicons name="calendar-outline" size={14} color="#94A3B8" />
+                        </TouchableOpacity>
+                        <TouchableOpacity className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2D3748] items-center justify-center">
+                            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                {/* Filters Area (Directly below Timeframe) */}
+                <View className="px-5 py-3 border-b border-[#1E293B] bg-[#090D16]">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
                         <TouchableOpacity
                             onPress={() => filterSheetRef.current?.present()}
-                            className="bg-white border border-gray-200 rounded-full w-8 h-8 items-center justify-center shadow-sm mr-2"
+                            activeOpacity={0.7}
+                            className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl w-9 h-9 items-center justify-center"
                         >
-                            <Ionicons name="list" size={16} color="#4B5563" />
+                            <Ionicons name="list" size={14} color="#4DB9F2" />
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setSelectedType('all')}
-                            className={`rounded-full px-4 py-1.5 justify-center mr-2 ${selectedType === 'all' ? 'bg-[#111827]' : 'bg-gray-100'}`}
+                            activeOpacity={0.7}
+                            className={`rounded-xl px-4 py-2 justify-center border ${selectedType === 'all' ? 'bg-[#1E293B] border-[#4DB9F2]' : 'bg-[#1E1E1E] border-[#2C2C2C]'
+                                }`}
                         >
-                            <Text className={`text-[13px] font-bold ${selectedType === 'all' ? 'text-white' : 'text-gray-500'}`}>All</Text>
+                            <Text className={`text-xs font-semibold ${selectedType === 'all' ? 'text-[#4DB9F2]' : 'text-slate-400'}`}>All</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setSelectedType('strength_training')}
-                            className={`rounded-full px-4 py-1.5 justify-center mr-2 ${selectedType === 'strength_training' ? 'bg-[#111827]' : 'bg-gray-100'}`}
+                            activeOpacity={0.7}
+                            className={`rounded-xl px-4 py-2 justify-center border ${selectedType === 'strength_training' ? 'bg-[#1E293B] border-[#4DB9F2]' : 'bg-[#1E1E1E] border-[#2C2C2C]'
+                                }`}
                         >
-                            <Text className={`text-[13px] font-bold ${selectedType === 'strength_training' ? 'text-white' : 'text-gray-500'}`}>Strength Training</Text>
+                            <Text className={`text-xs font-semibold ${selectedType === 'strength_training' ? 'text-[#4DB9F2]' : 'text-slate-400'}`}>Strength</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setSelectedType('mixed_cardio')}
-                            className={`rounded-full px-4 py-1.5 justify-center mr-2 ${selectedType === 'mixed_cardio' ? 'bg-[#111827]' : 'bg-gray-100'}`}
+                            activeOpacity={0.7}
+                            className={`rounded-xl px-4 py-2 justify-center border ${selectedType === 'mixed_cardio' ? 'bg-[#1E293B] border-[#4DB9F2]' : 'bg-[#1E1E1E] border-[#2C2C2C]'
+                                }`}
                         >
-                            <Text className={`text-[13px] font-bold ${selectedType === 'mixed_cardio' ? 'text-white' : 'text-gray-500'}`}>Mixed Cardio</Text>
+                            <Text className={`text-xs font-semibold ${selectedType === 'mixed_cardio' ? 'text-[#4DB9F2]' : 'text-slate-400'}`}>Mixed Cardio</Text>
                         </TouchableOpacity>
 
-                        {/* Append the custom selected filter from the bottom sheet if it's not a default one */}
                         {isCustomTypeSelected && (
-                            <TouchableOpacity className="rounded-full px-4 py-1.5 justify-center mr-2 bg-[#111827]">
-                                <Text className="text-[13px] font-bold text-white">{getSelectedLabel()}</Text>
+                            <TouchableOpacity className="rounded-xl px-4 py-2 justify-center border bg-[#1E293B] border-[#4DB9F2]">
+                                <Text className="text-xs font-semibold text-[#4DB9F2]">{getSelectedLabel()}</Text>
                             </TouchableOpacity>
                         )}
                     </ScrollView>
-
-                    {/* Bar Chart Mock */}
-                    <View className="h-56 relative justify-end pb-6 border-b-2 border-emerald-400 mb-6">
-                        <View className="absolute right-0 top-0 bottom-6 justify-between items-end z-0 opacity-40">
-                            <Text className="text-[10px] font-bold text-gray-400">24</Text>
-                            <Text className="text-[10px] font-bold text-gray-400 border-b border-dashed w-full text-right border-gray-200">16</Text>
-                            <Text className="text-[10px] font-bold text-gray-400 border-b border-dashed w-full text-right border-gray-200">8</Text>
-                            <Text className="text-[10px] font-bold text-gray-400">0</Text>
-                        </View>
-                        <View className="absolute bottom-6 left-0 right-10 h-full flex-row items-end justify-end gap-1">
-                            {/* Dynamically adjust bars based on selected type to simulate filtering visually */}
-                            {selectedType === 'all' && <View className="w-1.5 h-[30%] bg-teal-400 rounded-t-sm" />}
-                            <View className={`w-1.5 ${selectedType === 'all' ? 'h-[60%]' : 'h-[40%]'} bg-teal-400 rounded-t-sm`} />
-                        </View>
-                    </View>
-
-                    {/* X-Axis Labels */}
-                    <View className="flex-row justify-between pr-8 mb-6">
-                        <Text className="text-[10px] font-bold text-gray-400">15 Aug</Text>
-                        <Text className="text-[10px] font-bold text-gray-400">22 Aug</Text>
-                        <Text className="text-[10px] font-bold text-gray-400">30 Aug</Text>
-                        <Text className="text-[10px] font-bold text-gray-400">6 Sep</Text>
-                        <Text className="text-[10px] font-bold text-gray-400">14 Sep</Text>
-                    </View>
-
-                    {/* Timeframe Selector */}
-                    <View className="flex-row items-center justify-between mb-10">
-                        <TouchableOpacity className="w-8 h-8 rounded-full bg-white border border-gray-100 shadow-sm items-center justify-center">
-                            <Ionicons name="chevron-back" size={16} color="#9CA3AF" />
-                        </TouchableOpacity>
-                        <View className="flex-row items-center gap-1">
-                            {['1M', '3M', '6M', '1Y'].map(t => (
-                                <TouchableOpacity
-                                    key={t}
-                                    onPress={() => setTimeframe(t)}
-                                    className={`w-10 h-8 items-center justify-center rounded-full ${timeframe === t ? 'bg-white border border-gray-200 shadow-sm' : ''}`}
-                                >
-                                    <Text className={`text-[12px] font-bold ${timeframe === t ? 'text-gray-900' : 'text-gray-400'}`}>{t}</Text>
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                        <View className="flex-row gap-2">
-                            <TouchableOpacity className="w-8 h-8 rounded-full bg-white border border-gray-100 shadow-sm items-center justify-center">
-                                <Ionicons name="calendar-outline" size={14} color="#9CA3AF" />
-                            </TouchableOpacity>
-                            <TouchableOpacity className="w-8 h-8 rounded-full bg-white border border-gray-100 shadow-sm items-center justify-center">
-                                <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    {/* Breakdown List */}
-                    <Text className="text-[16px] font-bold text-gray-900 mb-4">Cardio Focus Breakdown</Text>
-                    <View className="bg-white rounded-[20px] p-2 border border-gray-100 shadow-sm shadow-black/5">
-                        <View className="flex-row justify-between px-4 py-3 border-b border-gray-50">
-                            <Text className="text-[11px] font-bold text-gray-400 w-1/3">Status</Text>
-                            <Text className="text-[11px] font-bold text-gray-400 w-1/3 text-center">Value</Text>
-                            <Text className="text-[11px] font-bold text-gray-400 w-1/3 text-right">%</Text>
-                        </View>
-                        <View className="flex-row items-center justify-between px-4 py-4 border-b border-gray-50">
-                            <Text className="text-[13px] font-bold text-gray-900 w-1/3">Low Aerobic</Text>
-                            <Text className="text-[13px] font-bold text-teal-400 w-1/3 text-center">{selectedType === 'all' ? '+20' : '+12'}</Text>
-                            <Text className="text-[13px] font-bold text-gray-900 w-1/3 text-right">100%</Text>
-                        </View>
-                        <View className="flex-row items-center justify-between px-4 py-4">
-                            <Text className="text-[13px] font-bold text-gray-900 w-1/3">High Aerobic</Text>
-                            <Text className="text-[13px] font-bold text-gray-400 w-1/3 text-center">0</Text>
-                            <Text className="text-[13px] font-bold text-gray-900 w-1/3 text-right">0%</Text>
-                        </View>
-                    </View>
-                </ScrollView>
-
-                {/* Floating Feedback Button */}
-                <View className="absolute bottom-10 self-center">
-                    <TouchableOpacity activeOpacity={0.8} className="bg-white/95 px-5 py-3.5 rounded-full flex-row items-center shadow-lg shadow-black/10 border border-gray-100">
-                        <Ionicons name="sync" size={16} color="#3B82F6" className="mr-2" />
-                        <Text className="font-bold text-[14px] text-gray-900 mr-2">
-                            {/* Dynamically switch text based on selection matching screenshot behavior */}
-                            {selectedType === 'all' ? 'Low Aerobic Dominance' : 'Low Aerobic Focus'}
-                        </Text>
-                        <Ionicons name="chevron-up" size={16} color="#9CA3AF" />
-                    </TouchableOpacity>
                 </View>
 
-                {/* Bottom Sheet Filter */}
+                <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+
+                    {/* Highly Structured Technical Chart Panel */}
+                    <View className="mx-5 mt-6 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5">
+                        <View className="flex-row justify-between items-center mb-4">
+                            <Text className="text-sm font-semibold text-slate-400">Cardio index chart</Text>
+                            <View className="flex-row items-center gap-1.5">
+                                <View className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+                                <Text className="text-xs text-slate-400">Aerobic index</Text>
+                            </View>
+                        </View>
+
+                        <View className="h-44 relative justify-end mt-4">
+                            {/* Flat scale lines */}
+                            <View className="absolute inset-0 justify-between">
+                                <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">24 max</Text></View>
+                                <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">16 avg</Text></View>
+                                <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">0 min</Text></View>
+                            </View>
+
+                            {/* Solid bar chart readout */}
+                            <View className="absolute bottom-0 left-0 right-0 h-32 flex-row items-end justify-end gap-1">
+                                {selectedType === 'all' && <View className="w-1.5 h-[30%] bg-teal-400 rounded-t-sm" />}
+                                <View className={`w-1.5 ${selectedType === 'all' ? 'h-[60%]' : 'h-[40%]'} bg-[#10B981] rounded-t-sm`} />
+                            </View>
+                        </View>
+
+                        <View className="flex-row justify-between mt-4 pt-3 border-t border-[#1E293B] pr-8">
+                            <Text className="text-[10px] font-bold text-slate-500">15 Aug</Text>
+                            <Text className="text-[10px] font-bold text-slate-500">30 Aug</Text>
+                            <Text className="text-[10px] font-bold text-slate-500">14 Sep</Text>
+                        </View>
+                    </View>
+
+                    {/* Integrated Summary Card (Positioned below the chart for layout difference) */}
+                    <View className="mx-5 mt-4 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 flex-row justify-between items-center">
+                        <View className="flex-col">
+                            <Text className="text-xs text-slate-400 mb-1">Focus state</Text>
+                            <Text className="text-2xl font-bold text-white">Low Aerobic</Text>
+                            <Text className="text-[10px] text-[#4DB9F2] mt-1">14 Sep 2025</Text>
+                        </View>
+                        <View className="h-8 w-[1px] bg-[#1E293B]" />
+                        <View className="flex-col items-end">
+                            <Text className="text-xs text-slate-400 mb-1">Target achieved</Text>
+                            <Text className="text-2xl font-bold text-[#10B981]">100%</Text>
+                            <Text className="text-[10px] text-slate-500 mt-1">Optimal recovery</Text>
+                        </View>
+                    </View>
+
+                    {/* Integrated Success Tag Indicator */}
+                    <View className="mx-5 mt-4 bg-emerald-950/20 border border-emerald-500/10 rounded-2xl p-4 flex-row items-center justify-between">
+                        <View className="flex-row items-center gap-3">
+                            <View className="w-8 h-8 rounded-lg bg-emerald-500/10 items-center justify-center">
+                                <Ionicons name="sync" size={16} color="#10B981" />
+                            </View>
+                            <Text className="text-sm font-semibold text-white">
+                                {selectedType === 'all' ? 'Low Aerobic Dominance' : 'Low Aerobic Focus'}
+                            </Text>
+                        </View>
+                        <Ionicons name="chevron-forward" size={16} color="#10B981" />
+                    </View>
+
+                    {/* Cardio Focus Breakdown (Modular Grid Cards) */}
+                    <View className="px-5 mt-8 mb-24">
+                        <Text className="text-lg font-bold text-white mb-4">Focus breakdown</Text>
+
+                        <View className="gap-3">
+                            <View className="bg-[#151E33] border border-[#1E293B] p-5 rounded-2xl flex-row justify-between items-center">
+                                <View className="flex-row items-center gap-3">
+                                    <View className="w-10 h-10 bg-[#1E1E1E] rounded-xl border border-[#2D3748] items-center justify-center">
+                                        <Ionicons name="pulse" size={20} color="#10B981" />
+                                    </View>
+                                    <View>
+                                        <Text className="font-bold text-base text-white">Low Aerobic</Text>
+                                        <Text className="text-xs text-slate-400 mt-0.5">Value rating</Text>
+                                    </View>
+                                </View>
+                                <View className="items-end">
+                                    <Text className="text-lg font-bold text-[#10B981]">{selectedType === 'all' ? '+20' : '+12'}</Text>
+                                    <Text className="text-xs text-slate-500 mt-0.5">100% distribution</Text>
+                                </View>
+                            </View>
+
+                            <View className="bg-[#151E33] border border-[#1E293B] p-5 rounded-2xl flex-row justify-between items-center">
+                                <View className="flex-row items-center gap-3">
+                                    <View className="w-10 h-10 bg-[#1E1E1E] rounded-xl border border-[#2D3748] items-center justify-center">
+                                        <Ionicons name="flash-outline" size={20} color="#64748B" />
+                                    </View>
+                                    <View>
+                                        <Text className="font-bold text-base text-slate-400">High Aerobic</Text>
+                                        <Text className="text-xs text-slate-500 mt-0.5">Value rating</Text>
+                                    </View>
+                                </View>
+                                <View className="items-end">
+                                    <Text className="text-lg font-bold text-slate-500">0</Text>
+                                    <Text className="text-xs text-slate-500 mt-0.5">0% distribution</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+
+                </ScrollView>
+
                 <TypeFilterSheet
                     ref={filterSheetRef}
                     selectedType={selectedType}

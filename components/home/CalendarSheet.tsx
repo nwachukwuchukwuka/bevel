@@ -59,13 +59,13 @@ export const CalendarSheet = forwardRef<CalendarSheetRef, Props>(({ selectedDate
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
             enablePanDownToClose
-            handleIndicatorStyle={{ backgroundColor: '#E5E7EB', width: 40 }}
-            backgroundStyle={{ backgroundColor: '#FFFFFF', borderRadius: 32 }}
+            handleIndicatorStyle={{ backgroundColor: '#334155', width: 40 }}
+            backgroundStyle={{ backgroundColor: '#090D16', borderRadius: 24 }}
             enableDynamicSizing={false}
         >
-            <BottomSheetView className="flex-1 px-5 pt-2" style={{ paddingBottom: insets.bottom || 20 }}>
+            <BottomSheetView className="flex-1 px-5 pt-2 bg-[#090D16]" style={{ paddingBottom: insets.bottom || 20 }}>
                 {/* Tabs */}
-                <View className="flex-row items-center border-b border-gray-100 mb-6">
+                <View className="flex-row items-center bg-slate-900/60 border border-slate-800/80 rounded-xl p-1 mb-6">
                     {TABS.map((tab) => {
                         const isActive = activeTab === tab;
                         const color = getTabColor(tab);
@@ -73,15 +73,13 @@ export const CalendarSheet = forwardRef<CalendarSheetRef, Props>(({ selectedDate
                             <TouchableOpacity
                                 key={tab}
                                 onPress={() => setActiveTab(tab)}
-                                className={`flex-1 flex-row items-center justify-center py-4 border-b-2 ${isActive ? 'border-gray-900' : 'border-transparent'}`}
+                                className={`flex-1 flex-row items-center justify-center py-2.5 rounded-lg ${isActive ? 'bg-[#151E33] border border-slate-700/20' : ''}`}
                             >
                                 <View
-                                    className="w-4 h-4 rounded-full border-2 mr-2 items-center justify-center"
-                                    style={{ borderColor: color, opacity: isActive ? 1 : 0.3 }}
-                                >
-                                    <View className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
-                                </View>
-                                <Text className={`text-[13px] font-semibold ${isActive ? 'text-gray-900' : 'text-gray-300'}`}>
+                                    className="w-1.5 h-1.5 rounded-full mr-2 items-center justify-center"
+                                    style={{ backgroundColor: color, opacity: isActive ? 1 : 0.4 }}
+                                />
+                                <Text className={`text-[12px] font-semibold ${isActive ? 'text-slate-100' : 'text-slate-400'}`}>
                                     {tab}
                                 </Text>
                             </TouchableOpacity>
@@ -89,16 +87,26 @@ export const CalendarSheet = forwardRef<CalendarSheetRef, Props>(({ selectedDate
                     })}
                 </View>
 
-                {/* Month/Year */}
-                <View className="mb-6">
-                    <Text className="text-[24px] font-bold text-gray-900">September</Text>
-                    <Text className="text-[14px] font-medium text-gray-300">2025</Text>
+                {/* Month/Year with navigation arrows */}
+                <View className="flex-row items-center justify-between mb-6">
+                    <View>
+                        <Text className="text-[20px] font-bold text-slate-100">September 2025</Text>
+                        <Text className="text-[12px] font-medium text-slate-500 mt-0.5">Overview & History</Text>
+                    </View>
+                    <View className="flex-row gap-2">
+                        <TouchableOpacity className="w-8 h-8 rounded-lg bg-slate-800/60 border border-slate-700/20 items-center justify-center">
+                            <Ionicons name="chevron-back" size={16} color="#94A3B8" />
+                        </TouchableOpacity>
+                        <TouchableOpacity className="w-8 h-8 rounded-lg bg-slate-800/60 border border-slate-700/20 items-center justify-center">
+                            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 {/* Weekdays */}
-                <View className="flex-row justify-between mb-6">
+                <View className="flex-row justify-between mb-4">
                     {DAYS.map(day => (
-                        <Text key={day} className="flex-1 text-center text-[12px] font-medium text-gray-400">
+                        <Text key={day} className="flex-1 text-center text-[12px] font-semibold text-slate-500">
                             {day}
                         </Text>
                     ))}
@@ -108,50 +116,30 @@ export const CalendarSheet = forwardRef<CalendarSheetRef, Props>(({ selectedDate
                 <View className="flex-row flex-wrap pb-6">
                     {/* Empty offsets */}
                     {Array.from({ length: startOffset }).map((_, i) => (
-                        <View key={`offset-${i}`} className="w-[14.28%] h-24" />
+                        <View key={`offset-${i}`} className="w-[14.28%] aspect-square" />
                     ))}
 
                     {calendarItems.map((item) => {
                         const isDateSelected = selectedDate.getDate() === item.day && selectedDate.getMonth() === 8;
-                        const isSpecialDay = item.day === 11; // Day 11 is highlighted in screenshot
-                        const isToday = item.day === 14; // Day 14 is "Today" with blue text
+                        const isSpecialDay = item.day === 11;
+                        const isToday = item.day === 14;
                         const ringColor = getTabColor(activeTab);
 
                         return (
                             <TouchableOpacity
                                 key={item.day}
-                                className="w-[14.28%] items-center justify-center mb-6"
+                                className="w-[14.28%] aspect-square items-center justify-center mb-3"
                                 onPress={() => handleSelectDay(item.day)}
                             >
                                 <View
-                                    className={`items-center justify-between py-3 rounded-full w-[85%] aspect-[1/2.2] border ${isSpecialDay || isDateSelected ? 'bg-white border-gray-100' : 'border-transparent'}`}
+                                    className={`items-center justify-center w-10 h-10 rounded-full border ${isDateSelected ? 'bg-blue-600 border-blue-500' : isSpecialDay ? 'bg-[#151E33] border-slate-700/50' : 'bg-slate-900/30 border-transparent'}`}
                                 >
-                                    {/* Metric Ring */}
-                                    <View className="w-10 h-10 items-center justify-center">
-                                        {/* Background Ring */}
-                                        <View className="w-8 h-8 rounded-full border-[3px] border-gray-50" />
-
-                                        {/* Metric Arc (Mock) */}
-                                        {item.score > 0 && (
-                                            <View
-                                                className="absolute w-8 h-8 rounded-full border-[3px] border-t-transparent border-l-transparent"
-                                                style={{
-                                                    borderColor: ringColor,
-                                                    transform: [{ rotate: '45deg' }],
-                                                }}
-                                            />
-                                        )}
-
-                                        {/* Small inner dot if score > 0 */}
-                                        {item.score > 0 && (
-                                            <View className="absolute w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ringColor }} />
-                                        )}
-                                    </View>
-
-                                    {/* Day Number */}
-                                    <Text className={`text-[14px] font-bold ${isToday ? 'text-blue-500' : 'text-gray-900'}`}>
+                                    <Text className={`text-[13px] font-bold ${isDateSelected ? 'text-white' : isToday ? 'text-blue-400' : 'text-slate-100'}`}>
                                         {item.day}
                                     </Text>
+                                    {item.score > 0 && !isDateSelected && (
+                                        <View className="absolute bottom-0.5 w-1 h-1 rounded-full" style={{ backgroundColor: ringColor }} />
+                                    )}
                                 </View>
                             </TouchableOpacity>
                         );
@@ -159,13 +147,16 @@ export const CalendarSheet = forwardRef<CalendarSheetRef, Props>(({ selectedDate
                 </View>
 
                 {/* Bottom Actions */}
-                <View className="flex-row items-center justify-between mt-auto py-5 border-t border-gray-100">
-                    <TouchableOpacity onPress={() => onDateSelect(new Date())}>
-                        <Text className="text-blue-500 font-bold text-[16px]">Today</Text>
+                <View className="flex-row items-center justify-between mt-auto py-4 border-t border-slate-800/80">
+                    <TouchableOpacity
+                        onPress={() => onDateSelect(new Date())}
+                        className="bg-[#151E33] border border-slate-800/80 px-4 py-2 rounded-xl"
+                    >
+                        <Text className="text-blue-400 font-bold text-sm">Today</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity className="flex-row items-center gap-1">
-                        <Text className="text-gray-400 font-bold text-[16px]">Go to</Text>
-                        <Ionicons name="chevron-forward" size={18} color="#D1D5DB" />
+                    <TouchableOpacity className="flex-row items-center gap-1.5 bg-[#151E33] border border-slate-800/80 px-4 py-2 rounded-xl">
+                        <Text className="text-slate-400 font-bold text-sm">Go to</Text>
+                        <Ionicons name="chevron-forward" size={14} color="#94A3B8" />
                     </TouchableOpacity>
                 </View>
             </BottomSheetView>

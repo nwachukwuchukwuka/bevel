@@ -1,66 +1,71 @@
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Text, View } from 'react-native';
 
 export const CardioImpactCard = () => {
     return (
-        <View className="mb-6">
-            <Text className="text-[16px] font-bold text-gray-900 mb-3">Cardio Impact</Text>
-            <View className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5">
+        <View className="mb-8">
+            <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6">
 
-                {/* Cardio Load */}
-                <View className="flex-row items-center gap-2 mb-4">
-                    <Ionicons name="pulse" size={16} color="#9CA3AF" />
-                    <Text className="text-[13px] font-bold text-gray-500">Cardio Load</Text>
+                {/* Section 1: Cardio Load Pipeline */}
+                <View className="flex-row items-center justify-between mb-6 border-b border-[#1E293B] pb-4">
+                    <Text className="text-lg font-bold text-slate-100">Cardio Load</Text>
+                    <View className="bg-rose-950/30 px-3 py-1.5 rounded-xl border border-rose-500/20 flex-row items-center gap-1.5">
+                        <Text className="text-xs font-bold text-rose-500">Overtraining</Text>
+                        <Ionicons name="warning-outline" size={14} color="#EF4444" />
+                    </View>
                 </View>
 
-                <View className="flex-row items-end justify-between mb-6 pb-6 border-b border-gray-50">
-                    <View>
-                        <Text className="text-[24px] font-bold text-gray-900">+8</Text>
-                        <Text className="text-[13px] font-bold text-pink-500">Overtraining</Text>
-                    </View>
-                    <View className="flex-row items-center gap-3">
-                        <View className="items-center">
-                            <Text className="text-[11px] font-medium text-gray-400 mb-1">Before</Text>
-                            <View className="bg-gray-200 px-6 py-2 rounded-lg"><Text className="font-bold text-gray-400">5</Text></View>
-                        </View>
-                        <View className="items-center">
-                            <Text className="text-[11px] font-medium text-gray-400 mb-1">After</Text>
-                            <LinearGradient colors={['#FF719A', '#B95CE4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className="px-6 py-2 rounded-lg">
-                                <Text className="font-bold text-white">13</Text>
-                            </LinearGradient>
+                <View className="flex-row justify-between items-center mb-8 bg-[#090D16] border border-[#1E293B] p-4 rounded-2xl">
+                    <View className="items-center">
+                        <Text className="text-[10px] font-semibold text-slate-500 mb-1">Before load</Text>
+                        <View className="w-12 h-12 rounded-xl bg-[#1E293B] border border-[#2D3748] items-center justify-center">
+                            <Text className="font-bold text-slate-400 text-lg">5</Text>
                         </View>
                     </View>
-                </View>
 
-                {/* Cardio Focus */}
-                <View className="flex-row items-center gap-2 mb-4">
-                    <Ionicons name="layers" size={16} color="#9CA3AF" />
-                    <Text className="text-[13px] font-bold text-gray-500">Cardio Focus</Text>
-                </View>
+                    <View className="flex-row items-center gap-2">
+                        <View className="w-8 h-[2px] bg-[#1E293B] border border-dashed border-[#2D3748]" />
+                        <View className="bg-[#1E293B] px-3 py-1.5 rounded-lg border border-[#4DB9F2]">
+                            <Text className="text-sm font-bold text-[#4DB9F2]">+8</Text>
+                        </View>
+                        <Ionicons name="arrow-forward" size={16} color="#4DB9F2" />
+                    </View>
 
-                <View className="flex-row justify-between mb-3">
-                    <View>
-                        <Text className="text-[15px] font-bold text-gray-900">100% <Text className="text-[11px] font-medium text-gray-400">(+20)</Text></Text>
-                        <Text className="text-[12px] font-bold text-teal-400">Low Aero.</Text>
-                    </View>
-                    <View>
-                        <Text className="text-[15px] font-bold text-gray-900">0% <Text className="text-[11px] font-medium text-gray-400">(+0)</Text></Text>
-                        <Text className="text-[12px] font-bold text-blue-400">High Aero.</Text>
-                    </View>
-                    <View>
-                        <Text className="text-[15px] font-bold text-gray-900">0% <Text className="text-[11px] font-medium text-gray-400">(+0)</Text></Text>
-                        <Text className="text-[12px] font-bold text-purple-400">Anaerobic</Text>
+                    <View className="items-center">
+                        <Text className="text-[10px] font-semibold text-slate-500 mb-1">After load</Text>
+                        <View className="w-12 h-12 rounded-xl bg-rose-500/20 border border-rose-500 items-center justify-center">
+                            <Text className="font-bold text-rose-500 text-lg">13</Text>
+                        </View>
                     </View>
                 </View>
 
-                {/* Progress Bar Mock */}
-                <View className="h-2.5 rounded-full bg-gray-100 overflow-hidden flex-row">
-                    <View className="bg-teal-400 h-full w-full rounded-full" />
+                {/* Section 2: Cardio Focus Distribution */}
+                <View className="flex-row items-center justify-between mb-4">
+                    <Text className="text-sm font-semibold text-slate-400">Cardio Focus Distribution</Text>
+                    <Ionicons name="layers-outline" size={16} color="#4DB9F2" />
+                </View>
+
+                <View className="flex-row justify-between gap-2 mb-6">
+                    <FocusBlock label="Low Aero." pct="100%" val="+20" color="#10B981" />
+                    <FocusBlock label="High Aero." pct="0%" val="+0" color="#3B82F6" />
+                    <FocusBlock label="Anaerobic" pct="0%" val="+0" color="#A855F7" />
+                </View>
+
+                {/* Unified Progress Bar */}
+                <View className="w-full h-2 rounded-full bg-[#1E293B] overflow-hidden flex-row">
+                    <View className="bg-[#10B981] h-full w-full" />
                 </View>
 
             </View>
         </View>
     );
 };
+
+const FocusBlock = ({ label, pct, val, color }: any) => (
+    <View className="flex-1 bg-[#1E293B40] border border-[#1E293B] rounded-xl p-3 flex-col items-center">
+        <Text className="text-lg font-bold text-white mb-0.5">{pct}</Text>
+        <Text className="text-[10px] font-semibold text-slate-500 mb-2">({val})</Text>
+        <Text className="text-[10px] font-bold" style={{ color }}>{label}</Text>
+    </View>
+);

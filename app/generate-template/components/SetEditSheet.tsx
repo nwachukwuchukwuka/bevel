@@ -22,7 +22,7 @@ export const SetEditSheet = forwardRef<BottomSheetModal, SetEditSheetProps>(({ m
         }
     }, [initialValue, mode]);
 
-    const renderBackdrop = useCallback((props: any) => <BottomSheetBackdrop {...props} opacity={0.4} />, []);
+    const renderBackdrop = useCallback((props: any) => <BottomSheetBackdrop {...props} opacity={0.6} />, []);
 
     const handleNumberPress = (num: string) => {
         if (num === ',' && value.includes(',')) return;
@@ -43,82 +43,91 @@ export const SetEditSheet = forwardRef<BottomSheetModal, SetEditSheetProps>(({ m
     const NumberButton = ({ val }: { val: string }) => (
         <TouchableOpacity
             onPress={() => handleNumberPress(val)}
-            activeOpacity={0.6}
-            className="w-[30%] aspect-[1.8] bg-gray-50 rounded-2xl items-center justify-center mb-1.5"
+            activeOpacity={0.7}
+            className="w-[31%] aspect-[1.8] bg-[#151E33] border border-[#1E293B] rounded-xl items-center justify-center mb-3"
         >
-            <Text className="text-xl font-normal text-gray-900">{val}</Text>
+            <Text className="text-xl font-medium text-white">{val}</Text>
         </TouchableOpacity>
     );
 
     return (
         <BottomSheetModal
             ref={ref}
-            snapPoints={['60%']}
+            snapPoints={['75%']}
             backdropComponent={renderBackdrop}
-            handleIndicatorStyle={{ width: 32, backgroundColor: '#E5E7EB', height: 4 }}
+            handleIndicatorStyle={{ backgroundColor: '#2D3748', width: 48, height: 4 }}
+            backgroundStyle={{ backgroundColor: '#090D16', borderRadius: 32 }}
             enableDynamicSizing={false}
         >
-            <View className="flex-1 bg-white pt-1 rounded-t-3xl">
+            <View className="flex-1 bg-[#090D16] pt-2">
+
                 {/* Header */}
-                <View className="flex-row justify-between items-center px-6 mb-2.5 pt-0.5">
-                    <TouchableOpacity onPress={() => (ref as any).current?.dismiss()}>
-                        <Text className="text-gray-400 text-[13px] font-normal">Cancel</Text>
-                    </TouchableOpacity>
-                    <Text className="font-medium text-gray-900 text-sm capitalize">{mode === 'weight' ? 'Weight' : inputMode}</Text>
-                    <TouchableOpacity onPress={handleSave}>
-                        <Text className="text-black font-semibold text-sm">Save</Text>
+                <View className="flex-row justify-between items-start px-5 mb-6">
+                    <View>
+                        <Text className="font-bold text-white text-2xl capitalize">
+                            {mode === 'weight' ? 'Weight' : inputMode}
+                        </Text>
+                        <Text className="text-slate-400 font-medium text-sm mt-1">
+                            Update set values
+                        </Text>
+                    </View>
+                    <TouchableOpacity onPress={() => (ref as any).current?.dismiss()} className="w-10 h-10 border border-[#2D3748] bg-[#151E33] rounded-xl items-center justify-center">
+                        <Ionicons name="close" size={20} color="#94A3B8" />
                     </TouchableOpacity>
                 </View>
 
+                {/* Sub Toggles */}
+                <View className="px-5 mb-4">
+                    <View className="flex-row bg-[#151E33] border border-[#1E293B] rounded-xl p-1.5">
+                        {mode === 'weight' ? (
+                            <>
+                                <TouchableOpacity
+                                    onPress={() => setUnit('lbs')}
+                                    className={`flex-1 items-center justify-center py-2 rounded-lg ${unit === 'lbs' ? 'bg-[#1E293B] border border-[#2D3748]' : 'border border-transparent'}`}
+                                >
+                                    <Text className={`font-semibold text-sm ${unit === 'lbs' ? 'text-white' : 'text-slate-500'}`}>lbs</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => setUnit('kg')}
+                                    className={`flex-1 items-center justify-center py-2 rounded-lg ${unit === 'kg' ? 'bg-[#1E293B] border border-[#2D3748]' : 'border border-transparent'}`}
+                                >
+                                    <Text className={`font-semibold text-sm ${unit === 'kg' ? 'text-white' : 'text-slate-500'}`}>kg</Text>
+                                </TouchableOpacity>
+                            </>
+                        ) : (
+                            <>
+                                <TouchableOpacity
+                                    onPress={() => setInputMode('reps')}
+                                    className={`flex-1 items-center justify-center py-2 rounded-lg ${inputMode === 'reps' ? 'bg-[#1E293B] border border-[#2D3748]' : 'border border-transparent'}`}
+                                >
+                                    <Text className={`font-semibold text-sm ${inputMode === 'reps' ? 'text-white' : 'text-slate-500'}`}>Reps</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => setInputMode('duration')}
+                                    className={`flex-1 items-center justify-center py-2 rounded-lg ${inputMode === 'duration' ? 'bg-[#1E293B] border border-[#2D3748]' : 'border border-transparent'}`}
+                                >
+                                    <Text className={`font-semibold text-sm ${inputMode === 'duration' ? 'text-white' : 'text-slate-500'}`}>Duration</Text>
+                                </TouchableOpacity>
+                            </>
+                        )}
+                    </View>
+                </View>
+
                 {/* Input Display */}
-                <View className="px-6 mb-2.5">
-                    <View className="border border-gray-100 bg-gray-50 rounded-2xl p-3 flex-row items-center justify-between">
-                        <Text className="text-[20px] font-medium text-gray-900">{value || (inputMode === 'duration' ? '00:00' : '—')}</Text>
-                        <View className="flex-row items-center gap-2">
-                            {mode === 'weight' && <Text className="text-gray-400 text-sm font-normal">kg</Text>}
-                            {(mode === 'duration' || inputMode === 'duration') && <Text className="text-gray-400 text-[10px] font-normal">minutes and seconds</Text>}
-                            {mode === 'reps' && inputMode === 'reps' && <Text className="text-gray-400 text-sm font-normal">reps</Text>}
+                <View className="px-5 mb-6">
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-2xl py-2 flex-row items-center justify-center relative">
+                        <Text className="text-3xl font-bold text-white">{value || (inputMode === 'duration' ? '00:00' : '—')}</Text>
+
+                        <View className="absolute right-6 bottom-6 flex-row items-center">
+                            {mode === 'weight' && <Text className="text-[#4DB9F2] font-semibold text-sm">kg</Text>}
+                            {(mode === 'duration' || inputMode === 'duration') && <Text className="text-[#4DB9F2] font-semibold text-xs">min:sec</Text>}
+                            {mode === 'reps' && inputMode === 'reps' && <Text className="text-[#4DB9F2] font-semibold text-sm">reps</Text>}
                         </View>
                     </View>
                 </View>
 
-                {/* Sub Toggles */}
-                <View className="flex-row px-6 mb-3 gap-2">
-                    {mode === 'weight' ? (
-                        <View className="flex-row bg-gray-50 p-1 rounded-xl">
-                            <TouchableOpacity
-                                onPress={() => setUnit('lbs')}
-                                className={`px-4 py-1 rounded-lg ${unit === 'lbs' ? 'bg-[#1A1A1A]' : ''}`}
-                            >
-                                <Text className={`font-medium text-[12px] ${unit === 'lbs' ? 'text-white' : 'text-gray-400'}`}>lbs</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setUnit('kg')}
-                                className={`px-4 py-1 rounded-lg ${unit === 'kg' ? 'bg-[#1A1A1A]' : ''}`}
-                            >
-                                <Text className={`font-medium text-[12px] ${unit === 'kg' ? 'text-white' : 'text-gray-400'}`}>kg</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ) : (
-                        <View className="flex-row bg-gray-50 p-1 rounded-xl">
-                            <TouchableOpacity
-                                onPress={() => setInputMode('reps')}
-                                className={`px-4 py-1 rounded-lg ${inputMode === 'reps' ? 'bg-[#1A1A1A]' : ''}`}
-                            >
-                                <Text className={`font-medium text-[12px] ${inputMode === 'reps' ? 'text-white' : 'text-gray-400'}`}>Reps</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setInputMode('duration')}
-                                className={`px-4 py-1 rounded-lg ${inputMode === 'duration' ? 'bg-[#1A1A1A]' : ''}`}
-                            >
-                                <Text className={`font-medium text-[12px] ${inputMode === 'duration' ? 'text-white' : 'text-gray-400'}`}>Duration</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                </View>
-
                 {/* Number Pad */}
-                <View className="flex-row flex-wrap justify-between px-6 mb-2">
+                <View className="flex-row flex-wrap justify-between px-5">
                     <NumberButton val="1" />
                     <NumberButton val="2" />
                     <NumberButton val="3" />
@@ -132,26 +141,35 @@ export const SetEditSheet = forwardRef<BottomSheetModal, SetEditSheetProps>(({ m
                     <NumberButton val="0" />
                     <TouchableOpacity
                         onPress={handleBackspace}
-                        activeOpacity={0.6}
-                        className="w-[30%] aspect-[1.8] bg-gray-50 rounded-2xl items-center justify-center mb-1"
+                        activeOpacity={0.7}
+                        className="w-[31%] aspect-[1.8] bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center mb-3"
                     >
-                        <Ionicons name="backspace-outline" size={18} color="#4B5563" />
+                        <Ionicons name="backspace" size={20} color="#4DB9F2" />
                     </TouchableOpacity>
                 </View>
 
-                {/* Footer Checkbox */}
-                <TouchableOpacity
-                    onPress={() => setApplyToNext(!applyToNext)}
-                    activeOpacity={0.8}
-                    className="flex-row items-center justify-center mb-4 gap-2.5"
-                >
-                    <Text className="text-gray-900 font-medium text-[13px]">Apply to next set</Text>
-                    <View className={`w-4 h-4 rounded-full border items-center justify-center ${applyToNext ? 'bg-black border-black' : 'border-gray-300'}`} style={{ width: 16, height: 16 }}>
-                        {applyToNext ? (
-                            <Ionicons name="checkmark" size={10} color="white" />
-                        ) : null}
-                    </View>
-                </TouchableOpacity>
+                {/* Footer Actions (Sticky Bottom) */}
+                <View className="absolute bottom-0 w-full px-5 pb-8 pt-4 bg-[#090D16]">
+                    {/* Checkbox */}
+                    <TouchableOpacity
+                        onPress={() => setApplyToNext(!applyToNext)}
+                        activeOpacity={0.8}
+                        className="flex-row items-center mb-5 gap-3"
+                    >
+                        <View className={`w-5 h-5 rounded-md border items-center justify-center ${applyToNext ? 'bg-[#4DB9F2] border-[#4DB9F2]' : 'bg-[#151E33] border-[#2D3748]'}`}>
+                            {applyToNext && <Ionicons name="checkmark" size={14} color="#090D16" />}
+                        </View>
+                        <Text className="text-slate-300 font-medium text-sm">Apply to next set</Text>
+                    </TouchableOpacity>
+
+                    {/* Save Button */}
+                    <TouchableOpacity
+                        onPress={handleSave}
+                        className="bg-[#4DB9F2] py-4 rounded-xl items-center border border-[#4DB9F2]"
+                    >
+                        <Text className="text-[#090D16] font-bold text-base">Save</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </BottomSheetModal>
     );

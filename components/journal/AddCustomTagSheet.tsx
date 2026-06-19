@@ -16,10 +16,10 @@ export const AddCustomTagSheet = forwardRef<AddCustomTagSheetRef, Props>(({ onSa
     const [label, setLabel] = useState('');
     const [logTime, setLogTime] = useState<'Daytime' | 'Nighttime'>('Daytime');
     const [isPinned, setIsPinned] = useState(false);
-    const [icon, setIcon] = useState('😴'); // Default emoji as per image
+    const [icon, setIcon] = useState('😴');
 
     const renderBackdrop = useCallback((props: any) => (
-        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.4} />
+        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.6} />
     ), []);
 
     const dismiss = () => (ref as any).current?.dismiss();
@@ -40,59 +40,133 @@ export const AddCustomTagSheet = forwardRef<AddCustomTagSheetRef, Props>(({ onSa
             index={0}
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
-            handleIndicatorStyle={{ backgroundColor: '#D1D5DB', width: 36, height: 4, marginTop: 8 }}
-            backgroundStyle={{ backgroundColor: '#FFFFFF', borderRadius: 24 }}
+            handleIndicatorStyle={{ backgroundColor: '#1E293B', width: 40, height: 4, marginTop: 8 }}
+            backgroundStyle={{ backgroundColor: '#151E33', borderRadius: 32, borderWidth: 1, borderColor: '#1E293B' }}
             enableDynamicSizing={false}
         >
-            <BottomSheetView style={{ paddingBottom: insets.bottom + 20 }} className="flex-1 px-5 pt-4">
-                <Text className="text-center font-bold text-[15px] text-gray-900 mb-8">Add custom tag</Text>
+            <BottomSheetView style={{ paddingBottom: insets.bottom + 20 }} className="flex-1 px-5 pt-3">
 
-                <View className="items-center mb-8">
-                    <TouchableOpacity className="w-16 h-16 rounded-full bg-gray-50 items-center justify-center border border-gray-100 mb-4">
-                        <Text className="text-[32px]">{icon}</Text>
-                    </TouchableOpacity>
-                    <TextInput
-                        value={label}
-                        onChangeText={setLabel}
-                        placeholder="(e.g. Sleep medication)"
-                        placeholderTextColor="#9CA3AF"
-                        className="text-[20px] font-bold text-gray-900 text-center w-full"
-                    />
-                </View>
-
-                {/* Segmented Control */}
-                <View className="flex-row bg-gray-100 p-1 rounded-xl mb-6">
+                <View className="px-1 pb-6 mb-4 border-b border-[#1E293B] flex-row justify-between items-center">
+                    <View>
+                        <Text className="text-2xl font-bold text-slate-100">Add custom tag</Text>
+                        <Text className="text-sm text-slate-400 mt-1">Define new tracking metric</Text>
+                    </View>
                     <TouchableOpacity
-                        onPress={() => setLogTime('Daytime')}
-                        className={`flex-1 py-2 items-center rounded-lg ${logTime === 'Daytime' ? 'bg-white ' : ''}`}
+                        onPress={dismiss}
+                        activeOpacity={0.7}
+                        className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
                     >
-                        <Text className={`text-[13px] font-bold ${logTime === 'Daytime' ? 'text-gray-900' : 'text-gray-500'}`}>Daytime</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => setLogTime('Nighttime')}
-                        className={`flex-1 py-2 items-center rounded-lg ${logTime === 'Nighttime' ? 'bg-white ' : ''}`}
-                    >
-                        <Text className={`text-[13px] font-bold ${logTime === 'Nighttime' ? 'text-gray-900' : 'text-gray-500'}`}>Nighttime</Text>
+                        <Ionicons name="close" size={20} color="#94A3B8" />
                     </TouchableOpacity>
                 </View>
 
-                <View className="flex-1 justify-end gap-3">
-                    <TouchableOpacity
-                        onPress={() => setIsPinned(!isPinned)}
-                        className="bg-gray-50 h-[56px] rounded-full items-center justify-center flex-row gap-2"
-                    >
-                        <Text className="text-gray-900 font-semibold text-[16px]">{isPinned ? 'Unpin' : 'Pin'}</Text>
-                        <Ionicons name={isPinned ? "pin" : "pin-outline"} size={16} color="#111827" />
-                        {isPinned && <Ionicons name="close" size={14} color="#111827" style={{ marginLeft: -4 }} />}
-                    </TouchableOpacity>
+                {/* Split Modular Grid Layout */}
+                <View className="flex-row gap-4 flex-1">
+
+                    {/* Left Column (Visuals & Pin) */}
+                    <View className="w-1/3 flex-col gap-4">
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            className="bg-[#090D16] rounded-2xl flex-1 items-center justify-center border border-[#1E293B]"
+                        >
+                            <Text className="text-4xl mb-2">{icon}</Text>
+                            <View className="bg-[#1E293B] px-2 py-1 rounded-md border border-[#2D3748]">
+                                <Text className="text-[10px] font-semibold text-slate-400">Edit icon</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => setIsPinned(!isPinned)}
+                            activeOpacity={0.8}
+                            className={`h-24 rounded-2xl items-center justify-center border ${isPinned
+                                ? 'bg-[#1E293B] border-[#4DB9F2]'
+                                : 'bg-[#1E293B40] border-[#1E293B]'
+                                }`}
+                        >
+                            <Ionicons
+                                name={isPinned ? "pin" : "pin-outline"}
+                                size={24}
+                                color={isPinned ? '#4DB9F2' : '#94A3B8'}
+                                className="mb-2"
+                            />
+                            <Text className={`text-xs font-semibold ${isPinned ? 'text-white' : 'text-slate-400'}`}>
+                                {isPinned ? 'Pinned' : 'Unpinned'}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* Right Column (Data & Time) */}
+                    <View className="flex-1 flex-col gap-4">
+
+                        <View className="bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-4">
+                            <Text className="text-xs font-semibold text-slate-500 mb-2">Metric identifier</Text>
+                            <View className="bg-[#090D16] border border-[#1E293B] rounded-xl px-3 h-12 justify-center">
+                                <TextInput
+                                    value={label}
+                                    onChangeText={setLabel}
+                                    placeholder="(e.g. Sleep medication)"
+                                    placeholderTextColor="#64748B"
+                                    className="text-base font-bold text-white w-full"
+                                    selectionColor="#4DB9F2"
+                                />
+                            </View>
+                        </View>
+
+                        <View className="bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-4 flex-1">
+                            <Text className="text-xs font-semibold text-slate-500 mb-3">Time domain</Text>
+
+                            <View className="flex-col gap-2">
+                                <TouchableOpacity
+                                    onPress={() => setLogTime('Daytime')}
+                                    activeOpacity={0.7}
+                                    className={`flex-row items-center gap-3 p-3 rounded-xl border ${logTime === 'Daytime'
+                                        ? 'bg-[#1E293B] border-[#2D3748]'
+                                        : 'bg-[#090D16] border-[#1E293B]'
+                                        }`}
+                                >
+                                    <View className={`w-3 h-3 rounded-full ${logTime === 'Daytime' ? 'bg-[#4DB9F2]' : 'bg-[#2D3748]'}`} />
+                                    <Text className={`text-sm font-semibold ${logTime === 'Daytime' ? 'text-white' : 'text-slate-500'}`}>
+                                        Daytime
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={() => setLogTime('Nighttime')}
+                                    activeOpacity={0.7}
+                                    className={`flex-row items-center gap-3 p-3 rounded-xl border ${logTime === 'Nighttime'
+                                        ? 'bg-[#1E293B] border-[#2D3748]'
+                                        : 'bg-[#090D16] border-[#1E293B]'
+                                        }`}
+                                >
+                                    <View className={`w-3 h-3 rounded-full ${logTime === 'Nighttime' ? 'bg-[#4DB9F2]' : 'bg-[#2D3748]'}`} />
+                                    <Text className={`text-sm font-semibold ${logTime === 'Nighttime' ? 'text-white' : 'text-slate-500'}`}>
+                                        Nighttime
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                    </View>
+                </View>
+
+                {/* Primary Action Footer */}
+                <View className="mt-4 pt-4 border-t border-[#1E293B]">
                     <TouchableOpacity
                         onPress={handleSave}
                         disabled={!label.trim()}
-                        className={`h-[56px] rounded-full items-center justify-center ${label.trim() ? 'bg-[#1C1C1E]' : 'bg-gray-300'}`}
+                        activeOpacity={0.8}
+                        className={`h-14 rounded-2xl items-center justify-center border flex-row gap-2 ${label.trim()
+                            ? 'bg-[#4DB9F2] border-[#4DB9F2]'
+                            : 'bg-[#1E293B] border-[#2D3748]'
+                            }`}
                     >
-                        <Text className="text-white font-semibold text-[16px]">Save</Text>
+                        <Text className={`font-bold text-base ${label.trim() ? 'text-[#090D16]' : 'text-slate-500'}`}>
+                            Save custom tag
+                        </Text>
+                        {label.trim() && <Ionicons name="checkmark-done" size={20} color="#090D16" />}
                     </TouchableOpacity>
                 </View>
+
             </BottomSheetView>
         </BottomSheetModal>
     );

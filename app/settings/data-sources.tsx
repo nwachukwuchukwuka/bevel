@@ -9,24 +9,37 @@ export default function DataSourcesScreen() {
     const router = useRouter();
 
     return (
-        <SafeAreaView edges={['top']} className="flex-1 bg-[#F9FAFB] pt-4">
-            <View className="flex-row items-center justify-between px-5 py-2 mb-4 border-b border-gray-100 pb-4">
-                <TouchableOpacity onPress={() => router.back()} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}><Ionicons name="chevron-back" size={24} color="#111827" /></TouchableOpacity>
-                <Text className="text-[16px] font-bold text-gray-900 flex-1 text-center mr-6">Data Sources</Text>
+        <SafeAreaView edges={['top']} className="flex-1 bg-[#090D16]">
+            <View className="flex-row items-center justify-between px-5 py-4">
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    className="w-10 h-10 bg-[#151E33] border border-slate-800/80 rounded-xl items-center justify-center"
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                    <Ionicons name="chevron-back" size={20} color="#94A3B8" />
+                </TouchableOpacity>
+                <Text className="text-[17px] font-bold text-slate-100 flex-1 text-center mr-10">Data sources</Text>
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 60 }}>
-                <View className="bg-white rounded-[24px] shadow-sm shadow-black/5 border border-gray-100 overflow-hidden">
-                    {DATA_METRICS.map((item, idx) => (
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 60 }}>
+                <View className="gap-3">
+                    {DATA_METRICS.map((item) => (
                         <TouchableOpacity
                             key={item.id}
                             onPress={() => router.push(`/settings/data-source/${item.label}`)}
-                            className={`flex-row items-center justify-between p-5 ${idx !== DATA_METRICS.length - 1 ? 'border-b border-gray-50' : ''}`}
+                            className="bg-[#151E33] border border-slate-800 rounded-2xl p-4 flex-row items-center justify-between"
                         >
-                            <Text className="text-[15px] font-bold text-gray-900">{item.label}</Text>
-                            <View className="flex-row items-center gap-1.5">
-                                <Text className="text-[14px] font-medium text-gray-400">{item.sources} sources</Text>
-                                <Ionicons name="chevron-forward" size={16} color="#D1D5DB" />
+                            <View className="flex-row items-center gap-3">
+                                <View className="w-10 h-10 bg-slate-800/60 rounded-xl items-center justify-center border border-slate-700/20">
+                                    <Ionicons name="stats-chart-outline" size={16} color="#38BDF8" />
+                                </View>
+                                <View>
+                                    <Text className="text-[15px] font-bold text-slate-100 mb-0.5">{item.label}</Text>
+                                    <Text className="text-[12px] font-medium text-slate-400">{item.sources} active sources</Text>
+                                </View>
+                            </View>
+                            <View className="w-8 h-8 rounded-lg bg-slate-800/40 items-center justify-center border border-slate-700/20">
+                                <Ionicons name="chevron-forward" size={14} color="#94A3B8" />
                             </View>
                         </TouchableOpacity>
                     ))}

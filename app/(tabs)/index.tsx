@@ -1,7 +1,7 @@
 import { ActivityStatusSheet, ActivityStatusSheetRef } from '@/components/activity-status/ActivityStatusSheet';
-import { CalendarSheet, CalendarSheetRef } from '@/components/home/CalendarSheet';
 import { AddCardSheet } from '@/components/home/AddCardSheet';
 import { AllCategoriesSheet } from '@/components/home/AllCategoriesSheet';
+import { CalendarSheet, CalendarSheetRef } from '@/components/home/CalendarSheet';
 import { CardioLoadSection } from '@/components/home/CardioLoadSection';
 import { DailyOverviewCard } from '@/components/home/DailyOverviewCard';
 import { HealthMonitorSection } from '@/components/home/HealthMonitorSection';
@@ -9,12 +9,12 @@ import { NutritionSection } from '@/components/home/NutritionSection';
 import { StressSection } from '@/components/home/StressSection';
 import { TimelineSection } from '@/components/home/TimelineSection';
 import { WorkoutPreviewSheet } from '@/components/home/WorkoutPreviewSheet';
-import { ACTIVITY_STATUSES, CURRENT_DATE } from '@/constants';
+import { ACTIVITY_STATUSES } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, DeviceEventEmitter } from 'react-native';
+import { DeviceEventEmitter, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -25,29 +25,35 @@ interface StatusSectionProps {
 }
 
 const StatusSection = ({ currentStatus, currentDuration, onPressStatus }: StatusSectionProps) => (
-    <View className="flex-row gap-3 mb-6 px-5">
-        <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={onPressStatus}
-            className="flex-row items-center bg-white rounded-full p-1 pr-4 shadow-sm border border-gray-50"
-        >
-            <View className={`${currentStatus.bgColor} rounded-full h-8 w-8 items-center justify-center mr-2`}>
-                <Ionicons name={currentStatus.icon} size={16} color={currentStatus.iconColor} />
-            </View>
-            <View>
-                <Text className="text-xs font-bold text-gray-800">{currentStatus.title}</Text>
-                <Text className="text-[10px] text-gray-500">{currentDuration}</Text>
-            </View>
-            <Ionicons name="chevron-down" size={16} color="#A3A3A3" style={{ marginLeft: 4 }} />
-        </TouchableOpacity>
+    <View className="px-5 mb-6">
+        <View className="flex-row items-center justify-between bg-[#151E33] border border-slate-800/80 rounded-2xl p-4">
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={onPressStatus}
+                className="flex-row items-center flex-1 mr-4"
+            >
+                <View className={`${currentStatus.bgColor} rounded-xl h-10 w-10 items-center justify-center mr-3`}>
+                    <Ionicons name={currentStatus.icon} size={20} color={currentStatus.iconColor} />
+                </View>
+                <View className="flex-1">
+                    <Text className="text-xs font-semibold text-slate-400">Current Status</Text>
+                    <View className="flex-row items-center mt-0.5">
+                        <Text className="text-sm font-bold text-slate-100 mr-1.5">{currentStatus.title}</Text>
+                        <Ionicons name="chevron-down" size={14} color="#94A3B8" />
+                    </View>
+                    <Text className="text-[10px] text-slate-400 mt-0.5">{currentDuration}</Text>
+                </View>
+            </TouchableOpacity>
 
-        <View className="flex-row items-center bg-white rounded-full p-2 px-4 shadow-sm flex-1 justify-between border border-gray-50">
-            <View className="bg-gray-100 rounded-full p-1 mr-2">
-                <Ionicons name="cloud" size={14} color="#A3A3A3" />
-            </View>
-            <View>
-                <Text className="text-xs font-bold text-gray-800">30°C</Text>
-                <Text className="text-[10px] text-gray-500">East Jakarta</Text>
+            <View className="flex-row items-center border-l border-slate-800 pl-4">
+                <View className="bg-slate-800/80 rounded-xl h-10 w-10 items-center justify-center mr-3">
+                    <Ionicons name="cloud" size={18} color="#94A3B8" />
+                </View>
+                <View>
+                    <Text className="text-xs font-semibold text-slate-400">Weather</Text>
+                    <Text className="text-sm font-bold text-slate-100 mt-0.5">30°C</Text>
+                    <Text className="text-[10px] text-slate-400 mt-0.5">East Jakarta</Text>
+                </View>
             </View>
         </View>
     </View>
@@ -75,7 +81,7 @@ export default function HomeScreen() {
     const [showSyncBanner, setShowSyncBanner] = useState(false);
 
     const [sections, setSections] = useState<HomeSectionItem[]>([
-        { id: 'overview', title: 'Daily Overview', component: <DailyOverviewCard onRingPress={(label) => handleRingPress(label)} /> },
+        { id: 'overview', title: 'aunty olly', component: <DailyOverviewCard onRingPress={(label) => handleRingPress(label)} /> },
         { id: 'stress', title: 'Stress & Energy', component: <StressSection onPress={() => router.push('/stress')} /> },
         { id: 'nutrition', title: 'Nutrition', component: <NutritionSection /> },
         { id: 'health', title: 'Health Monitor', component: <HealthMonitorSection /> },
@@ -166,18 +172,19 @@ export default function HomeScreen() {
                     disabled={isActive}
                     style={{ marginBottom: 24, paddingHorizontal: 20 }}
                 >
-                    <View className="flex-row items-center mb-3">
+                    <View className="flex-row items-center mb-4 pl-1">
                         {isEditing && (
                             <TouchableOpacity
                                 onPress={() => handleRemoveCard(item.id)}
-                                className="mr-2"
+                                className="mr-3 p-1 rounded-lg bg-red-950/40 border border-red-900/40"
                             >
-                                <Ionicons name="remove-circle" size={22} color="#EF4444" />
+                                <Ionicons name="close-outline" size={18} color="#EF4444" />
                             </TouchableOpacity>
                         )}
-                        <Text className="text-lg font-bold text-gray-900 flex-1">{item.title}</Text>
+                        <View className="w-1 h-4 bg-blue-500 rounded-full mr-2.5" />
+                        <Text className="text-[17px] font-bold text-slate-100 flex-1">{item.title}</Text>
                         {isEditing && (
-                            <Ionicons name="menu" size={20} color="#D1D5DB" />
+                            <Ionicons name="reorder-two-outline" size={22} color="#94A3B8" />
                         )}
                     </View>
                     {item.component}
@@ -187,43 +194,49 @@ export default function HomeScreen() {
     }, [isEditing]);
 
     const Header = () => (
-        <View className="px-5 pt-2 pb-4">
+        <View className="px-5 pt-3 pb-5">
             {showSyncBanner && (
-                <View className="bg-[#D1FAE5] rounded-full py-2.5 px-4 mb-4 flex-row items-center gap-2">
-                    <View className="bg-[#10B981] rounded-full p-0.5">
-                        <Ionicons name="checkmark" size={12} color="white" />
-                    </View>
-                    <Text className="text-[#065F46] font-bold text-[13px]">Synced at 1.55 PM on 17/09/25</Text>
+                <View className="bg-emerald-950/30 border border-emerald-800/30 rounded-xl py-2.5 px-4 mb-4 flex-row items-center gap-2">
+                    <Ionicons name="checkmark-circle-outline" size={16} color="#34D399" />
+                    <Text className="text-emerald-400 font-semibold text-[13px]">Synced at 1.55 PM on 17/09/25</Text>
                 </View>
             )}
             {isEditing ? (
-                <View className="flex-row items-center justify-between">
-                    <TouchableOpacity onPress={() => setIsEditing(false)} className="px-4 py-2 bg-white rounded-lg border border-gray-100 shadow-sm shadow-black/5">
-                        <Text className="font-bold text-gray-900 text-[13px]">Cancel</Text>
+                <View className="flex-row items-center justify-between bg-slate-900/80 border border-slate-800/60 rounded-xl p-2.5">
+                    <TouchableOpacity
+                        onPress={() => setIsEditing(false)}
+                        className="px-4 py-2 bg-slate-800 border border-slate-700/60 rounded-lg"
+                    >
+                        <Text className="font-semibold text-slate-300 text-[13px]">Cancel</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setIsEditing(false)} className="px-5 py-2 bg-gray-900 rounded-lg shadow-sm">
-                        <Text className="font-bold text-white text-[13px]">Save</Text>
+                    <Text className="font-semibold text-slate-400 text-[13px]">Customise Home</Text>
+                    <TouchableOpacity
+                        onPress={() => setIsEditing(false)}
+                        className="px-4 py-2 bg-blue-600 rounded-lg"
+                    >
+                        <Text className="font-semibold text-white text-[13px]">Save Changes</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
                 <View className="flex-row items-center justify-between">
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         onPress={() => calendarSheetRef.current?.present()}
-                        className="flex-row items-center gap-2"
+                        className="flex-row items-center gap-2 bg-[#151E33] border border-slate-800/80 rounded-xl px-4 py-2"
                     >
-                        <Text className="text-xl font-bold text-gray-900">
-                            {selectedDate.toDateString() === new Date().toDateString() 
+                        <Ionicons name="calendar-outline" size={16} color="#3B82F6" />
+                        <Text className="text-sm font-semibold text-slate-100">
+                            {selectedDate.toDateString() === new Date().toDateString()
                                 ? 'Today, ' + selectedDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })
                                 : selectedDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
                             }
                         </Text>
-                        <Ionicons name="chevron-down" size={20} color="#6B7280" />
+                        <Ionicons name="chevron-down-outline" size={14} color="#94A3B8" />
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => router.push('/settings')}
-                        className="bg-blue-100 h-9 w-9 rounded-full items-center justify-center font-bold"
+                        className="bg-[#151E33] border border-slate-800/80 h-9 w-9 rounded-xl items-center justify-center"
                     >
-                        <Text className="text-blue-500 font-bold text-[14px]">S</Text>
+                        <Ionicons name="settings-outline" size={18} color="#94A3B8" />
                     </TouchableOpacity>
                 </View>
             )}
@@ -231,35 +244,35 @@ export default function HomeScreen() {
     );
 
     const Footer = () => (
-        <View className="px-5 pb-32 pt-4">
+        <View className="px-5 pb-32 pt-6">
             {isEditing ? (
                 <View className="items-center">
                     <TouchableOpacity
                         onPress={() => addCardSheetRef.current?.present()}
-                        className="w-full h-16 bg-white rounded-2xl border border-dashed border-gray-200 items-center justify-center mb-3"
+                        className="w-full h-16 bg-[#151E33]/40 rounded-2xl border border-dashed border-slate-800 items-center justify-center mb-4"
                     >
-                        <View className="bg-gray-50 w-8 h-8 rounded-lg items-center justify-center mb-1">
-                            <Ionicons name="add" size={20} color="#9CA3AF" />
+                        <View className="bg-slate-800/80 w-8 h-8 rounded-lg items-center justify-center mb-1">
+                            <Ionicons name="add" size={20} color="#94A3B8" />
                         </View>
-                        <Text className="font-bold text-gray-400 text-xs">Add card</Text>
+                        <Text className="font-semibold text-slate-400 text-xs">Add section card</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleResetToDefault}>
-                        <Text className="font-bold text-gray-400 text-sm mt-4">Reset to default</Text>
+                        <Text className="font-semibold text-slate-400 text-sm mt-4">Reset dashboard</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
                 <View className="gap-3">
                     <TouchableOpacity
                         onPress={() => setIsEditing(true)}
-                        className="bg-white h-14 rounded-2xl items-center justify-center border border-gray-100 shadow-sm shadow-black/5"
+                        className="bg-[#151E33] h-14 rounded-2xl items-center justify-center border border-slate-800/80"
                     >
-                        <Text className="font-bold text-gray-900 text-[15px]">Edit Home</Text>
+                        <Text className="font-semibold text-slate-100 text-[15px]">Edit Dashboard</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => allCategoriesSheetRef.current?.present()}
-                        className="bg-white h-14 rounded-2xl items-center justify-center border border-gray-100 shadow-sm shadow-black/5"
+                        className="bg-[#151E33] h-14 rounded-2xl items-center justify-center border border-slate-800/80"
                     >
-                        <Text className="font-bold text-gray-900 text-[15px]">View All Categories</Text>
+                        <Text className="font-semibold text-slate-100 text-[15px]">View All Categories</Text>
                     </TouchableOpacity>
                 </View>
             )}
@@ -267,7 +280,7 @@ export default function HomeScreen() {
     );
 
     return (
-        <View className="flex-1 bg-[#F9FAFB]">
+        <View className="flex-1 bg-[#090D16]">
             <SafeAreaView edges={['top']} className="flex-1">
                 <Header />
                 {!isEditing && (
@@ -325,12 +338,4 @@ export default function HomeScreen() {
     );
 }
 
-const styles = StyleSheet.create({
-    shadow: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 8,
-        elevation: 3
-    }
-});
+const styles = StyleSheet.create({});

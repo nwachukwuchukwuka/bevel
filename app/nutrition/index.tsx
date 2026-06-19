@@ -1,81 +1,64 @@
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 
 const TrendCard = ({ title, value, subtitle, subtitleColor, icon, showSparkline, showBars, isEmpty, onPress }: any) => (
     <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.8}
-        className="bg-white rounded-[24px] p-5 shadow-sm border border-gray-50 flex-row justify-between items-center"
-        style={styles.shadow}
+        className="w-[300px] bg-[#1E293B] border border-[#2D3748] rounded-2xl p-5 mr-4 flex-col justify-between min-h-[160px]"
     >
-        <View className="flex-1">
-            <View className="flex-row items-center gap-2 mb-3">
-                <Ionicons name={isEmpty ? "cube-outline" : (title === "Nutrition Score" ? "restaurant-outline" : title === "Macro Balance" ? "pie-chart-outline" : "add-circle-outline")} size={16} color="#9CA3AF" />
-                <Text className="text-gray-400 font-bold text-[15px]">{title}</Text>
+        <View className="flex-row items-center justify-between mb-2">
+            <View className="flex-row items-center gap-2">
+                <Ionicons name={isEmpty ? "cube-outline" : (title === "Nutrition Score" ? "restaurant-outline" : title === "Macro Balance" ? "pie-chart-outline" : "add-circle-outline")} size={16} color="#4DB9F2" />
+                <Text className="text-slate-400 font-semibold text-sm">{title}</Text>
             </View>
-            <Text className={`text-[34px] font-bold ${isEmpty ? 'text-gray-300' : 'text-gray-900'} mb-1`}>{value}</Text>
-            {subtitle && (
-                <View className="flex-row items-center gap-1">
-                    {icon && !isEmpty && (
-                        <View className="w-5 h-5 bg-blue-100 rounded-full items-center justify-center">
-                            <Ionicons name={icon} size={12} color="#3B82F6" />
-                        </View>
-                    )}
-                    {isEmpty && <Ionicons name="close-circle" size={12} color="#D1D5DB" />}
-                    <Text className={`text-[14px] font-bold ${subtitleColor}`}>{subtitle}</Text>
-                </View>
-            )}
+            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
         </View>
 
-        <View className="flex-1 items-end relative h-full justify-between min-h-[80px]">
-            <Ionicons name="arrow-forward" size={18} color="#9CA3AF" className="absolute -top-1 -right-1" />
-
-            {/* Graphics */}
-            {showSparkline && (
-                <View className="w-24 h-16 items-end justify-center mt-4">
-                    <View className="w-full h-full">
-                        <View className="absolute bottom-4 left-0 w-4 h-2 bg-blue-100 rounded-full opacity-40 rotate-[30deg]" />
-                        <View className="absolute bottom-6 left-4 w-6 h-3 bg-blue-200 rounded-full opacity-50 -rotate-[10deg]" />
-                        <View className="absolute bottom-2 left-10 w-4 h-8 bg-blue-300 rounded-full opacity-60 rotate-[45deg]" />
-                        <View className="absolute top-2 right-2 w-1 h-12 bg-blue-500 rounded-full rotate-[15deg] shadow-lg shadow-blue-400" />
-                        <View className="absolute top-0 right-1 w-4 h-4 rounded-full bg-indigo-500/20 items-center justify-center">
-                            <View className="w-2.5 h-2.5 rounded-full bg-indigo-100 border-2 border-indigo-400" />
-                            <View className="absolute inset-0 bg-indigo-400 rounded-full opacity-20" />
-                        </View>
+        <View className="flex-row items-end justify-between flex-1">
+            <View className="flex-col">
+                <Text className={`text-3xl font-bold mb-1 ${isEmpty ? 'text-slate-500' : 'text-slate-100'}`}>
+                    {value}
+                </Text>
+                {subtitle && (
+                    <View className="flex-row items-center gap-1 mt-1">
+                        {icon && !isEmpty && <Ionicons name={icon} size={14} color="#4DB9F2" />}
+                        {isEmpty && <Ionicons name="close-circle" size={14} color="#64748B" />}
+                        <Text className={`text-xs font-semibold ${subtitleColor}`}>{subtitle}</Text>
                     </View>
-                </View>
-            )}
+                )}
+            </View>
 
-            {showBars && title === "Macro Balance" && (
-                <View className="flex-row items-end gap-[4px] h-14 mt-4">
-                    {[{ h: [10, 5, 5] }, { h: [15, 8, 12] }, { h: [12, 20, 10] }, { h: [8, 10, 5] }, { h: [20, 15, 10] }, { h: [10, 5, 8] }].map((bar, i) => (
-                        <View key={i} className="w-2.5 gap-[1px]">
-                            <View className="bg-pink-400 rounded-t-sm" style={{ height: bar.h[2] }} />
-                            <View className="bg-yellow-400" style={{ height: bar.h[1] }} />
-                            <View className="bg-blue-400 rounded-b-sm" style={{ height: bar.h[0] }} />
-                        </View>
-                    ))}
-                </View>
-            )}
+            <View className="w-16 h-12 justify-end items-end pb-1">
+                {showSparkline && (
+                    <View className="w-full h-full relative">
+                        <View className="absolute bottom-2 left-0 w-2 h-4 bg-emerald-500 rounded-sm" />
+                        <View className="absolute bottom-2 left-3 w-2 h-6 bg-emerald-500 rounded-sm" />
+                        <View className="absolute bottom-2 left-6 w-2 h-3 bg-emerald-500 rounded-sm" />
+                        <View className="absolute bottom-2 left-9 w-2 h-8 bg-emerald-500 rounded-sm" />
+                        <View className="absolute bottom-2 left-12 w-2 h-10 bg-[#4DB9F2] rounded-sm" />
+                    </View>
+                )}
 
-            {showBars && title === "Net Energy" && (
-                <View className="flex-row items-end gap-[4px] h-14 mt-4">
-                    {Array.from({ length: 9 }).map((_, i) => (
-                        <View key={i} className="flex-row gap-[2px]">
-                            {i % 3 === 0 ? (
-                                <View className="w-1.5 bg-blue-400 rounded-sm" style={{ height: 30 + Math.random() * 20 }} />
-                            ) : (
-                                <View className="w-1.5 bg-orange-400 rounded-sm" style={{ height: 40 + Math.random() * 20 }} />
-                            )}
-                        </View>
-                    ))}
-                </View>
-            )}
+                {showBars && title === "Macro Balance" && (
+                    <View className="w-full h-full flex-row items-end justify-end gap-1">
+                        {[10, 15, 8, 20].map((h, i) => (
+                            <View key={i} className="w-2 rounded-t-sm bg-[#4DB9F2]" style={{ height: h }} />
+                        ))}
+                    </View>
+                )}
+
+                {showBars && title === "Net Energy" && (
+                    <View className="w-full h-full flex-row items-end justify-end gap-1">
+                        {[15, 25, 10, 30].map((h, i) => (
+                            <View key={i} className="w-2 rounded-t-sm bg-rose-500" style={{ height: h }} />
+                        ))}
+                    </View>
+                )}
+            </View>
         </View>
     </TouchableOpacity>
 );
@@ -83,241 +66,87 @@ const TrendCard = ({ title, value, subtitle, subtitleColor, icon, showSparkline,
 export default function NutritionDashboard() {
     const router = useRouter();
 
-    const renderDotMatrix = (color: string, count: number, total: number = 40) => (
-        <View className="flex-row flex-wrap w-[28%] gap-[3px]">
+    const renderDotMatrix = (color: string, count: number, total: number = 24) => (
+        <View className="flex-row flex-wrap w-[30%] gap-1">
             {Array.from({ length: total }).map((_, i) => (
-                <View key={i} className={`w-[4px] h-[4px] rounded-full ${i < count ? color : 'bg-gray-100'}`} />
+                <View key={i} className={`w-1.5 h-1.5 rounded-sm ${i < count ? color : 'bg-[#1E293B]'}`} />
             ))}
         </View>
     );
 
     return (
-        <View className="flex-1 bg-[#F4F5F9]">
-            {/* Dynamic Background Gradient */}
-            <LinearGradient colors={['#F3E8FF', '#F4F5F9']} className="absolute top-0 w-full h-96 opacity-60" />
-
+        <View className="flex-1 bg-[#090D16]">
             <SafeAreaView className="flex-1" edges={['top']}>
-                {/* Header */}
-                <View className="flex-row justify-between items-center px-5 py-2">
-                    <TouchableOpacity onPress={() => router.back()} className="w-10">
-                        <Ionicons name="chevron-back" size={28} color="#111827" />
-                    </TouchableOpacity>
-                    <View className="items-center">
-                        <Text className="font-bold text-gray-900 text-lg">Nutrition</Text>
-                        <View className="flex-row items-center gap-1 mt-0.5">
-                            <Text className="text-gray-500 font-medium text-xs">Today, 14 September</Text>
-                            <Ionicons name="chevron-down" size={12} color="#6B7280" />
-                        </View>
+
+                <View className="px-5 pt-4 pb-6 flex-row items-center justify-between">
+                    <View>
+                        <Text className="text-2xl font-bold text-slate-100">Nutrition metrics</Text>
+                        <Text className="text-xs text-slate-400 mt-1">Today, 14 September</Text>
                     </View>
-                    <TouchableOpacity className="w-8 h-8 bg-white rounded-full items-center justify-center shadow-sm">
-                        <Ionicons name="ellipsis-horizontal" size={16} color="#4B5563" />
-                    </TouchableOpacity>
+                    <View className="flex-row items-center gap-3">
+                        <TouchableOpacity
+                            onPress={() => router.back()}
+                            activeOpacity={0.7}
+                            className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                        >
+                            <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                        >
+                            <Ionicons name="settings-outline" size={20} color="#94A3B8" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
-                <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
-                    {/* Hero Score */}
-                    <View className="items-center my-8 relative">
-                        <View className="absolute left-10 top-8 opacity-20"><Ionicons name="restaurant" size={60} color="#9CA3AF" /></View>
-                        <View className="absolute right-10 top-8 opacity-20" style={{ transform: [{ scaleX: -1 }] }}><Ionicons name="restaurant" size={60} color="#9CA3AF" /></View>
-                        <View className="w-48 h-48 bg-white rounded-full shadow-2xl shadow-purple-200 items-center justify-center border-4 border-white">
-                            <View className="w-[170px] h-[170px] rounded-full border-4 border-dashed border-blue-100 items-center justify-center relative">
-                                <View className="absolute inset-0 border-4 border-blue-500 rounded-full border-r-transparent border-b-transparent -rotate-45" />
-                                <Text className="text-5xl font-bold text-gray-900">83</Text>
-                                <Text className="text-blue-500 font-bold text-sm">optimal</Text>
-                            </View>
-                        </View>
-                    </View>
+                <ScrollView contentContainerStyle={{ paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
 
-                    {/* Quick Actions */}
-                    <View className="flex-row justify-between gap-3 mb-6">
-                        {['Describe', 'Capture', 'Search'].map((action, i) => (
-                            <TouchableOpacity key={action} className="flex-1 bg-white rounded-2xl p-4 items-center justify-center shadow-sm">
-                                <Ionicons name={i === 0 ? 'text' : i === 1 ? 'camera' : 'search'} size={24} color="#111827" className="mb-2" />
-                                <Text className="font-bold text-gray-900 text-[13px]">{action}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
-
-                    {/* Mini Scores */}
-                    <View className="flex-row gap-3 mb-6">
-                        <View className="flex-1 bg-white rounded-2xl p-4 shadow-sm border border-gray-50">
-                            <View className="flex-row items-center gap-1 mb-2">
-                                <Ionicons name="medal-outline" size={14} color="#9CA3AF" />
-                                <Text className="text-gray-400 font-semibold text-xs">Food Quality</Text>
-                            </View>
-                            <Text className="text-2xl font-bold text-gray-900">83</Text>
-                            <Text className="text-blue-500 font-bold text-xs mt-1">Optimal</Text>
-                        </View>
-                        <View className="flex-1 bg-white rounded-2xl p-4 shadow-sm border border-gray-50">
-                            <View className="flex-row items-center gap-1 mb-2">
-                                <Ionicons name="cube-outline" size={14} color="#9CA3AF" />
-                                <Text className="text-gray-400 font-semibold text-xs">Glucose Impact</Text>
-                            </View>
-                            <Text className="text-2xl font-bold text-gray-300">-</Text>
-                        </View>
-                    </View>
-
-                    {/* My Foods Link */}
-                    <TouchableOpacity
-                        onPress={() => router.push('/nutrition/my-foods')}
-                        className="bg-white rounded-2xl p-5 shadow-sm border border-gray-50 flex-row justify-between items-center mb-6"
-                    >
-                        <View>
-                            <Text className="font-bold text-gray-900 text-base mb-1">My Foods</Text>
-                            <Text className="text-gray-500 text-xs font-medium">0 favorites • 0 recipes • <Text className="font-bold">2 foods</Text></Text>
-                        </View>
-                        <Ionicons name="arrow-forward" size={20} color="#9CA3AF" />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={() => router.push('/nutrition/goals')} className="bg-white rounded-[24px] p-6 shadow-sm border border-gray-50 mb-6 relative overflow-hidden items-center">
-
-                        {/* Faint Background Icon Pattern */}
-                        <View
-                            className="absolute inset-0 flex-row flex-wrap justify-center items-center gap-6 z-0"
-                            style={{ opacity: 0.03, transform: [{ scale: 1.2 }] }}
-                        >
-                            {Array.from({ length: 15 }).map((_, i) => (
-                                <Ionicons
-                                    key={i}
-                                    name={['fast-food', 'leaf', 'water', 'nutrition', 'egg'][i % 5] as any}
-                                    size={32}
-                                    color="#000"
-                                />
-                            ))}
-                        </View>
-
-                        {/* Top Right Arrow */}
-                        <TouchableOpacity className="absolute top-5 right-5 z-20">
-                            <Ionicons name="arrow-forward" size={20} color="#9CA3AF" />
-                        </TouchableOpacity>
-
-                        {/* Multi-color Ring Graphic */}
-                        <View className="w-[72px] h-[72px] mb-4 z-10 relative mt-2">
-                            {/* Top Half - Orange */}
-                            <View className="absolute top-0 w-full h-[36px] overflow-hidden">
-                                <View className="w-[72px] h-[72px] rounded-full border-[6px] border-[#FBBF24] absolute top-0" />
-                            </View>
-
-                            {/* Bottom Left Quarter - Blue */}
-                            <View className="absolute bottom-0 left-0 w-[36px] h-[36px] overflow-hidden">
-                                <View className="w-[72px] h-[72px] rounded-full border-[6px] border-[#818CF8] absolute bottom-0 left-0" />
-                            </View>
-
-                            {/* Bottom Right Quarter - Pink */}
-                            <View className="absolute bottom-0 right-0 w-[36px] h-[36px] overflow-hidden">
-                                <View className="w-[72px] h-[72px] rounded-full border-[6px] border-[#F472B6] absolute bottom-0 right-0" />
-                            </View>
-                        </View>
-
-                        {/* Text Content */}
-                        <Text className="text-[17px] font-bold text-gray-900 mb-1 z-10">
-                            Goals for nutrition
-                        </Text>
-                        <Text className="text-[13.5px] text-gray-500 text-center leading-5 px-4 mb-6 z-10 font-medium">
-                            Set your daily goals for your calories and macros, and more
-                        </Text>
-
-                        {/* Action Button */}
-                        <TouchableOpacity className="w-full py-3.5 rounded-xl border border-gray-200 items-center bg-white z-10 shadow-sm">
-                            <Text className="font-bold text-gray-600 text-[15px]">Disable</Text>
-                        </TouchableOpacity>
-                    </TouchableOpacity>
-
-                    {/* Nutritional Details Card */}
-                    <TouchableOpacity onPress={() => router.push('/nutrition/nutritional-details')}
-                        className="bg-white rounded-3xl p-5 shadow-sm border border-gray-50 mb-6">
+                    <View className="mx-5 mb-6 bg-[#151E33] border border-[#1E293B] rounded-3xl p-6">
                         <View className="flex-row justify-between items-center mb-6">
-                            <Text className="font-bold text-gray-900 text-base">Nutritional Details</Text>
-                            <View className="flex-row gap-2 items-center">
-                                <View className="bg-gray-100 rounded-lg flex-row px-1 py-0.5">
-                                    <View className="bg-white rounded px-2 py-1 shadow-sm"><Text className="font-bold text-xs">g</Text></View>
-                                    <View className="px-2 py-1"><Text className="font-bold text-xs text-gray-500">%</Text></View>
-                                </View>
-                                <Ionicons name="arrow-forward" size={16} color="#9CA3AF" />
+                            <Text className="text-sm font-semibold text-slate-400">Daily nutrition score</Text>
+                            <View className="bg-emerald-950/20 px-3 py-1 rounded-lg border border-emerald-500/20">
+                                <Text className="text-xs font-bold text-emerald-500">optimal</Text>
                             </View>
                         </View>
-                        <View className="flex-row justify-between mb-4">
-                            {renderDotMatrix('bg-blue-400', 12)}
-                            {renderDotMatrix('bg-yellow-400', 35)}
-                            {renderDotMatrix('bg-pink-400', 18)}
-                        </View>
-                        <View className="flex-row justify-between mb-6">
-                            <View><Text className="font-bold text-gray-900">38,3g</Text><Text className="text-blue-400 text-xs font-bold">Fat</Text></View>
-                            <View><Text className="font-bold text-gray-900">94,7g</Text><Text className="text-yellow-400 text-xs font-bold">Carbs</Text></View>
-                            <View><Text className="font-bold text-gray-900">27g</Text><Text className="text-pink-400 text-xs font-bold">Protein</Text></View>
-                        </View>
-                        <View className="h-[1px] bg-gray-100 w-full mb-6" />
-                        <View>
-                            <View className="flex-row justify-between items-end mb-4">
-                                <View><Text className="font-bold text-gray-900 text-lg">-483 kcal</Text><Text className="text-gray-400 text-xs">Net Energy</Text></View>
-                                <View className="flex-row gap-3">
-                                    <View className="flex-row items-center gap-1"><Ionicons name="flame" size={14} color="#F97316" /><Text className="font-bold text-gray-900 text-xs">1.182</Text></View>
-                                    <View className="flex-row items-center gap-1"><Ionicons name="nutrition" size={14} color="#3B82F6" /><Text className="font-bold text-gray-900 text-xs">699</Text></View>
-                                </View>
-                            </View>
-                            <View className="relative justify-center h-4 mb-2">
-                                <LinearGradient colors={['#EF4444', '#F97316', '#EAB308', '#3B82F6', '#8B5CF6']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={{ height: 8, borderRadius: 4, width: '100%' }} />
-                                <View className="absolute left-[35%] w-4 h-4 bg-white border-[3px] border-orange-500 rounded-full shadow-sm" />
-                            </View>
-                            <View className="flex-row justify-between">
-                                {['-500', '-250', '0', '250', '500'].map(val => <Text key={val} className="text-[10px] text-gray-400 font-medium">{val}</Text>)}
-                            </View>
-                        </View>
-                    </TouchableOpacity>
 
-                    <View className="bg-white rounded-[24px] p-6 shadow-sm border border-gray-50 mb-6 relative overflow-hidden">
-                        <View className="absolute right-0 top-0 w-40 h-40 bg-blue-50 rounded-full -mr-16 -mt-16 opacity-50" />
-                        <Text className="font-bold text-gray-900 text-lg mb-1">Connect CGM</Text>
-                        <Text className="text-gray-500 text-sm leading-5 mb-6 w-[80%]">Get personalized nutrition scores with glucose data.</Text>
-                        <View className="flex-row gap-3">
-                            <TouchableOpacity className="flex-1 py-3.5 rounded-xl border border-gray-200 items-center bg-white">
-                                <Text className="font-bold text-gray-700">Disable</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => router.push('/nutrition/cgm')}
-                                className="flex-1 py-3.5 rounded-xl bg-[#1A1A1A] items-center"
-                            >
-                                <Text className="font-bold text-white">Connect</Text>
-                            </TouchableOpacity>
+                        <View className="flex-row items-baseline gap-3">
+                            <Text className="text-6xl font-bold text-[#4DB9F2]">83</Text>
+                            <Text className="text-sm font-semibold text-slate-500">/ 100 max</Text>
                         </View>
-                    </View>
 
-                    {/* Timeline */}
-                    <View className="mb-8">
-                        <View className="flex-row items-center justify-between mb-4 px-2">
-                            <Text className="text-lg font-bold text-gray-900">Timeline</Text>
-                            <TouchableOpacity><Ionicons name="add" size={24} color="#9CA3AF" /></TouchableOpacity>
-                        </View>
-                        <View className="gap-3">
-                            {[
-                                { icon: '🥑', name: 'Avocado Toast with Fried Egg', time: '14/09/25 at 12.48 PM', score: '88', color: 'bg-purple-100 border-purple-300 text-purple-700' },
-                                { icon: '☕️', name: 'Coffee Latte', time: '14/09/25 at 12.48 PM', score: '61', color: 'bg-blue-100 border-blue-300 text-blue-700' }
-                            ].map((item, i) => (
+                        <View className="mt-8 flex-row gap-3">
+                            {['Describe', 'Capture', 'Search'].map((action, i) => (
                                 <TouchableOpacity
-                                    key={i}
-                                    onPress={() => router.push('/nutrition/log-details')}
-                                    className="bg-white rounded-2xl p-4 shadow-sm border border-gray-50 flex-row items-center justify-between"
+                                    key={action}
+                                    activeOpacity={0.8}
+                                    className="flex-1 bg-[#1E293B] border border-[#2D3748] rounded-xl py-3 flex-row justify-center items-center gap-2"
                                 >
-                                    <View className="flex-row items-center gap-4">
-                                        <View className="relative">
-                                            <View className="w-12 h-12 bg-gray-50 rounded-xl items-center justify-center border border-gray-100"><Text className="text-2xl">{item.icon}</Text></View>
-                                            <View className={`absolute -bottom-2 -right-2 px-1.5 py-0.5 rounded-md border ${item.color}`}><Text className="text-[10px] font-bold">{item.score}</Text></View>
-                                        </View>
-                                        <View><Text className="font-bold text-gray-900 text-[15px] mb-0.5">{item.name}</Text><Text className="text-gray-400 text-xs font-medium">{item.time}</Text></View>
-                                    </View>
-                                    <Ionicons name="arrow-forward" size={16} color="#9CA3AF" />
+                                    <Ionicons name={i === 0 ? 'text' : i === 1 ? 'camera' : 'search'} size={14} color="#4DB9F2" />
+                                    <Text className="font-semibold text-slate-200 text-xs">{action}</Text>
                                 </TouchableOpacity>
                             ))}
                         </View>
                     </View>
 
-                    <View className="mb-6">
-                        <Text className="text-lg font-bold text-gray-900 mb-4 px-2">Trends</Text>
-                        <View className="gap-3">
-                            {/* Nutrition Score Card */}
+                    <View className="px-5 flex-row gap-4 mb-8">
+                        <View className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5">
+                            <Text className="text-xs font-semibold text-slate-400 mb-2">Food Quality</Text>
+                            <Text className="text-2xl font-bold text-slate-100 mb-1">83</Text>
+                            <Text className="text-[10px] font-bold text-[#4DB9F2]">Optimal</Text>
+                        </View>
+                        <View className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5">
+                            <Text className="text-xs font-semibold text-slate-400 mb-2">Glucose Impact</Text>
+                            <Text className="text-2xl font-bold text-slate-500 mb-1">-</Text>
+                            <Text className="text-[10px] font-bold text-slate-600">No data</Text>
+                        </View>
+                    </View>
+
+                    <View className="pl-5 mb-8">
+                        <Text className="text-lg font-bold text-white mb-4">Metric trends</Text>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingRight: 20 }}>
                             <TrendCard
-                                title="Nutrition Score" value="83" subtitle="Above normal" subtitleColor="text-blue-500" icon="arrow-up" showSparkline
+                                title="Nutrition Score" value="83" subtitle="Above normal" subtitleColor="text-[#4DB9F2]" icon="trending-up" showSparkline
                                 onPress={() => router.push({ pathname: '/nutrition/trend-details', params: { type: 'score' } })}
                             />
                             <TrendCard
@@ -325,24 +154,136 @@ export default function NutritionDashboard() {
                                 onPress={() => router.push({ pathname: '/nutrition/trend-details', params: { type: 'macro' } })}
                             />
                             <TrendCard
-                                title="Net Energy" value="-483 kCal" subtitle="Deficit" subtitleColor="text-red-500" showBars
+                                title="Net Energy" value="-483 kCal" subtitle="Deficit" subtitleColor="text-rose-500" showBars
                                 onPress={() => router.push({ pathname: '/nutrition/trend-details', params: { type: 'energy' } })}
                             />
+                        </ScrollView>
+                    </View>
+
+                    <View className="px-5 mb-8">
+                        <TouchableOpacity
+                            onPress={() => router.push('/nutrition/nutritional-details')}
+                            activeOpacity={0.8}
+                            className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6"
+                        >
+                            <View className="flex-row justify-between items-center mb-6">
+                                <Text className="font-bold text-slate-100 text-lg">Nutritional Details</Text>
+                                <View className="flex-row items-center gap-3">
+                                    <View className="flex-row bg-[#090D16] rounded-lg border border-[#1E293B] p-0.5">
+                                        <View className="bg-[#1E293B] px-2 py-1 rounded-md"><Text className="text-[10px] font-bold text-slate-200">g</Text></View>
+                                        <View className="px-2 py-1"><Text className="text-[10px] font-bold text-slate-500">%</Text></View>
+                                    </View>
+                                    <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                                </View>
+                            </View>
+
+                            <View className="flex-row justify-between mb-4">
+                                {renderDotMatrix('bg-[#4DB9F2]', 10)}
+                                {renderDotMatrix('bg-[#F59E0B]', 18)}
+                                {renderDotMatrix('bg-rose-500', 8)}
+                            </View>
+
+                            <View className="flex-row justify-between mb-6 pb-6 border-b border-[#1E293B]">
+                                <View><Text className="font-bold text-white text-base">38.3 g</Text><Text className="text-[#4DB9F2] text-xs font-semibold mt-1">Fat</Text></View>
+                                <View><Text className="font-bold text-white text-base">94.7 g</Text><Text className="text-[#F59E0B] text-xs font-semibold mt-1">Carbs</Text></View>
+                                <View><Text className="font-bold text-white text-base">27.0 g</Text><Text className="text-rose-500 text-xs font-semibold mt-1">Protein</Text></View>
+                            </View>
+
+                            <View className="flex-row justify-between items-center mb-4">
+                                <View>
+                                    <Text className="text-xs text-slate-400 font-semibold mb-1">Net Energy</Text>
+                                    <Text className="font-bold text-white text-xl">-483 kCal</Text>
+                                </View>
+                                <View className="flex-row gap-4">
+                                    <View className="flex-row items-center gap-1.5"><Ionicons name="flame" size={12} color="#F97316" /><Text className="font-semibold text-slate-300 text-sm">1,182</Text></View>
+                                    <View className="flex-row items-center gap-1.5"><Ionicons name="nutrition" size={12} color="#10B981" /><Text className="font-semibold text-slate-300 text-sm">699</Text></View>
+                                </View>
+                            </View>
+
+                            <View className="h-2 w-full bg-[#1E293B] rounded-full overflow-hidden flex-row">
+                                <View className="h-full bg-[#4DB9F2]" style={{ width: '20%' }} />
+                                <View className="h-full bg-[#10B981]" style={{ width: '30%' }} />
+                                <View className="h-full bg-rose-500" style={{ width: '15%' }} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View className="px-5 mb-8">
+                        <View className="flex-row justify-between items-center mb-4">
+                            <Text className="text-lg font-bold text-white">Event timeline</Text>
+                            <TouchableOpacity className="w-8 h-8 bg-[#1E293B] border border-[#2D3748] rounded-lg items-center justify-center">
+                                <Ionicons name="add" size={16} color="#4DB9F2" />
+                            </TouchableOpacity>
+                        </View>
+
+                        <View className="gap-3">
+                            {[
+                                { icon: '🥑', name: 'Avocado Toast with Fried Egg', time: '14/09/25 at 12:48 PM', score: '88', color: 'bg-emerald-950/30 border-emerald-500/30 text-emerald-400' },
+                                { icon: '☕️', name: 'Coffee Latte', time: '14/09/25 at 12:48 PM', score: '61', color: 'bg-amber-950/30 border-amber-500/30 text-amber-400' }
+                            ].map((item, i) => (
+                                <TouchableOpacity
+                                    key={i}
+                                    onPress={() => router.push('/nutrition/log-details')}
+                                    activeOpacity={0.8}
+                                    className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-4 flex-row items-center justify-between"
+                                >
+                                    <View className="flex-row items-center gap-4 flex-1">
+                                        <View className="w-12 h-12 bg-[#1E293B] rounded-xl items-center justify-center border border-[#2D3748] relative">
+                                            <Text className="text-2xl">{item.icon}</Text>
+                                        </View>
+                                        <View className="flex-1 pr-2">
+                                            <Text className="font-bold text-slate-100 text-sm mb-1" numberOfLines={1}>{item.name}</Text>
+                                            <Text className="text-slate-500 text-[10px] font-medium">{item.time}</Text>
+                                        </View>
+                                    </View>
+                                    <View className={`px-2 py-1 rounded border ${item.color}`}>
+                                        <Text className="text-xs font-bold text-white">{item.score}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            ))}
                         </View>
                     </View>
+
+                    <View className="px-5 flex-row gap-4 mb-6">
+                        <TouchableOpacity
+                            onPress={() => router.push('/nutrition/my-foods')}
+                            activeOpacity={0.8}
+                            className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 justify-between min-h-[120px]"
+                        >
+                            <Ionicons name="fast-food-outline" size={20} color="#4DB9F2" className="mb-2" />
+                            <View>
+                                <Text className="font-bold text-slate-100 text-base mb-1">My Foods</Text>
+                                <Text className="text-slate-500 text-[10px] font-medium">0 favorites • 2 entries</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => router.push('/nutrition/goals')}
+                            activeOpacity={0.8}
+                            className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 justify-between min-h-[120px]"
+                        >
+                            <Ionicons name="flag-outline" size={20} color="#4DB9F2" className="mb-2" />
+                            <View>
+                                <Text className="font-bold text-slate-100 text-base mb-1">Goals</Text>
+                                <Text className="text-slate-500 text-[10px] font-medium">Caloric & macro targets</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View className="px-5">
+                        <TouchableOpacity
+                            onPress={() => router.push('/nutrition/cgm')}
+                            activeOpacity={0.8} className="bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-6 flex-row items-center justify-between">
+                            <View className="flex-1 pr-4">
+                                <Text className="font-bold text-slate-100 text-base mb-1">Connect CGM device</Text>
+                                <Text className="text-slate-400 text-xs leading-5">Enable personalized nutrition scoring driven by real-time glucose telemetry.</Text>
+                            </View>
+                            <Ionicons name="hardware-chip-outline" size={32} color="#94A3B8" />
+                        </TouchableOpacity>
+                    </View>
+
                 </ScrollView>
             </SafeAreaView>
         </View>
     );
 }
-
-
-const styles = StyleSheet.create({
-    shadow: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 8,
-        elevation: 3,
-    }
-});

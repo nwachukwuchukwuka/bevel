@@ -18,98 +18,105 @@ export default function ImportFoodScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            className="flex-1 bg-white"
+            className="flex-1 bg-[#090D16]"
         >
             <StatusBar style="light" />
 
-            {/* Black Header with Photo Previews */}
-            <View style={{ paddingTop: insets.top }} className="bg-black pb-6">
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }} className="pt-4">
-                    {/* Add Button */}
-                    <TouchableOpacity className="w-16 h-16 rounded-xl border border-gray-800 bg-gray-900/50 items-center justify-center">
-                        <Ionicons name="add" size={24} color="white" />
-                    </TouchableOpacity>
+            <View className="bg-[#151E33] border-b border-[#1E293B]">
+                <View className="px-5 py-4 flex-row items-center justify-between border-b border-[#1E293B]">
+                    <View>
+                        <Text className="text-xl font-bold text-slate-100">Visual import</Text>
+                        <Text className="text-xs text-slate-400 mt-1">Image analysis pipeline</Text>
+                    </View>
+                    <View className="bg-emerald-950/30 px-3 py-1.5 rounded-xl border border-emerald-500/20 flex-row items-center gap-1.5">
+                        <Ionicons name="scan" size={12} color="#10B981" />
+                        <Text className="text-xs font-semibold text-emerald-500">Ai active</Text>
+                    </View>
+                </View>
 
-                    {/* Image Thumbnails */}
-                    {SELECTED_IMAGES.map((img) => (
-                        <View key={img.id} className="relative">
-                            <Image
-                                source={{ uri: img.url }}
-                                className="w-16 h-16 rounded-xl"
-                                style={{ backgroundColor: '#333' }}
-                            />
-                            <TouchableOpacity className="absolute -top-1.5 -left-1.5 bg-[#FF6B6B] rounded-full w-5 h-5 items-center justify-center border-2 border-black">
-                                <Ionicons name="remove" size={12} color="white" />
-                            </TouchableOpacity>
-                        </View>
-                    ))}
-                </ScrollView>
+                <View className="py-5 bg-[#090D16]">
+                    <Text className="text-xs font-semibold text-slate-400 px-5 mb-3">Scanned sources</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }}>
+
+                        {SELECTED_IMAGES.map((img) => (
+                            <View key={img.id} className="relative w-20 h-28 rounded-2xl border border-[#2D3748] overflow-hidden">
+                                <Image
+                                    source={{ uri: img.url }}
+                                    className="w-full h-full"
+                                />
+                                <View className="absolute inset-0 bg-black/20" />
+                                <TouchableOpacity className="absolute bottom-2 right-2 bg-[#090D16]/80 p-1.5 rounded-lg border border-[#EF4444]">
+                                    <Ionicons name="trash-outline" size={14} color="#EF4444" />
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            className="w-20 h-28 rounded-2xl border border-dashed border-[#4DB9F2] bg-[#1E293B40] items-center justify-center"
+                        >
+                            <Ionicons name="add" size={24} color="#4DB9F2" />
+                        </TouchableOpacity>
+                    </ScrollView>
+                </View>
             </View>
 
-            {/* Main Content Area */}
             <ScrollView
-                className="flex-1 px-6 pt-6"
-                contentContainerStyle={{ flexGrow: 1 }}
+                className="flex-1 px-5 pt-6"
+                contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
                 keyboardShouldPersistTaps="handled"
                 showsVerticalScrollIndicator={false}
             >
-                <View className="flex-row justify-between items-start mb-6">
-                    {/* Preview Badge */}
-                    <View className="flex-row items-center bg-gray-100/50 border border-gray-200 px-3 py-1.5 rounded-full">
-                        <Ionicons name="sparkles-outline" size={10} color="#6B7280" style={{ marginRight: 4 }} />
-                        <Text className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Preview</Text>
-                    </View>
-
-                    {/* Dropdown / Counter (Right side) */}
-                    <View className="flex-row items-center border border-gray-200 rounded-xl px-2 py-1 bg-white">
-                        <View className="w-6 h-6 bg-gray-50 rounded-lg items-center justify-center border border-gray-100 mr-2">
-                             <Image 
-                                source={{ uri: SELECTED_IMAGES[0].url }} 
-                                className="w-full h-full rounded-lg"
-                             />
+                <View className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 mb-4">
+                    <View className="flex-row items-center justify-between mb-4">
+                        <Text className="text-sm font-semibold text-slate-400">Contextual override</Text>
+                        <View className="bg-[#1E293B] px-2 py-1 rounded-lg border border-[#2D3748]">
+                            <Text className="text-[10px] text-slate-400 font-bold">Optional</Text>
                         </View>
-                        <Ionicons name="chevron-down" size={14} color="#9CA3AF" />
                     </View>
+
+                    <TextInput
+                        className="text-white text-lg font-medium leading-7 min-h-[120px]"
+                        placeholder="Add descriptive context to override or assist the image analysis engine."
+                        placeholderTextColor="#64748B"
+                        multiline
+                        textAlignVertical="top"
+                        value={text}
+                        onChangeText={setText}
+                        selectionColor="#F97316"
+                    />
                 </View>
 
-                <Text className="text-[22px] font-bold text-gray-900 mb-2">
-                    What are you eating?
-                </Text>
-
-                <TextInput
-                    className="text-lg text-gray-800 leading-7 mt-2 mb-8 font-medium"
-                    placeholder="Add an optional description to improve AI accuracy."
-                    placeholderTextColor="#D1D5DB"
-                    multiline
-                    textAlignVertical="top"
-                    value={text}
-                    onChangeText={setText}
-                    style={{ minHeight: 120 }}
-                />
-
-                <View className="gap-5">
-                    <TouchableOpacity className="flex-row items-center gap-3">
-                        <Ionicons name="camera" size={20} color="#D1D5DB" />
-                        <Text className="text-gray-400 font-semibold text-sm">Capture photo</Text>
+                <View className="flex-row gap-3">
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        className="flex-1 bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-4 flex-row justify-center items-center gap-2"
+                    >
+                        <Ionicons name="camera-outline" size={18} color="#94A3B8" />
+                        <Text className="text-sm font-semibold text-slate-300">Camera</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row items-center gap-3">
-                        <Ionicons name="image" size={20} color="#D1D5DB" />
-                        <Text className="text-gray-400 font-semibold text-sm">Import photo</Text>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        className="flex-1 bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-4 flex-row justify-center items-center gap-2"
+                    >
+                        <Ionicons name="image-outline" size={18} color="#94A3B8" />
+                        <Text className="text-sm font-semibold text-slate-300">Gallery</Text>
                     </TouchableOpacity>
                 </View>
 
-                {/* Spacer to push button to bottom */}
                 <View className="flex-1" />
 
                 <View className="mb-8 mt-10">
                     <TouchableOpacity
-                        onPress={() => {
-                            router.push('/processing-food');
-                        }}
-                        className="w-full py-4 rounded-full items-center justify-center bg-[#1A1A1A]"
+                        onPress={() => router.push('/processing-food')}
+                        activeOpacity={0.8}
+                        className="w-full h-14 rounded-2xl items-center justify-center flex-row gap-2 border bg-[#4DB9F2] border-[#4DB9F2]"
                     >
-                        <Text className="text-white font-bold text-base">Continue</Text>
+                        <Text className="font-bold text-base text-[#090D16]">
+                            continue
+                        </Text>
+                        <Ionicons name="scan-outline" size={18} color="#090D16" />
                     </TouchableOpacity>
                 </View>
             </ScrollView>

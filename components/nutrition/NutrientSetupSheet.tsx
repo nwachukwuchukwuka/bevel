@@ -48,7 +48,7 @@ export const NutrientSetupSheet = forwardRef<NutrientSetupSheetRef, Props>(({ nu
     }, [nutrient.label]);
 
     const renderBackdrop = useCallback((props: any) => (
-        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.4} />
+        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.6} />
     ), []);
 
     const handleSave = () => {
@@ -72,13 +72,17 @@ export const NutrientSetupSheet = forwardRef<NutrientSetupSheetRef, Props>(({ nu
                 setIntent(value);
                 setShowIntentPicker(false);
             }}
-            className="flex-row items-center justify-between py-3 px-4"
+            className="flex-row items-center justify-between py-4 px-5"
         >
             <View className="flex-row items-center gap-3">
-                {isSelected && <Ionicons name="checkmark" size={20} color="#1A1A1A" />}
-                <Text className={`text-[16px] ${isSelected ? 'font-bold text-gray-900' : 'text-gray-500'} ${!isSelected && 'ml-7'}`}>{label}</Text>
+                {isSelected ? (
+                    <Ionicons name="checkmark-circle" size={20} color="#4DB9F2" />
+                ) : (
+                    <View className="w-5 h-5 ml-1" />
+                )}
+                <Text className={`text-[15px] ${isSelected ? 'font-bold text-[#4DB9F2]' : 'text-[#94A3B8]'} ${!isSelected && 'ml-2'}`}>{label}</Text>
             </View>
-            <Ionicons name={icon} size={20} color="#6B7280" />
+            <Ionicons name={icon} size={20} color="#64748B" />
         </TouchableOpacity>
     );
 
@@ -90,42 +94,42 @@ export const NutrientSetupSheet = forwardRef<NutrientSetupSheetRef, Props>(({ nu
                 snapPoints={snapPoints}
                 backdropComponent={renderBackdrop}
                 stackBehavior="push"
-                handleIndicatorStyle={{ display: 'none' }}
-                backgroundStyle={{ backgroundColor: '#FFFFFF', borderRadius: 40 }}
+                handleIndicatorStyle={{ backgroundColor: '#1E2D4A', width: 40 }}
+                backgroundStyle={{ backgroundColor: '#090D16', borderRadius: 32 }}
             >
                 <BottomSheetView style={{ flex: 1, paddingBottom: insets.bottom }}>
                     {/* Header */}
                     <View className="flex-row items-center justify-between px-6 pt-4 pb-8">
-                        <TouchableOpacity onPress={() => (ref as any).current?.dismiss()}>
-                            <Ionicons name="close" size={24} color="#D1D5DB" />
+                        <TouchableOpacity onPress={() => (ref as any).current?.dismiss()} className="w-10 h-10 bg-[#151E33] border border-[#1E2D4A] rounded-[12px] items-center justify-center">
+                            <Ionicons name="close" size={20} color="#F1F5F9" />
                         </TouchableOpacity>
-                        <Text className="font-bold text-[15px] text-gray-900">{nutrient.label}</Text>
-                        <View className="w-6" />
+                        <Text className="font-bold text-[18px] text-[#F1F5F9]">{nutrient.label} Settings</Text>
+                        <View className="w-10" />
                     </View>
 
-                    <View className="flex-1 px-5">
-                        <View className="bg-white rounded-3xl border border-gray-100 overflow-hidden mb-6">
+                    <View className="flex-1 px-6">
+                        <View className="bg-[#151E33] rounded-[24px] border border-[#1E2D4A] overflow-hidden mb-6">
                             {/* Tracking Intent */}
                             <TouchableOpacity
                                 onPress={() => setShowIntentPicker(!showIntentPicker)}
-                                className="flex-row items-center justify-between px-5 py-4 border-b border-gray-50"
+                                className="flex-row items-center justify-between px-5 py-5 border-b border-[#1E2D4A]"
                             >
                                 <View>
-                                    <Text className="text-gray-900 font-bold text-[15px]">Tracking Intent</Text>
-                                    <Text className="text-gray-400 text-[12px]">Target or limit a nutrient</Text>
+                                    <Text className="text-[#F1F5F9] font-bold text-[15px] mb-1">Tracking Intent</Text>
+                                    <Text className="text-[#64748B] text-[13px]">Target or limit a nutrient</Text>
                                 </View>
-                                <View className="flex-row items-center gap-1">
-                                    <Text className="text-gray-400 font-bold text-[15px]">{intent}</Text>
-                                    <Ionicons name="swap-vertical" size={16} color="#D1D5DB" />
+                                <View className="flex-row items-center gap-2">
+                                    <Text className="text-[#4DB9F2] font-bold text-[15px]">{intent}</Text>
+                                    <Ionicons name="swap-vertical" size={16} color="#4DB9F2" />
                                 </View>
                             </TouchableOpacity>
 
                             {showIntentPicker && (
-                                <View className="bg-gray-50 m-2 rounded-2xl border border-gray-100 shadow-sm">
+                                <View className="bg-[#0F172A] border-y border-[#1E2D4A]">
                                     <IntentOption label="Target" value="Target" icon="medical-outline" isSelected={intent === 'Target'} />
-                                    <View className="h-[1px] bg-gray-100 mx-4" />
+                                    <View className="h-[1px] bg-[#1E2D4A] mx-5" />
                                     <IntentOption label="Limit" value="Limit" icon="remove-circle-outline" isSelected={intent === 'Limit'} />
-                                    <View className="h-[1px] bg-gray-100 mx-4" />
+                                    <View className="h-[1px] bg-[#1E2D4A] mx-5" />
                                     <IntentOption label="None" value="None" icon="ban-outline" isSelected={intent === 'None'} />
                                 </View>
                             )}
@@ -133,43 +137,43 @@ export const NutrientSetupSheet = forwardRef<NutrientSetupSheetRef, Props>(({ nu
                             {/* Daily Goal */}
                             <TouchableOpacity
                                 onPress={() => openKeypad('target')}
-                                className="flex-row items-center justify-between px-5 py-4 border-b border-gray-50"
+                                className="flex-row items-center justify-between px-5 py-5 border-b border-[#1E2D4A]"
                             >
                                 <View>
-                                    <Text className="text-gray-900 font-bold text-[15px]">Daily {intent === 'Limit' ? 'Limit' : 'Target'}</Text>
-                                    <Text className="text-gray-400 text-[12px]">{intent === 'Limit' ? 'Aim to stay near or below' : 'Aim to meet or exceed'}</Text>
+                                    <Text className="text-[#F1F5F9] font-bold text-[15px] mb-1">Daily {intent === 'Limit' ? 'Limit' : 'Target'}</Text>
+                                    <Text className="text-[#64748B] text-[13px]">{intent === 'Limit' ? 'Aim to stay near or below' : 'Aim to meet or exceed'}</Text>
                                 </View>
-                                <View className="flex-row items-center gap-1">
-                                    <Text className="text-gray-900 font-bold text-[15px]">{target}{nutrient.unit}</Text>
-                                    <Ionicons name="chevron-forward" size={16} color="#D1D5DB" />
+                                <View className="flex-row items-center gap-2">
+                                    <Text className="text-[#4DB9F2] font-bold text-[15px]">{target}{nutrient.unit}</Text>
+                                    <Ionicons name="chevron-forward" size={16} color="#4DB9F2" />
                                 </View>
                             </TouchableOpacity>
 
                             {/* Quick Add */}
                             <TouchableOpacity
                                 onPress={() => openKeypad('quickAdd')}
-                                className="flex-row items-center justify-between px-5 py-4"
+                                className="flex-row items-center justify-between px-5 py-5"
                             >
                                 <View>
-                                    <Text className="text-gray-900 font-bold text-[15px]">Quick Add Amount</Text>
-                                    <Text className="text-gray-400 text-[12px]">Set default add amount</Text>
+                                    <Text className="text-[#F1F5F9] font-bold text-[15px] mb-1">Quick Add Amount</Text>
+                                    <Text className="text-[#64748B] text-[13px]">Set default add amount</Text>
                                 </View>
-                                <View className="flex-row items-center gap-1">
-                                    <Text className="text-gray-900 font-bold text-[15px]">{quickAdd}{nutrient.unit}</Text>
-                                    <Ionicons name="chevron-forward" size={16} color="#D1D5DB" />
+                                <View className="flex-row items-center gap-2">
+                                    <Text className="text-[#4DB9F2] font-bold text-[15px]">{quickAdd}{nutrient.unit}</Text>
+                                    <Ionicons name="chevron-forward" size={16} color="#4DB9F2" />
                                 </View>
                             </TouchableOpacity>
                         </View>
 
-                        <Text className="text-center text-gray-400 text-[13px] mb-8 font-bold">
-                            Recommended <Text className="text-gray-700">{recommendedValue}</Text> daily
+                        <Text className="text-center text-[#64748B] text-[13px] mb-8">
+                            Recommended <Text className="text-[#F1F5F9] font-bold">{recommendedValue}</Text> daily
                         </Text>
 
                         <TouchableOpacity
                             onPress={handleSave}
-                            className="bg-[#1A1A1A] h-[64px] rounded-[32px] items-center justify-center shadow-lg shadow-black/5"
+                            className="bg-[#4DB9F2] h-[56px] rounded-[16px] items-center justify-center"
                         >
-                            <Text className="text-white font-bold text-[18px]">Save</Text>
+                            <Text className="text-[#090D16] font-bold text-[16px]">Save</Text>
                         </TouchableOpacity>
                     </View>
                 </BottomSheetView>

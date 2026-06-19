@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Mock Data
@@ -32,50 +32,64 @@ export default function NutrientSetupScreen() {
 
     return (
         <BottomSheetModalProvider>
-            <SafeAreaView className="flex-1 bg-[#F9FAFB]" edges={['top']}>
+            <SafeAreaView className="flex-1 bg-[#090D16]" edges={['top']}>
 
                 {/* Modal Drag Handle Mock */}
-                <View className="w-full items-center pt-3 pb-2"><View className="w-10 h-1 bg-gray-300 rounded-full" /></View>
+                <View className="w-full items-center pt-4 pb-2">
+                    <View className="w-12 h-1.5 bg-[#1E2D4A] rounded-full" />
+                </View>
 
                 {/* Header */}
-                <View className="items-center pb-4 border-b border-gray-100">
-                    <Text className="font-semibold text-gray-700 text-[15px]">Target Nutrients</Text>
+                <View className="items-center pb-6 pt-2">
+                    <Text className="font-bold text-[#F1F5F9] text-[16px]">Target Nutrients</Text>
                 </View>
 
                 {/* Tabs */}
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="border-b border-gray-100 max-h-12" contentContainerStyle={{ paddingHorizontal: 10 }}>
-                    {['All', 'Core', 'Fats', 'Minerals', 'Vitamins', 'Other'].map(tab => (
-                        <TouchableOpacity key={tab} className={`px-4 py-3 border-b-2 ${tab === 'Core' ? 'border-gray-900' : 'border-transparent'}`}>
-                            <Text className={`font-bold text-[13px] ${tab === 'Core' ? 'text-gray-900' : 'text-gray-400'}`}>{tab}</Text>
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
+                <View className="mb-6">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} className="max-h-12" contentContainerStyle={{ paddingHorizontal: 24 }}>
+                        {['All', 'Core', 'Fats', 'Minerals', 'Vitamins', 'Other'].map(tab => {
+                            const isSelected = tab === 'Core';
+                            return (
+                                <TouchableOpacity 
+                                    key={tab} 
+                                    className={`px-5 py-2.5 mr-3 rounded-full border ${isSelected ? 'bg-[#15233A] border-[#4DB9F2]' : 'bg-[#151E33] border-[#1E2D4A]'}`}
+                                >
+                                    <Text className={`font-bold text-[13px] ${isSelected ? 'text-[#4DB9F2]' : 'text-[#64748B]'}`}>{tab}</Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </ScrollView>
+                </View>
 
                 {/* List Content */}
-                <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 100 }}>
+                <ScrollView contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
                     {NUTRIENTS.map(item => {
                         const isEnabled = enabledItems.includes(item.id);
                         return (
-                            <View key={item.id} className="flex-row items-center justify-between mb-6">
-                                <View className="flex-row items-center gap-3">
-                                    <Text className="text-xl">{item.icon}</Text>
-                                    <Text className="font-bold text-gray-900 text-[15px]">{item.name}</Text>
-                                </View>
+                            <View key={item.id} className="flex-row items-center justify-between p-4 mb-4 bg-[#151E33] border border-[#1E2D4A] rounded-[24px]">
                                 <View className="flex-row items-center gap-4">
+                                    <View className="w-14 h-14 bg-[#0F172A] border border-[#1E2D4A] rounded-[16px] items-center justify-center">
+                                        <Text className="text-[22px]">{item.icon}</Text>
+                                    </View>
+                                    <Text className="font-bold text-[#F1F5F9] text-[15px]">{item.name}</Text>
+                                </View>
+                                <View className="flex-row items-center gap-3">
                                     <TouchableOpacity
                                         onPress={() => openSettings(item.name)}
-                                        className="w-8 h-8 bg-gray-100 rounded-lg items-center justify-center border border-gray-200"
+                                        className="w-10 h-10 bg-[#0F172A] rounded-[12px] items-center justify-center border border-[#1E2D4A]"
                                     >
-                                        <Ionicons name="settings-sharp" size={14} color="#6B7280" />
+                                        <Ionicons name="settings-outline" size={18} color="#94A3B8" />
                                     </TouchableOpacity>
 
                                     {/* Custom Toggle Switch */}
                                     <TouchableOpacity
                                         activeOpacity={0.8}
                                         onPress={() => toggleNutrient(item.id)}
-                                        className={`w-[50px] h-[30px] rounded-full justify-center px-1 ${isEnabled ? 'bg-[#22C55E]' : 'bg-gray-200'}`}
+                                        className={`w-14 h-8 rounded-full flex-row items-center px-1 border ${isEnabled ? 'bg-[#15233A] border-[#4DB9F2] justify-end' : 'bg-[#0F172A] border-[#1E2D4A] justify-start'}`}
                                     >
-                                        <View className={`w-6 h-6 bg-white rounded-full transition-transform ${isEnabled ? 'translate-x-5 shadow-sm' : 'translate-x-0'}`} style={styles.shadow} />
+                                        <View className={`w-6 h-6 rounded-full items-center justify-center ${isEnabled ? 'bg-[#4DB9F2]' : 'bg-[#1E2D4A]'}`}>
+                                            {isEnabled && <Ionicons name="checkmark" size={12} color="#090D16" />}
+                                        </View>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -92,59 +106,59 @@ export default function NutrientSetupScreen() {
                             {...p}
                             disappearsOnIndex={-1}
                             appearsOnIndex={0}
-                            opacity={0.4}
+                            opacity={0.6}
                         />
                     )}
-                    handleIndicatorStyle={{ display: 'none' }}
-                    backgroundStyle={{ backgroundColor: '#F9FAFB', borderRadius: 24 }}
+                    handleIndicatorStyle={{ backgroundColor: '#1E2D4A', width: 40 }}
+                    backgroundStyle={{ backgroundColor: '#090D16' }}
                     enableDynamicSizing={false}
                     stackBehavior='push'
                 >
-                    <BottomSheetView className="flex-1 pt-2">
+                    <BottomSheetView className="flex-1 px-6 pt-4">
                         {/* Sheet Header */}
-                        <View className="flex-row justify-between items-center px-5 mb-6">
-                            <TouchableOpacity onPress={() => settingsSheetRef.current?.dismiss()}>
-                                <Ionicons name="close" size={24} color="#6B7280" />
+                        <View className="flex-row justify-between items-center mb-8">
+                            <Text className="font-bold text-[#F1F5F9] text-[20px]">{activeNutrient}</Text>
+                            <TouchableOpacity onPress={() => settingsSheetRef.current?.dismiss()} className="w-8 h-8 bg-[#151E33] border border-[#1E2D4A] rounded-full items-center justify-center">
+                                <Ionicons name="close" size={18} color="#94A3B8" />
                             </TouchableOpacity>
-                            <Text className="font-semibold text-gray-700 text-[15px]">{activeNutrient}</Text>
-                            <View className="w-6" />
                         </View>
 
-                        <View className="px-5 gap-3 mb-8">
-                            <View className="bg-white border border-gray-100 rounded-2xl p-4 flex-row justify-between items-center" style={styles.shadow}>
+                        <View className="gap-4 mb-8">
+                            <View className="bg-[#151E33] border border-[#1E2D4A] rounded-[20px] p-5 flex-row justify-between items-center">
                                 <View>
-                                    <Text className="font-bold text-gray-900 text-[15px]">Daily Target</Text>
-                                    <Text className="text-gray-400 text-xs">Aim to meet or exceed</Text>
+                                    <Text className="font-bold text-[#F1F5F9] text-[15px] mb-1">Daily Target</Text>
+                                    <Text className="text-[#64748B] font-medium text-[12px]">Aim to meet or exceed</Text>
                                 </View>
-                                <View className="flex-row items-center gap-2">
-                                    <Text className="text-gray-700 font-medium">20g</Text>
-                                    <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                                <View className="flex-row items-center gap-3">
+                                    <Text className="text-[#4DB9F2] font-bold text-[15px]">20g</Text>
+                                    <Ionicons name="chevron-forward" size={18} color="#4DB9F2" />
                                 </View>
                             </View>
 
-                            <View className="bg-white border border-gray-100 rounded-2xl p-4 flex-row justify-between items-center" style={styles.shadow}>
+                            <View className="bg-[#151E33] border border-[#1E2D4A] rounded-[20px] p-5 flex-row justify-between items-center">
                                 <View>
-                                    <Text className="font-bold text-gray-900 text-[15px]">Quick Add Amount</Text>
-                                    <Text className="text-gray-400 text-xs">Set default add amount</Text>
+                                    <Text className="font-bold text-[#F1F5F9] text-[15px] mb-1">Quick Add Amount</Text>
+                                    <Text className="text-[#64748B] font-medium text-[12px]">Set default add amount</Text>
                                 </View>
-                                <View className="flex-row items-center gap-2">
-                                    <Text className="text-gray-700 font-medium">5g</Text>
-                                    <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                                <View className="flex-row items-center gap-3">
+                                    <Text className="text-[#4DB9F2] font-bold text-[15px]">5g</Text>
+                                    <Ionicons name="chevron-forward" size={18} color="#4DB9F2" />
                                 </View>
                             </View>
                         </View>
 
-                        <Text className="text-center text-gray-500 text-xs font-medium mb-4">Recommended <Text className="font-bold text-gray-900">25g</Text> daily</Text>
+                        <View className="items-center mb-6">
+                            <Text className="text-[#64748B] text-[12px] font-medium">Recommended <Text className="font-bold text-[#F1F5F9]">25g</Text> daily</Text>
+                        </View>
 
                         {/* Save Button */}
-                        <View className="px-5">
-                            <TouchableOpacity
-                                onPress={() => settingsSheetRef.current?.dismiss()}
-                                className="bg-[#1A1A1A] py-4 rounded-full items-center shadow-lg"
-                            >
-                                <Text className="text-white font-bold text-base">Save</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity
+                            onPress={() => settingsSheetRef.current?.dismiss()}
+                            className="bg-[#4DB9F2] py-4 rounded-[16px] items-center"
+                        >
+                            <Text className="text-[#090D16] font-bold text-[15px]">Save</Text>
+                        </TouchableOpacity>
+
                     </BottomSheetView>
                 </BottomSheetModal>
 
@@ -152,13 +166,3 @@ export default function NutrientSetupScreen() {
         </BottomSheetModalProvider>
     );
 }
-
-const styles = StyleSheet.create({
-    shadow: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 5,
-        elevation: 2,
-    }
-});

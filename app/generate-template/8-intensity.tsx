@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Text, View } from 'react-native';
@@ -11,24 +10,24 @@ const getIntensityData = (val: number) => {
         return {
             title: 'Low',
             desc: 'Comfortable pace, focusing on form and gentle movement.',
-            color: '#10B981', // emerald-500
-            bgColor: '#D1FAE5', // emerald-100
+            color: '#34D399', // emerald
+            bgColor: '#34D39920', // tinted dark
             icon: 'arrow-down',
         };
     } else if (val < 66) {
         return {
             title: 'Moderate',
             desc: 'Challenging but manageable, ideal for building endurance and staying active.',
-            color: '#F59E0B', // amber-500
-            bgColor: '#FEF3C7', // amber-100
+            color: '#FACC15', // yellow
+            bgColor: '#FACC1520',
             icon: 'arrow-forward',
         };
     } else {
         return {
             title: 'Max',
             desc: 'Pushing hard, near max effort, designed for maximum strength and conditioning.',
-            color: '#EF4444', // red-500
-            bgColor: '#FEE2E2', // red-100
+            color: '#F87171', // red
+            bgColor: '#F8717120',
             icon: 'flame',
         };
     }
@@ -40,12 +39,6 @@ export default function IntensityScreen() {
 
     const data = getIntensityData(sliderValue);
 
-    // Dynamic rotation for the graphic based on slider 0-100 mapping to an angle
-    // At 50%, angle is -45 degrees (like original Moderate).
-    // At 0%, we can make it point further down (-135 degrees).
-    // At 100%, we point it up (45 degrees).
-    const angle = -135 + (sliderValue / 100) * 180;
-
     return (
         <StepLayout
             rightIcon="settings-sharp"
@@ -55,48 +48,37 @@ export default function IntensityScreen() {
             onNext={() => router.push('/generate-template/9-generating')}
             contentContainerStyle={{ alignItems: 'center' }}
         >
-            {/* Glow Background Dynamic */}
-            <View className="absolute top-20 w-[150%] h-[400px] -z-10 opacity-30">
-                <LinearGradient colors={[data.bgColor, 'transparent']} className="flex-1 rounded-full" />
-            </View>
-
-            {/* Circular Graphic */}
+            {/* Dynamic Card */}
             <View 
-                className="w-48 h-48 rounded-full border-[16px] items-center justify-center mt-10 mb-12 relative"
-                style={{ borderColor: data.bgColor }}
+                className="w-full mt-6 rounded-[24px] border items-center justify-center p-8 mb-10"
+                style={{ backgroundColor: data.bgColor, borderColor: `${data.color}40` }}
             >
-                <View 
-                    className="absolute inset-0 border-[16px] rounded-full" 
-                    style={{ 
-                        borderTopColor: data.color, 
-                        borderRightColor: data.color, 
-                        borderBottomColor: 'transparent', 
-                        borderLeftColor: 'transparent', 
-                        transform: [{ rotate: `${angle}deg` }] 
-                    }} 
-                />
-                <View className="w-20 h-20 bg-white rounded-full items-center justify-center shadow-md">
-                    <Ionicons name={data.icon as any} size={40} color={data.color} />
+                <View className="w-24 h-24 rounded-full items-center justify-center mb-6" style={{ backgroundColor: `${data.color}20`, borderWidth: 1, borderColor: `${data.color}50` }}>
+                    <Ionicons name={data.icon as any} size={48} color={data.color} />
                 </View>
+
+                <Text className="text-[28px] font-bold mb-3" style={{ color: data.color }}>{data.title}</Text>
+                <Text className="text-center text-[#94A3B8] leading-5 font-medium px-2">{data.desc}</Text>
             </View>
 
-            <Text className="text-2xl font-bold text-gray-900 mb-2">{data.title}</Text>
-            <Text className="text-center text-gray-500 mb-12 px-8 h-12">{data.desc}</Text>
-
-            {/* Slider */}
-            <View className="w-full px-6 flex-row items-center justify-between mb-2">
-                <Text className="text-gray-400 text-xs font-medium">Low</Text>
+            {/* Slider container */}
+            <View className="w-full bg-[#151E33] border border-[#1E2D4A] rounded-[20px] p-5">
+                <View className="flex-row items-center justify-between mb-4 px-2">
+                    <Text className="text-[#64748B] text-[13px] font-semibold">Low</Text>
+                    <Text className="text-[#F1F5F9] text-[15px] font-bold">{Math.round(sliderValue)}%</Text>
+                    <Text className="text-[#64748B] text-[13px] font-semibold">Max</Text>
+                </View>
+                
                 <Slider
-                    style={{ flex: 1, height: 40, marginHorizontal: 16 }}
+                    style={{ width: '100%', height: 40 }}
                     minimumValue={0}
                     maximumValue={100}
                     value={sliderValue}
                     onValueChange={setSliderValue}
                     minimumTrackTintColor={data.color}
-                    maximumTrackTintColor="#F3F4F6"
-                    thumbTintColor="#FFFFFF"
+                    maximumTrackTintColor="#1E2D4A"
+                    thumbTintColor={data.color}
                 />
-                <Text className="text-gray-400 text-xs font-medium">Max</Text>
             </View>
         </StepLayout>
     );

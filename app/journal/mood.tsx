@@ -1,15 +1,13 @@
 import { MOOD_CAUSES, MOOD_DESCRIPTORS_NEGATIVE, MOOD_DESCRIPTORS_POSITIVE } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 export default function MoodScreen() {
     const [entries, setEntries] = useState<{ id: string, mood: string, time: string }[]>([]);
 
-    // Wizard State
     const [step, setStep] = useState<'list' | 'intensity' | 'descriptors' | 'causes'>('list');
-    const [intensity, setIntensity] = useState(4); // 1-5
+    const [intensity, setIntensity] = useState(4);
     const [tab, setTab] = useState<'Positive' | 'Negative'>('Positive');
     const [selectedDescriptors, setSelectedDescriptors] = useState<string[]>([]);
     const [selectedCauses, setSelectedCauses] = useState<string[]>([]);
@@ -20,167 +18,256 @@ export default function MoodScreen() {
         setStep('list');
     };
 
-    // --- SUB-VIEWS FOR THE WIZARD ---
-
     if (step === 'intensity') return (
-        <View className="flex-1 bg-[#F9FAFB]">
-            <View className="flex-row items-center justify-between px-5 py-4">
-                <TouchableOpacity onPress={() => setStep('list')}><Ionicons name="chevron-back" size={24} color="#9CA3AF" /></TouchableOpacity>
-                <Text className="text-[15px] font-bold text-gray-900">Log daily mood</Text>
-                <View className="w-8" />
+        <View className="flex-1 bg-[#090D16]">
+            <View className="px-5 pt-6 pb-6 flex-row items-center gap-4">
+                <TouchableOpacity
+                    onPress={() => setStep('list')}
+                    activeOpacity={0.7}
+                    className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-xl items-center justify-center"
+                >
+                    <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
+                </TouchableOpacity>
+                <View>
+                    <Text className="text-xl font-bold text-slate-100">Log daily mood</Text>
+                    <Text className="text-xs text-slate-400">Step 1 of 3: How do you feel?</Text>
+                </View>
             </View>
-            <View className="flex-1 items-center px-5 pt-10">
-                <Text className="text-[22px] font-bold text-gray-900 mb-10">How do you feel?</Text>
 
-                {/* Face Visualizer Mock */}
-                <View className="w-64 h-64 rounded-full items-center justify-center mb-10 relative overflow-hidden">
-                    <LinearGradient
-                        colors={intensity >= 4 ? ['#ECFCCB', '#DCFCE7'] : intensity <= 2 ? ['#FEE2E2', '#FECACA'] : ['#F3F4F6', '#E5E7EB']}
-                        style={{ position: 'absolute', width: '100%', height: '100%' }}
-                    />
-                    <View className={`w-40 h-40 rounded-full border-[10px] items-center justify-center ${intensity >= 4 ? 'border-green-100 bg-green-50' : intensity <= 2 ? 'border-red-100 bg-red-50' : 'border-gray-200 bg-gray-100'}`}>
-                        {intensity >= 4 ? <Text className="text-[64px] text-green-500 font-bold">^ ^</Text> : intensity <= 2 ? <Text className="text-[64px] text-red-500 font-bold">~ ~</Text> : <Text className="text-[64px] text-gray-500 font-bold">O O</Text>}
-                    </View>
+            <View className="flex-1 px-5 mt-4">
+
+                <View className={`rounded-3xl p-8 items-center border ${intensity >= 4
+                    ? 'bg-emerald-950/20 border-emerald-500/30'
+                    : intensity <= 2
+                        ? 'bg-rose-950/20 border-rose-500/30'
+                        : 'bg-[#1E293B40] border-[#1E293B]'
+                    }`}>
+                    <Text className={`text-[80px] font-bold ${intensity >= 4 ? 'text-emerald-400' : intensity <= 2 ? 'text-rose-400' : 'text-slate-400'
+                        }`}>
+                        {intensity >= 4 ? '^ ^' : intensity <= 2 ? '~ ~' : 'O O'}
+                    </Text>
+                    <Text className="text-3xl font-bold text-white mt-6 mb-2">
+                        {intensity >= 4 ? 'Pleasant' : intensity <= 2 ? 'Unpleasant' : 'Neutral'}
+                    </Text>
                 </View>
 
-                <Text className="text-[24px] font-bold text-gray-900 mb-8">{intensity >= 4 ? 'Pleasant' : intensity <= 2 ? 'Unpleasant' : 'Neutral'}</Text>
-
-                {/* Slider Mock */}
-                <View className="w-full mb-10">
-                    <View className="h-2 bg-gray-200 rounded-full w-full mb-2 flex-row items-center justify-between">
+                <View className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-6 mt-6">
+                    <View className="flex-row justify-between mb-4">
+                        <Text className="text-xs font-semibold text-rose-400">Very unpleasant</Text>
+                        <Text className="text-xs font-semibold text-emerald-400">Very pleasant</Text>
+                    </View>
+                    <View className="h-2 bg-[#090D16] rounded-full flex-row items-center justify-between px-1">
                         {[1, 2, 3, 4, 5].map(val => (
-                            <TouchableOpacity key={val} onPress={() => setIntensity(val)} className={`w-5 h-5 rounded-full border-4 border-white ${intensity === val ? 'bg-green-500 scale-125' : 'bg-gray-400'}`} />
+                            <TouchableOpacity
+                                key={val}
+                                onPress={() => setIntensity(val)}
+                                activeOpacity={0.8}
+                                className={`w-6 h-6 rounded-full border-4 border-[#151E33] ${intensity === val
+                                    ? 'bg-[#4DB9F2]'
+                                    : 'bg-[#1E293B]'
+                                    }`}
+                            />
                         ))}
                     </View>
-                    <View className="flex-row justify-between w-full px-1">
-                        <Text className="text-[11px] text-gray-500">Very unpleasant</Text>
-                        <Text className="text-[11px] text-gray-500">Very pleasant</Text>
-                    </View>
                 </View>
 
-                <TouchableOpacity onPress={() => setStep('descriptors')} className="w-full bg-gray-200 h-[56px] rounded-full items-center justify-center mb-4">
-                    <Text className="text-gray-900 font-semibold text-[16px]">Add details</Text>
+            </View>
+
+            <View className="px-5 pb-10 pt-4 bg-[#090D16] border-t border-[#1E293B] flex-row gap-3">
+                <TouchableOpacity
+                    onPress={handleFinishLog}
+                    activeOpacity={0.7}
+                    className="flex-1 bg-[#1E293B] h-14 rounded-2xl items-center justify-center border border-[#2D3748]"
+                >
+                    <Text className="text-white font-bold text-sm">Add to journal</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleFinishLog} className="w-full bg-[#1C1C1E] h-[56px] rounded-full items-center justify-center">
-                    <Text className="text-white font-semibold text-[16px]">Add to journal</Text>
+                <TouchableOpacity
+                    onPress={() => setStep('descriptors')}
+                    activeOpacity={0.8}
+                    className="flex-1 bg-[#4DB9F2] h-14 rounded-2xl items-center justify-center border border-[#4DB9F2]"
+                >
+                    <Text className="text-[#090D16] font-bold text-sm">Add details</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 
     if (step === 'descriptors') return (
-        <View className="flex-1 bg-[#F9FAFB]">
-            <View className="flex-row items-center justify-between px-5 py-4">
-                <TouchableOpacity onPress={() => setStep('intensity')}><Ionicons name="chevron-back" size={24} color="#9CA3AF" /></TouchableOpacity>
-                <Text className="text-[15px] font-bold text-gray-900">Log daily mood</Text>
-                <View className="w-8" />
+        <View className="flex-1 bg-[#090D16]">
+            <View className="px-5 pt-6 pb-6 flex-row items-center gap-4">
+                <TouchableOpacity
+                    onPress={() => setStep('intensity')}
+                    activeOpacity={0.7}
+                    className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-xl items-center justify-center"
+                >
+                    <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
+                </TouchableOpacity>
+                <View>
+                    <Text className="text-xl font-bold text-slate-100">Log daily mood</Text>
+                    <Text className="text-xs text-slate-400">Step 2 of 3: What describes this feeling?</Text>
+                </View>
             </View>
-            <View className="flex-1 items-center px-5 pt-8">
-                <Text className="text-[20px] font-bold text-gray-900 mb-6">What describes this feeling?</Text>
 
-                {/* Tabs */}
-                <View className="flex-row bg-gray-200 p-1 rounded-xl mb-8 w-full">
-                    <TouchableOpacity onPress={() => setTab('Positive')} className={`flex-1 py-2 items-center rounded-lg ${tab === 'Positive' ? 'bg-white ' : ''}`}><Text className={`text-[13px] font-bold ${tab === 'Positive' ? 'text-gray-900' : 'text-gray-500'}`}>Positive</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={() => setTab('Negative')} className={`flex-1 py-2 items-center rounded-lg ${tab === 'Negative' ? 'bg-white ' : ''}`}><Text className={`text-[13px] font-bold ${tab === 'Negative' ? 'text-gray-900' : 'text-gray-500'}`}>Negative</Text></TouchableOpacity>
+            <View className="flex-1 px-5 mt-4">
+                <View className="flex-row bg-[#151E33] border border-[#1E293B] p-1.5 rounded-xl mb-6">
+                    <TouchableOpacity
+                        onPress={() => setTab('Positive')}
+                        activeOpacity={0.7}
+                        className={`flex-1 py-2.5 items-center rounded-lg border ${tab === 'Positive' ? 'bg-[#1E293B] border-[#2D3748]' : 'border-transparent'
+                            }`}
+                    >
+                        <Text className={`text-sm font-bold ${tab === 'Positive' ? 'text-[#4DB9F2]' : 'text-slate-500'}`}>Positive</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => setTab('Negative')}
+                        activeOpacity={0.7}
+                        className={`flex-1 py-2.5 items-center rounded-lg border ${tab === 'Negative' ? 'bg-[#1E293B] border-[#2D3748]' : 'border-transparent'
+                            }`}
+                    >
+                        <Text className={`text-sm font-bold ${tab === 'Negative' ? 'text-[#4DB9F2]' : 'text-slate-500'}`}>Negative</Text>
+                    </TouchableOpacity>
                 </View>
 
-                {/* Chips */}
-                <View className="flex-row flex-wrap justify-center gap-3">
+                <View className="flex-row flex-wrap gap-3">
                     {(tab === 'Positive' ? MOOD_DESCRIPTORS_POSITIVE : MOOD_DESCRIPTORS_NEGATIVE).map(desc => {
                         const isSelected = selectedDescriptors.includes(desc);
                         return (
                             <TouchableOpacity
                                 key={desc}
                                 onPress={() => isSelected ? setSelectedDescriptors(selectedDescriptors.filter(d => d !== desc)) : setSelectedDescriptors([...selectedDescriptors, desc])}
-                                className={`px-4 py-2.5 rounded-full border ${isSelected ? 'border-gray-900 bg-white ' : 'border-gray-200 bg-white'}`}
+                                activeOpacity={0.7}
+                                className={`px-4 py-3 rounded-xl border ${isSelected
+                                    ? 'border-[#4DB9F2] bg-[#1E293B]'
+                                    : 'border-[#1E293B] bg-[#151E33]'
+                                    }`}
                             >
-                                <Text className={`text-[13px] ${isSelected ? 'font-bold text-gray-900' : 'font-medium text-gray-600'}`}>{desc}</Text>
+                                <Text className={`text-sm font-semibold ${isSelected ? 'text-[#4DB9F2]' : 'text-slate-400'}`}>
+                                    {desc}
+                                </Text>
                             </TouchableOpacity>
                         );
                     })}
                 </View>
             </View>
 
-            <View className="px-5 pb-8 pt-4 bg-[#F9FAFB] gap-3">
-                <TouchableOpacity onPress={() => setStep('causes')} className="w-full bg-gray-200 h-[56px] rounded-full items-center justify-center">
-                    <Text className="text-gray-900 font-semibold text-[16px]">Continue</Text>
+            <View className="px-5 pb-10 pt-4 bg-[#090D16] border-t border-[#1E293B] flex-col gap-3">
+                <TouchableOpacity
+                    onPress={() => setStep('causes')}
+                    activeOpacity={0.8}
+                    className="w-full bg-[#4DB9F2] h-14 rounded-2xl items-center justify-center border border-[#4DB9F2]"
+                >
+                    <Text className="text-[#090D16] font-bold text-sm">Continue</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleFinishLog} className="w-full bg-[#1C1C1E] h-[56px] rounded-full items-center justify-center">
-                    <Text className="text-white font-semibold text-[16px]">Add to journal</Text>
+                <TouchableOpacity
+                    onPress={handleFinishLog}
+                    activeOpacity={0.7}
+                    className="w-full bg-[#1E293B] h-14 rounded-2xl items-center justify-center border border-[#2D3748]"
+                >
+                    <Text className="text-white font-bold text-sm">Skip and add to journal</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 
     if (step === 'causes') return (
-        <View className="flex-1 bg-[#F9FAFB]">
-            <View className="flex-row items-center justify-between px-5 py-4">
-                <TouchableOpacity onPress={() => setStep('descriptors')}><Ionicons name="chevron-back" size={24} color="#9CA3AF" /></TouchableOpacity>
-                <Text className="text-[15px] font-bold text-gray-900">Log daily mood</Text>
-                <View className="w-8" />
+        <View className="flex-1 bg-[#090D16]">
+            <View className="px-5 pt-6 pb-6 flex-row items-center gap-4 border-b border-[#1E293B]">
+                <TouchableOpacity
+                    onPress={() => setStep('descriptors')}
+                    activeOpacity={0.7}
+                    className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-xl items-center justify-center"
+                >
+                    <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
+                </TouchableOpacity>
+                <View>
+                    <Text className="text-xl font-bold text-slate-100">Log daily mood</Text>
+                    <Text className="text-xs text-slate-400">Step 3 of 3: What is causing this feeling?</Text>
+                </View>
             </View>
-            <ScrollView className="flex-1 px-5 pt-8" showsVerticalScrollIndicator={false}>
-                <Text className="text-[20px] font-bold text-gray-900 mb-8 text-center">What is causing this feeling?</Text>
 
-                <View className="flex-row flex-wrap justify-between gap-y-6">
+            <ScrollView className="flex-1 px-5 pt-6" showsVerticalScrollIndicator={false}>
+                <View className="flex-row flex-wrap justify-between gap-y-4 pb-8">
                     {MOOD_CAUSES.map(cause => {
                         const isSelected = selectedCauses.includes(cause.label);
                         return (
                             <TouchableOpacity
                                 key={cause.id}
                                 onPress={() => isSelected ? setSelectedCauses(selectedCauses.filter(c => c !== cause.label)) : setSelectedCauses([...selectedCauses, cause.label])}
-                                className="w-[30%] items-center"
+                                activeOpacity={0.7}
+                                className={`w-[48%] flex-row items-center gap-3 p-4 rounded-2xl border ${isSelected
+                                    ? 'bg-[#1E293B] border-[#4DB9F2]'
+                                    : 'bg-[#151E33] border-[#1E293B]'
+                                    }`}
                             >
-                                <View className={`w-16 h-16 rounded-[20px] items-center justify-center mb-2  ${isSelected ? 'bg-gray-900 border border-gray-900' : 'bg-white border border-gray-100'}`}>
-                                    <Ionicons name={cause.icon as any} size={24} color={isSelected ? 'white' : '#4B5563'} />
-                                </View>
-                                <Text className="text-[12px] font-bold text-gray-600 text-center">{cause.label}</Text>
+                                <Ionicons name={cause.icon as any} size={20} color={isSelected ? '#4DB9F2' : '#94A3B8'} />
+                                <Text className={`text-sm font-semibold flex-1 ${isSelected ? 'text-white' : 'text-slate-400'}`}>
+                                    {cause.label}
+                                </Text>
                             </TouchableOpacity>
                         );
                     })}
                 </View>
             </ScrollView>
-            <View className="px-5 pb-8 pt-4 bg-[#F9FAFB]">
-                <TouchableOpacity onPress={handleFinishLog} className="w-full bg-[#1C1C1E] h-[56px] rounded-full items-center justify-center">
-                    <Text className="text-white font-semibold text-[16px]">Add to journal</Text>
+
+            <View className="px-5 pb-10 pt-4 bg-[#090D16] border-t border-[#1E293B]">
+                <TouchableOpacity
+                    onPress={handleFinishLog}
+                    activeOpacity={0.8}
+                    className="w-full bg-[#4DB9F2] h-14 rounded-2xl items-center justify-center border border-[#4DB9F2]"
+                >
+                    <Text className="text-[#090D16] font-bold text-base">Add to journal</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 
-    // --- MAIN LIST VIEW ---
     return (
-        <View className="flex-1 bg-[#F3F4F6]">
-            <View className="flex-row items-center justify-between px-5 py-4">
-                <View className="w-10" />
-                <Text className="text-[16px] font-bold text-gray-900">Daily mood</Text>
-                <TouchableOpacity className="w-10 h-10 bg-white rounded-full items-center justify-center ">
-                    <Ionicons name="settings-outline" size={20} color="#4B5563" />
-                </TouchableOpacity>
+        <View className="flex-1 bg-[#090D16]">
+
+            <View className="px-5 pt-6 pb-6 border-b border-[#1E293B] bg-[#151E33]">
+                <View className="flex-row items-center justify-between mb-4">
+                    <Text className="text-2xl font-bold text-slate-100">Daily mood</Text>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                    >
+                        <Ionicons name="settings-outline" size={20} color="#94A3B8" />
+                    </TouchableOpacity>
+                </View>
+                <Text className="text-sm text-slate-400 leading-5 pr-4">
+                    The latest entry will be categorized in Insights as either Pleasant Moods or Unpleasant Moods.
+                </Text>
             </View>
 
-            <View className="flex-1 px-5 pt-4">
-                <View className="mb-6">
-                    <Text className="text-[16px] font-bold text-gray-900 mb-1">Today's Entries</Text>
-                    <Text className="text-[13px] text-gray-500 leading-5">The latest entry will be categorized in <Text className="font-bold text-gray-700">Insights</Text> as either <Text className="font-bold text-gray-700">Pleasant Moods</Text> or <Text className="font-bold text-gray-700">Unpleasant Moods</Text>.</Text>
-                </View>
+            <View className="flex-1 px-5 pt-6">
+                <Text className="text-sm font-semibold text-slate-500 mb-4">Today's Entries</Text>
 
                 {entries.length === 0 ? (
-                    <View className="flex-1 items-center justify-center pb-20">
-                        <Text className="text-[15px] font-bold text-gray-500 mb-1">No logs yet</Text>
-                        <Text className="text-[13px] text-gray-400">Once you add a log, it will show up here.</Text>
+                    <View className="border border-dashed border-[#1E293B] bg-[#151E33]/30 rounded-3xl p-8 items-center justify-center">
+                        <Text className="text-slate-300 font-bold text-lg mb-2">No logs yet</Text>
+                        <Text className="text-slate-500 text-center leading-6 text-sm">
+                            Once you add a log, it will show up here.
+                        </Text>
                     </View>
                 ) : (
                     <View className="gap-3">
                         {entries.map(entry => (
-                            <View key={entry.id} className="bg-white rounded-[20px] p-4 flex-row items-center justify-between">
-                                <View className="flex-row items-center gap-3">
-                                    <View className="w-10 h-10 bg-green-50 rounded-full items-center justify-center"><Text className="text-green-500 font-bold text-[18px]">^ ^</Text></View>
-                                    <View><Text className="text-[14px] font-bold text-gray-900">Daily mood</Text><Text className="text-[11px] text-gray-400">{entry.time}</Text></View>
+                            <View
+                                key={entry.id}
+                                className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-4 flex-row items-center justify-between"
+                            >
+                                <View className="flex-row items-center gap-4">
+                                    <View className="w-12 h-12 bg-emerald-950/20 rounded-xl border border-emerald-500/20 items-center justify-center">
+                                        <Text className="text-emerald-500 font-bold text-xl">^ ^</Text>
+                                    </View>
+                                    <View>
+                                        <Text className="font-bold text-base text-white">Daily mood</Text>
+                                        <Text className="text-xs text-slate-400 mt-0.5">{entry.time}</Text>
+                                    </View>
                                 </View>
-                                <View className="flex-row items-center gap-2">
-                                    <Text className="text-[13px] font-bold text-gray-900">{entry.mood}</Text>
-                                    <Ionicons name="arrow-forward" size={14} color="#9CA3AF" />
+                                <View className="bg-[#1E293B] px-3 py-1.5 rounded-lg border border-[#2D3748] flex-row items-center gap-2">
+                                    <Text className="text-[#4DB9F2] font-bold text-xs">{entry.mood}</Text>
+                                    <Ionicons name="arrow-forward" size={12} color="#94A3B8" />
                                 </View>
                             </View>
                         ))}
@@ -188,10 +275,14 @@ export default function MoodScreen() {
                 )}
             </View>
 
-            <View className="px-5 pb-8 pt-4 bg-[#F3F4F6]">
-                <TouchableOpacity onPress={() => setStep('intensity')} className="bg-[#1C1C1E] h-[56px] rounded-full items-center justify-center flex-row gap-2">
-                    <Text className="text-white font-semibold text-[15px]">Add log</Text>
-                    <Ionicons name="add" size={16} color="white" />
+            <View className="px-5 pb-10 pt-4 bg-[#090D16] border-t border-[#1E293B]">
+                <TouchableOpacity
+                    onPress={() => setStep('intensity')}
+                    activeOpacity={0.8}
+                    className="w-full bg-[#4DB9F2] h-14 rounded-2xl items-center justify-center border border-[#4DB9F2] flex-row gap-2"
+                >
+                    <Ionicons name="add" size={20} color="#090D16" />
+                    <Text className="text-[#090D16] font-bold text-base">Add log</Text>
                 </TouchableOpacity>
             </View>
         </View>

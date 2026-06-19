@@ -25,7 +25,6 @@ interface ReorderSheetProps {
 export const ReorderSheet = forwardRef<BottomSheetModal, ReorderSheetProps>(({ exercises, onSave }, ref) => {
     const [data, setData] = useState(exercises);
 
-    // Sync data when sheet opens
     useEffect(() => { setData(exercises); }, [exercises]);
 
     const handleSave = () => {
@@ -33,59 +32,72 @@ export const ReorderSheet = forwardRef<BottomSheetModal, ReorderSheetProps>(({ e
         (ref as any).current?.dismiss();
     };
 
-    const renderBackdrop = useCallback((props: any) => <BottomSheetBackdrop {...props} opacity={0.4} />, []);
+    const renderBackdrop = useCallback((props: any) => <BottomSheetBackdrop {...props} opacity={0.6} />, []);
 
     const renderItem = ({ item, drag, isActive }: RenderItemParams<Exercise>) => {
         return (
             <ScaleDecorator>
                 <TouchableOpacity
-                    activeOpacity={1}
+                    activeOpacity={0.9}
                     onLongPress={drag}
                     disabled={isActive}
-                    className={`flex-row items-center justify-between bg-white p-4 rounded-2xl border border-gray-100 mb-3 mx-5 ${isActive ? 'shadow-lg shadow-black/20 elevation-5' : 'shadow-sm'}`}
+                    className={`flex-row items-center justify-between p-4 mb-3 mx-5 rounded-2xl border ${isActive ? 'border-[#4DB9F2] bg-[#4DB9F2]/10' : 'border-[#1E293B] bg-[#151E33]'}`}
                 >
                     <View className="flex-row items-center gap-4">
-                        <View className="w-12 h-12 bg-gray-50 rounded-xl items-center justify-center border border-gray-100">
+                        <View className="w-12 h-12 bg-[#1E293B] rounded-xl items-center justify-center border border-[#2D3748]">
                             <Text className="text-xl">{item.icon}</Text>
                         </View>
                         <View>
-                            <Text className="font-bold text-gray-900 text-[15px]">{item.name}</Text>
-                            <Text className="text-gray-400 text-xs mt-0.5">{item.type} • {item.sets} sets</Text>
+                            <Text className="font-semibold text-white text-base">{item.name}</Text>
+                            <Text className="text-slate-400 font-medium text-sm mt-0.5">
+                                {item.type} • {item.sets} sets
+                            </Text>
                         </View>
                     </View>
 
-                    <TouchableOpacity onPressIn={drag} className="p-2">
-                        {/* Grip icon mimicking the screenshot */}
-                        <Ionicons name="reorder-four" size={24} color="#D1D5DB" />
-                    </TouchableOpacity>
+                    <View
+                        onTouchStart={drag}
+                        className={`w-10 h-10 rounded-xl items-center justify-center border ${isActive ? 'bg-[#4DB9F2] border-[#4DB9F2]' : 'bg-[#1E293B] border-[#2D3748]'}`}
+                    >
+                        <Ionicons name="swap-vertical" size={20} color={isActive ? '#090D16' : '#4DB9F2'} />
+                    </View>
                 </TouchableOpacity>
             </ScaleDecorator>
         );
     };
 
     return (
-        <BottomSheetModal ref={ref} snapPoints={['100%']} backgroundStyle={{ backgroundColor: '#F9FAFB' }} backdropComponent={renderBackdrop} handleIndicatorStyle={{ display: 'none' }} enableDynamicSizing={false}>
-            <View className="flex-1  rounded-t-3xl ">
+        <BottomSheetModal
+            ref={ref}
+            snapPoints={['100%']}
+            backdropComponent={renderBackdrop}
+            handleIndicatorStyle={{ display: 'none' }}
+            backgroundStyle={{ backgroundColor: '#090D16', borderRadius: 32 }}
+            enableDynamicSizing={false}
+        >
+            <View className="flex-1 bg-[#090D16] pt-4">
 
-                {/* Header */}
-                <View className="flex-row justify-center items-center px-5 mb-6 pt-4">
-                    <Text className="font-bold text-gray-500 text-sm">Reorder exercises</Text>
+                <View className="flex-row items-start justify-between px-5 mb-6">
+                    <View className="flex-1">
+                        <Text className="text-3xl font-bold text-white mb-2">Reorder exercises</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => (ref as any).current?.dismiss()} className="w-10 h-10 border border-[#2D3748] bg-[#151E33] rounded-xl items-center justify-center mt-1">
+                        <Ionicons name="close" size={20} color="#94A3B8" />
+                    </TouchableOpacity>
                 </View>
 
-                {/* Draggable List */}
                 <DraggableFlatList
                     data={data}
                     onDragEnd={({ data }) => setData(data)}
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
-                    contentContainerStyle={{ paddingBottom: 100 }}
+                    contentContainerStyle={{ paddingBottom: 140 }}
                     showsVerticalScrollIndicator={false}
                 />
 
-                {/* Sticky Save Button */}
-                <View className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#F9FAFB] to-transparent pt-10 pb-8 px-5">
-                    <TouchableOpacity onPress={handleSave} className="bg-[#1A1A1A] py-4 rounded-full items-center shadow-lg">
-                        <Text className="text-white font-bold text-base">Save</Text>
+                <View className="absolute bottom-0 left-0 right-0 bg-[#090D16] px-5 pt-4 pb-8">
+                    <TouchableOpacity onPress={handleSave} className="bg-[#4DB9F2] py-4 rounded-xl items-center border border-[#4DB9F2]">
+                        <Text className="text-[#090D16] font-bold text-base">Save</Text>
                     </TouchableOpacity>
                 </View>
             </View>

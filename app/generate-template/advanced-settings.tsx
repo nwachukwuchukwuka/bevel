@@ -8,11 +8,15 @@ import { LibrarySheet } from './components/LibrarySheet';
 
 const CustomSwitch = ({ value, onValueChange }: { value: boolean, onValueChange: (val: boolean) => void }) => (
     <TouchableOpacity
-        activeOpacity={0.8}
+        activeOpacity={1}
         onPress={() => onValueChange(!value)}
-        className={`w-[50px] h-[30px] rounded-full justify-center px-1 ${value ? 'bg-[#22C55E]' : 'bg-gray-200'}`}
+        className={`w-12 h-[26px] rounded-full border justify-center px-0.5 ${value ? 'bg-[#4DB9F2]/20 border-[#4DB9F2]' : 'bg-[#090D16] border-[#2D3748]'
+            }`}
     >
-        <View className={`w-6 h-6 bg-white rounded-full  transition-transform ${value ? 'translate-x-5' : 'translate-x-0'}`} />
+        <View
+            className={`w-[18px] h-[18px] rounded-full transition-transform ${value ? 'translate-x-6 bg-[#4DB9F2]' : 'translate-x-0 bg-[#64748B]'
+                }`}
+        />
     </TouchableOpacity>
 );
 
@@ -20,13 +24,11 @@ export default function AdvancedSettingsScreen() {
     const router = useRouter();
     const librarySheetRef = useRef<BottomSheetModal>(null);
 
-    // State
     const [toggles, setToggles] = useState({ warmUp: true, failure: false, coolDown: true, dropset: false });
     const [excluded, setExcluded] = useState<any[]>([]);
 
     const initialToggles = { warmUp: true, failure: false, coolDown: true, dropset: false };
 
-    // Derived state to enable the save button
     const hasChanges =
         toggles.warmUp !== initialToggles.warmUp ||
         toggles.failure !== initialToggles.failure ||
@@ -39,7 +41,6 @@ export default function AdvancedSettingsScreen() {
     };
 
     const handleAddExcluded = (newExercises: any[]) => {
-        // Add new ones avoiding duplicates
         setExcluded(prev => {
             const combined = [...prev, ...newExercises];
             return Array.from(new Map(combined.map(item => [item.id, item])).values());
@@ -48,136 +49,157 @@ export default function AdvancedSettingsScreen() {
 
     return (
         <BottomSheetModalProvider>
-            <SafeAreaView className="flex-1 bg-[#F9FAFB]" edges={['top']}>
+            <SafeAreaView className="flex-1 bg-[#090D16]" edges={['top']}>
 
-                {/* Header */}
-                <View className="flex-row items-center justify-between px-5 py-4">
-                    <TouchableOpacity onPress={() => router.back()} className="w-10">
-                        <Ionicons name="chevron-back" size={24} color="#6B7280" />
+                {/* Left-Aligned Structural Header */}
+                <View className="flex-row items-start justify-between px-5 pt-6 pb-6">
+                    <View className="flex-1 pr-4">
+                        <Text className="text-[24px] font-bold text-slate-100 mb-1">Advanced Settings</Text>
+                        <Text className="text-[13px] font-medium text-slate-400">Configure your workout parameters</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-[12px] items-center justify-center mt-1"
+                    >
+                        <Ionicons name="close" size={20} color="#94A3B8" />
                     </TouchableOpacity>
-                    <Text className="font-medium text-gray-700 text-[15px]">Advanced Settings</Text>
-                    <View className="w-10" />
                 </View>
 
-                <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 140 }}>
 
                     {/* Profile Section */}
-                    <Text className="text-gray-400 font-bold text-xs uppercase mb-3 mt-4">Profile</Text>
-                    <View className="bg-white rounded-2xl  border border-gray-100 mb-6">
-                        <TouchableOpacity className="flex-row justify-between items-center p-4 border-b border-gray-50">
-                            <View className="flex-row items-center gap-3">
-                                <Ionicons name="leaf" size={20} color="#4B5563" />
+                    <Text className="text-slate-500 font-bold text-[13px] px-5 mb-3">Profile Configuration</Text>
+                    <View className="mx-5 bg-[#151E33] border border-[#1E293B] rounded-[24px] mb-8 overflow-hidden">
+                        <TouchableOpacity className="flex-row justify-between items-center p-5 border-b border-[#1E293B]">
+                            <View className="flex-row items-center gap-4">
+                                <View className="w-12 h-12 bg-[#1E293B] border border-[#2D3748] rounded-[14px] items-center justify-center">
+                                    <Ionicons name="leaf" size={20} color="#10B981" />
+                                </View>
                                 <View>
-                                    <Text className="font-bold text-gray-900">Beginner</Text>
-                                    <Text className="text-gray-400 text-xs">Experience</Text>
+                                    <Text className="font-bold text-slate-100 text-[16px] mb-1">Beginner</Text>
+                                    <Text className="text-slate-500 text-[13px] font-medium">Experience level</Text>
                                 </View>
                             </View>
-                            <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                            <Ionicons name="chevron-forward" size={18} color="#64748B" />
                         </TouchableOpacity>
-                        <TouchableOpacity className="flex-row justify-between items-center p-4 border-b border-gray-50">
-                            <View className="flex-row items-center gap-3">
-                                <Ionicons name="barbell" size={20} color="#4B5563" />
+
+                        <TouchableOpacity className="flex-row justify-between items-center p-5 border-b border-[#1E293B]">
+                            <View className="flex-row items-center gap-4">
+                                <View className="w-12 h-12 bg-[#1E293B] border border-[#2D3748] rounded-[14px] items-center justify-center">
+                                    <Ionicons name="barbell" size={20} color="#4DB9F2" />
+                                </View>
                                 <View>
-                                    <Text className="font-bold text-gray-900">Get stronger</Text>
-                                    <Text className="text-gray-400 text-xs">Training Goal</Text>
+                                    <Text className="font-bold text-slate-100 text-[16px] mb-1">Get stronger</Text>
+                                    <Text className="text-slate-500 text-[13px] font-medium">Primary goal</Text>
                                 </View>
                             </View>
-                            <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                            <Ionicons name="chevron-forward" size={18} color="#64748B" />
                         </TouchableOpacity>
-                        <TouchableOpacity className="flex-row justify-between items-center p-4">
-                            <Text className="font-bold text-gray-900">Equipment</Text>
-                            <View className="flex-row items-center gap-2">
-                                <Text className="text-gray-500 font-medium text-[13px]">7 hidden</Text>
-                                <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+
+                        <TouchableOpacity className="flex-row justify-between items-center p-5">
+                            <View className="flex-row items-center gap-4">
+                                <View className="w-12 h-12 bg-[#1E293B] border border-[#2D3748] rounded-[14px] items-center justify-center">
+                                    <Ionicons name="construct" size={20} color="#F59E0B" />
+                                </View>
+                                <View>
+                                    <Text className="font-bold text-slate-100 text-[16px] mb-1">Equipment</Text>
+                                    <Text className="text-slate-500 text-[13px] font-medium">7 items hidden</Text>
+                                </View>
                             </View>
+                            <Ionicons name="chevron-forward" size={18} color="#64748B" />
                         </TouchableOpacity>
                     </View>
 
                     {/* Structure Section */}
-                    <Text className="text-gray-400 font-bold text-xs uppercase mb-3">Structure</Text>
-                    <View className="bg-white rounded-2xl  border border-gray-100 mb-6">
-                        <View className="flex-row justify-between items-center p-4 border-b border-gray-50">
-                            <Text className="font-bold text-gray-900 text-[15px]">Warm Up</Text>
+                    <Text className="text-slate-500 font-bold text-[13px] px-5 mb-3">Session Structure</Text>
+                    <View className="mx-5 bg-[#151E33] border border-[#1E293B] rounded-[24px] mb-4 overflow-hidden">
+                        <View className="flex-row justify-between items-center p-5 border-b border-[#1E293B]">
+                            <Text className="font-bold text-slate-100 text-[16px]">Warm Up Routine</Text>
                             <CustomSwitch value={toggles.warmUp} onValueChange={(v) => setToggles({ ...toggles, warmUp: v })} />
                         </View>
-                        <View className="flex-row justify-between items-center p-4 border-b border-gray-50">
-                            <Text className="font-bold text-gray-900 text-[15px]">Failure</Text>
+                        <View className="flex-row justify-between items-center p-5 border-b border-[#1E293B]">
+                            <Text className="font-bold text-slate-100 text-[16px]">Train to Failure</Text>
                             <CustomSwitch value={toggles.failure} onValueChange={(v) => setToggles({ ...toggles, failure: v })} />
                         </View>
-                        <View className="flex-row justify-between items-center p-4 border-b border-gray-50">
-                            <Text className="font-bold text-gray-900 text-[15px]">Cool Down</Text>
+                        <View className="flex-row justify-between items-center p-5 border-b border-[#1E293B]">
+                            <Text className="font-bold text-slate-100 text-[16px]">Cool Down Routine</Text>
                             <CustomSwitch value={toggles.coolDown} onValueChange={(v) => setToggles({ ...toggles, coolDown: v })} />
                         </View>
-                        <View className="flex-row justify-between items-center p-4">
-                            <Text className="font-bold text-gray-900 text-[15px]">Dropset</Text>
+                        <View className="flex-row justify-between items-center p-5">
+                            <Text className="font-bold text-slate-100 text-[16px]">Enable Dropsets</Text>
                             <CustomSwitch value={toggles.dropset} onValueChange={(v) => setToggles({ ...toggles, dropset: v })} />
                         </View>
                     </View>
 
-                    <View className="bg-white rounded-2xl  border border-gray-100 flex-row justify-between items-center p-4 mb-8">
-                        <Text className="font-bold text-gray-900 text-[15px]">Supersets/Circuits</Text>
-                        <View className="flex-row items-center gap-2">
-                            <Text className="font-bold text-gray-900 text-[15px]">Some</Text>
-                            <Ionicons name="chevron-up" size={12} color="#4B5563" style={{ marginBottom: -6 }} />
-                            <Ionicons name="chevron-down" size={12} color="#4B5563" style={{ marginLeft: -16, marginTop: 6 }} />
+                    {/* Supersets Block */}
+                    <TouchableOpacity className="mx-5 bg-[#151E33] border border-[#1E293B] rounded-[20px] flex-row justify-between items-center p-5 mb-8">
+                        <Text className="font-bold text-slate-100 text-[16px]">Supersets & Circuits</Text>
+                        <View className="flex-row items-center gap-3">
+                            <Text className="font-bold text-[#4DB9F2] text-[15px]">Some</Text>
+                            <View className="bg-[#1E293B] border border-[#2D3748] rounded-[10px] p-1.5">
+                                <Ionicons name="swap-vertical" size={14} color="#94A3B8" />
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+
+                    {/* Excluded Exercises Section */}
+                    <View className="flex-row justify-between items-center px-5 mb-4">
+                        <Text className="text-slate-500 font-bold text-[13px]">Excluded Exercises</Text>
+                        <View className="bg-[#1E293B] border border-[#2D3748] px-2.5 py-1 rounded-md">
+                            <Text className="text-slate-400 font-bold text-[11px]">{excluded.length} filtered</Text>
                         </View>
                     </View>
 
-                    {/* Excluded Exercises Section */}
-                    <View className="flex-row justify-between items-center mb-3">
-                        <Text className="text-gray-400 font-bold text-xs uppercase">Excluded Exercises</Text>
-                        <Text className="text-gray-400 font-medium text-xs">{excluded.length} exercises</Text>
-                    </View>
-
-                    <View className="gap-3">
-                        {/* Render Selected Excluded Items */}
+                    <View className="px-5 gap-3">
                         {excluded.map(ex => (
-                            <View key={ex.id} className="bg-white border border-gray-200  rounded-2xl p-3 flex-row items-center justify-between">
-                                <View className="flex-row items-center gap-3">
-                                    <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center border border-gray-100">
-                                        <Text className="text-lg">{ex.icon}</Text>
+                            <View key={ex.id} className="bg-[#151E33] border border-[#1E293B] rounded-[20px] p-4 flex-row items-center justify-between">
+                                <View className="flex-row items-center gap-4">
+                                    <View className="w-12 h-12 bg-[#1E293B] border border-[#2D3748] rounded-[14px] items-center justify-center">
+                                        <Text className="text-[20px]">{ex.icon}</Text>
                                     </View>
                                     <View>
-                                        <Text className="font-bold text-gray-900 text-[14px]">{ex.name}</Text>
-                                        <Text className="text-gray-500 text-[11px]">{ex.type}</Text>
+                                        <Text className="font-bold text-slate-100 text-[15px] mb-1">{ex.name}</Text>
+                                        <Text className="text-slate-500 text-[12px] font-medium">{ex.type}</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => handleRemoveExcluded(ex.id)}
-                                    className="w-6 h-6 bg-gray-200 rounded-full items-center justify-center"
+                                    className="w-8 h-8 bg-rose-950/20 border border-rose-500/20 rounded-[10px] items-center justify-center"
                                 >
-                                    <Ionicons name="close" size={14} color="#6B7280" />
+                                    <Ionicons name="trash" size={14} color="#EF4444" />
                                 </TouchableOpacity>
                             </View>
                         ))}
 
-                        {/* Add Button */}
                         <TouchableOpacity
                             onPress={() => librarySheetRef.current?.present()}
-                            className="border border-dashed border-gray-300 rounded-2xl p-4 flex-row items-center gap-3 bg-white"
+                            className="border border-dashed border-[#4DB9F2]/40 bg-[#4DB9F2]/5 rounded-[20px] p-5 flex-row items-center justify-center gap-2 mt-1"
                         >
-                            <Ionicons name="add" size={20} color="#4B5563" />
-                            <Text className="font-medium text-gray-600 text-[15px]">Add exercise</Text>
+                            <Ionicons name="add" size={18} color="#4DB9F2" />
+                            <Text className="font-bold text-[#4DB9F2] text-[15px]">Add exercise</Text>
                         </TouchableOpacity>
                     </View>
 
                 </ScrollView>
 
-                {/* Footer Save Button */}
-                <View className="absolute bottom-0 left-0 right-0 bg-[#F9FAFB] px-5 pt-4 pb-8 border-t border-transparent">
+                {/* Hard Boxed Footer */}
+                <View className="absolute bottom-0 w-full bg-[#090D16] px-5 pt-4 pb-8">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         disabled={!hasChanges}
-                        className={`py-4 rounded-full items-center ${hasChanges ? 'bg-[#1A1A1A] shadow-lg' : 'bg-gray-400'}`}
+                        className={`py-4 rounded-[16px] items-center border ${hasChanges
+                            ? 'bg-[#4DB9F2] border-[#4DB9F2]'
+                            : 'bg-[#151E33] border-[#1E293B]'
+                            }`}
                     >
-                        <Text className="text-white font-bold text-base">Save</Text>
+                        <Text className={`font-bold text-[16px] ${hasChanges ? 'text-[#090D16]' : 'text-slate-500'}`}>
+                            Save configuration
+                        </Text>
                     </TouchableOpacity>
                 </View>
 
-                {/* Mount the Bottom Sheet */}
                 <LibrarySheet ref={librarySheetRef} onExclude={handleAddExcluded} />
             </SafeAreaView>
         </BottomSheetModalProvider>
-
     );
 }

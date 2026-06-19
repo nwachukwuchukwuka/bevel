@@ -2,18 +2,16 @@ import { ResourceDetailSheet, ResourceDetailSheetRef } from '@/components/sleep/
 import { SLEEP_ANALYSIS, TIME_ASLEEP_ANALYSIS } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import React, { useRef, useState, useEffect } from 'react';
-import { Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 const TABS = ['Sleep Score', 'Time Asleep', 'REM Sleep', 'Deep Sleep'];
 
 export default function SleepScoreDetails() {
     const router = useRouter();
     const { initialTab } = useLocalSearchParams<{ initialTab: string }>();
-    
+
     const [selectedTab, setSelectedTab] = useState(initialTab || 'Sleep Score');
     const [selectedTimeframe, setSelectedTimeframe] = useState('1M');
 
@@ -32,238 +30,215 @@ export default function SleepScoreDetails() {
     const unit = isSleepScore ? '%' : '';
     const range = isSleepScore ? '43 - 82%' : '4h 19m - 8h 30m';
 
-
     return (
         <BottomSheetModalProvider>
-            <View className="flex-1 bg-[#181B28]">
-                {/* Modal Header */}
-                <View className="px-5 py-4 flex-row items-center justify-between border-b border-[#2A3047] bg-[#181B28]">
-                    <View className="w-8" />
-                    <Text className="text-[16px] font-semibold text-white">{selectedTab}</Text>
-                    <TouchableOpacity onPress={() => router.back()} className="w-8 h-8 bg-[#2A3047] rounded-full items-center justify-center">
-                        <Ionicons name="close" size={18} color="white" />
+            <View className="flex-1 bg-[#090D16]">
+
+                <View className="px-5 pt-6 pb-6 flex-row items-center justify-between border-b border-[#1E293B] bg-[#151E33]">
+                    <View>
+                        <Text className="text-xl font-bold text-slate-100">{selectedTab}</Text>
+                        <Text className="text-xs text-slate-400 mt-1">Telemetry analytics</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        activeOpacity={0.7}
+                        className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                    >
+                        <Ionicons name="close" size={20} color="#94A3B8" />
                     </TouchableOpacity>
                 </View>
 
-                <ScrollView className="flex-1 px-5 pt-6" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-
-                    <View className="flex-row items-center gap-2 mb-2">
-                        <Ionicons name={isSleepScore ? "moon" : "time"} size={18} color="#9CA3AF" />
-                        <Text className="text-[15px] font-semibold text-gray-400">{selectedTab}</Text>
-                    </View>
-
-                    <View className="flex-row justify-between items-end mb-6">
-                        <View>
-                            <Text className="text-[42px] font-semibold text-white tracking-tighter leading-none">
-                                {value}<Text className="text-[20px]">{unit}</Text>
-                            </Text>
-                            <Text className="text-[13px] font-medium text-gray-500 mt-2">14 Sep 2025</Text>
-                        </View>
-                        <View className="items-end">
-                            <Text className="text-[13px] font-semibold text-green-400 mb-1">Normal range</Text>
-                            <View className="flex-row items-center gap-1">
-                                <Ionicons name="menu" size={14} color="#6B7280" />
-                                <Text className="text-[12px] font-semibold text-gray-400">{range}</Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row gap-2 mb-8 overflow-visible">
-                        {TABS.map((tab) => (
-                            <TouchableOpacity
-                                key={tab}
-                                onPress={() => setSelectedTab(tab)}
-                                className={`px-4 py-2 rounded-full border ${selectedTab === tab ? 'bg-[#2A3047] border-[#3B82F6]' : 'bg-[#1F2437] border-transparent'}`}
-                            >
-                                <Text className={`text-[11px] font-semibold ${selectedTab === tab ? 'text-white' : 'text-gray-500'}`}>
-                                    {tab}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
+                <View className="px-5 py-4 bg-[#090D16] border-b border-[#1E293B]">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+                        {TABS.map((tab) => {
+                            const isActive = selectedTab === tab;
+                            return (
+                                <TouchableOpacity
+                                    key={tab}
+                                    onPress={() => setSelectedTab(tab)}
+                                    activeOpacity={0.7}
+                                    className={`px-4 py-2 rounded-lg border ${isActive
+                                        ? 'bg-[#1E293B] border-[#2D3748]'
+                                        : 'border-transparent'
+                                        }`}
+                                >
+                                    <Text className={`font-semibold text-sm ${isActive ? 'text-[#4DB9F2]' : 'text-slate-500'}`}>
+                                        {tab}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
                     </ScrollView>
+                </View>
 
-                    <View className="mb-10">
-                        <View className="h-56 relative justify-end pb-6 border-b border-gray-700">
+                <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
 
-                            {/* Y-Axis Labels (Background) */}
-                            <View className="absolute right-0 top-0 bottom-6 justify-between items-end z-0">
-                                <Text className="text-[10px] font-medium text-gray-600">100</Text>
-                                <Text className="text-[10px] font-medium text-gray-600">72</Text>
-                                <Text className="text-[10px] font-medium text-gray-600">44</Text>
-                                <Text className="text-[10px] font-medium text-gray-600">16</Text>
+                    <View className="p-5">
+
+                        <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6 mb-8">
+                            <View className="flex-row justify-between items-center mb-6">
+                                <Text className="text-sm font-semibold text-slate-400">Current baseline</Text>
+                                <View className="bg-[#090D16] border border-[#1E293B] px-3 py-1.5 rounded-lg flex-row items-center gap-1.5">
+                                    <Ionicons name="calendar-outline" size={12} color="#4DB9F2" />
+                                    <Text className="text-[10px] font-bold text-slate-300">14 Sep 2025</Text>
+                                </View>
                             </View>
 
-                            {/* Background Fill Gradient */}
-                            <View className="absolute bottom-6 left-0 right-6 top-0 overflow-hidden z-0 rounded-t-xl">
-                                <LinearGradient
-                                    colors={['rgba(129, 140, 248, 0.15)', 'rgba(129, 140, 248, 0)']}
-                                    className="w-full h-full"
-                                />
+                            <View className="flex-row items-baseline gap-2 mb-8">
+                                <Text className="text-5xl font-bold text-white">
+                                    {value}
+                                </Text>
+                                {unit ? <Text className="text-lg font-bold text-slate-500">{unit}</Text> : null}
                             </View>
 
-                            {/* Dotted Average Line */}
-                            <View className="absolute left-0 right-6 top-[45%] border-b border-dashed border-indigo-400/50 z-10" />
-                            <View className="absolute left-[35%] top-[45%] -translate-y-3 bg-indigo-500 px-2 py-0.5 rounded-full z-20">
-                                <Text className="text-[10px] font-semibold text-white">Avg. {isSleepScore ? '62%' : '6h 24m'}</Text>
+                            <View className="bg-[#1E293B40] border border-[#1E293B] p-4 rounded-xl flex-row justify-between items-center mb-8">
+                                <Text className="text-xs font-semibold text-slate-500">Normal range</Text>
+                                <Text className="text-sm font-bold text-[#10B981]">{range}</Text>
                             </View>
 
-                            {/* Data Points (Solid path line) */}
-                            <View className="flex-row items-end justify-between pr-8 z-20 h-full relative">
-                                {CHART_DATA.map((val, idx) => {
-                                    const isLast = idx === CHART_DATA.length - 1;
-                                    return (
-                                        <View key={idx} className="items-center w-[4px]" style={{ height: `${val}%` }}>
-                                            <View className="w-[1.5px] flex-1 bg-indigo-400" />
-                                            <View className={`w-2 h-2 rounded-full border bg-white absolute top-0 ${isLast ? 'border-indigo-500 w-2.5 h-2.5' : 'border-indigo-400'}`} />
-                                        </View>
-                                    )
-                                })}
+                            <View className="h-44 relative justify-end mb-4 border-b border-[#2D3748] pb-1">
+                                <View className="absolute inset-0 justify-between py-2">
+                                    <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">100 limit</Text></View>
+                                    <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">72 upper</Text></View>
+                                    <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">44 median</Text></View>
+                                    <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">16 lower</Text></View>
+                                </View>
+
+                                <View className="absolute left-0 right-0 top-[45%] border-t border-dashed border-[#4DB9F2] opacity-50 z-0" />
+                                <View className="absolute left-[35%] top-[45%] -translate-y-2 bg-[#090D16] border border-[#2D3748] px-2 py-0.5 rounded flex-row items-center gap-1 z-20">
+                                    <Text className="text-[10px] font-bold text-[#4DB9F2]">Avg. {isSleepScore ? '62%' : '6h 24m'}</Text>
+                                </View>
+
+                                <View className="absolute bottom-0 left-0 right-0 h-full flex-row items-end justify-between px-2 pt-2">
+                                    {CHART_DATA.map((val, idx) => {
+                                        const isLast = idx === CHART_DATA.length - 1;
+                                        return (
+                                            <View key={idx} className="items-center w-1" style={{ height: `${val}%` }}>
+                                                <View className="flex-1 w-[2px] bg-[#4DB9F2] opacity-60" />
+                                                <View className={`absolute top-0 w-2.5 h-2.5 rounded-full border-2 ${isLast ? 'bg-[#090D16] border-[#4DB9F2]' : 'bg-[#4DB9F2] border-[#4DB9F2]'
+                                                    }`} />
+                                            </View>
+                                        );
+                                    })}
+                                </View>
                             </View>
-                        </View>
 
-                        {/* X-Axis Labels */}
-                        <View className="flex-row justify-between pr-8 mt-2 mb-6">
-                            <Text className="text-[10px] font-medium text-gray-500">15 Aug</Text>
-                            <Text className="text-[10px] font-medium text-gray-500">22 Aug</Text>
-                            <Text className="text-[10px] font-medium text-gray-500">30 Aug</Text>
-                            <Text className="text-[10px] font-medium text-gray-500">6 Sep</Text>
-                            <Text className="text-[10px] font-medium text-gray-500">14 Sep</Text>
-                        </View>
+                            <View className="flex-row justify-between">
+                                <Text className="text-[10px] font-bold text-slate-500">15 Aug</Text>
+                                <Text className="text-[10px] font-bold text-slate-500">30 Aug</Text>
+                                <Text className="text-[10px] font-bold text-slate-500">14 Sep</Text>
+                            </View>
 
-                        {/* Timeframe Selector */}
-                        <View className="flex-row items-center justify-between">
-                            <TouchableOpacity className="w-8 h-8 rounded-full bg-[#2A3047] items-center justify-center">
-                                <Ionicons name="chevron-back" size={16} color="white" />
-                            </TouchableOpacity>
-
-                            <View className="flex-row items-center gap-1">
+                            <View className="flex-row bg-[#090D16] p-1 rounded-xl border border-[#1E293B] mt-8">
                                 {['1M', '3M', '6M', '1Y'].map(time => (
                                     <TouchableOpacity
                                         key={time}
                                         onPress={() => setSelectedTimeframe(time)}
-                                        className={`w-10 h-8 items-center justify-center rounded-full ${selectedTimeframe === time ? 'bg-[#2A3047]' : ''}`}
+                                        className={`flex-1 items-center justify-center py-2.5 rounded-lg border ${selectedTimeframe === time ? 'bg-[#1E293B] border-[#2D3748]' : 'border-transparent'
+                                            }`}
                                     >
-                                        <Text className={`text-[12px] font-semibold ${selectedTimeframe === time ? 'text-white' : 'text-gray-500'}`}>{time}</Text>
+                                        <Text className={`text-xs font-bold ${selectedTimeframe === time ? 'text-[#4DB9F2]' : 'text-slate-500'}`}>
+                                            {time}
+                                        </Text>
                                     </TouchableOpacity>
                                 ))}
                             </View>
-
-                            <View className="flex-row gap-2">
-                                <TouchableOpacity className="w-8 h-8 rounded-full bg-[#2A3047] items-center justify-center">
-                                    <Ionicons name="calendar-outline" size={14} color="white" />
-                                </TouchableOpacity>
-                                <TouchableOpacity className="w-8 h-8 rounded-full bg-[#2A3047] items-center justify-center">
-                                    <Ionicons name="chevron-forward" size={16} color="white" />
-                                </TouchableOpacity>
-                            </View>
                         </View>
-                    </View>
 
-                    {isSleepScore ? (
-                        <>
-                            {/* Sleep Breakdown */}
-                            <Text className="text-[15px] font-semibold text-white mb-4">Sleep Breakdown</Text>
-                            <View className="flex-row h-3 rounded-full overflow-hidden mb-4">
-                                <View className="bg-indigo-300 h-full" style={{ width: '70%' }} />
-                                <View className="bg-indigo-500 h-full border-l border-[#181B28]" style={{ width: '15%' }} />
-                                <View className="bg-purple-500 h-full border-l border-[#181B28]" style={{ width: '15%' }} />
+                        {isSleepScore ? (
+                            <View className="mb-8">
+                                <Text className="text-lg font-bold text-white mb-4">Score distribution limits</Text>
+                                <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6">
+                                    <View className="flex-row h-2 rounded-full overflow-hidden mb-6">
+                                        <View className="bg-rose-500 flex-[7]" />
+                                        <View className="bg-amber-500 flex-[1.5]" />
+                                        <View className="bg-emerald-500 flex-[1.5]" />
+                                    </View>
+                                    <View className="gap-4">
+                                        <View className="flex-row items-center justify-between"><View className="flex-row items-center gap-3"><View className="w-2.5 h-2.5 rounded-full bg-rose-500" /><Text className="font-bold text-slate-200">Low</Text></View><Text className="text-slate-500 font-medium">{'<'} 70.0%</Text></View>
+                                        <View className="flex-row items-center justify-between"><View className="flex-row items-center gap-3"><View className="w-2.5 h-2.5 rounded-full bg-amber-500" /><Text className="font-bold text-slate-200">Normal</Text></View><Text className="text-slate-500 font-medium">70.0% - 85.0%</Text></View>
+                                        <View className="flex-row items-center justify-between"><View className="flex-row items-center gap-3"><View className="w-2.5 h-2.5 rounded-full bg-emerald-500" /><Text className="font-bold text-slate-200">Optimal</Text></View><Text className="text-slate-500 font-medium">{'>'} 85.0%</Text></View>
+                                    </View>
+                                </View>
                             </View>
-                            <View className="gap-2 mb-8">
-                                <View className="flex-row items-center gap-2"><View className="w-2 h-2 rounded-full bg-indigo-300" /><Text className="text-[12px] font-medium text-white">Low <Text className="text-gray-500">&lt;70.0%</Text></Text></View>
-                                <View className="flex-row items-center gap-2"><View className="w-2 h-2 rounded-full bg-indigo-500" /><Text className="text-[12px] font-medium text-white">Normal <Text className="text-gray-500">70.0% - 85.0%</Text></Text></View>
-                                <View className="flex-row items-center gap-2"><View className="w-2 h-2 rounded-full bg-purple-500" /><Text className="text-[12px] font-medium text-white">Optimal <Text className="text-gray-500">&gt;85.0%</Text></Text></View>
+                        ) : (
+                            <View className="mb-8">
+                                <Text className="text-lg font-bold text-white mb-4">Weekly sleep distribution</Text>
+                                <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6">
+                                    <View className="flex-row justify-between items-end h-32 mb-4 border-b border-[#2D3748] pb-1">
+                                        {[40, 20, 60, 30, 80, 50, 70].map((h, i) => (
+                                            <View key={i} className={`w-[10%] rounded-t-sm ${h > 50 ? 'bg-[#4DB9F2]' : 'bg-[#1E293B]'}`} style={{ height: `${h}%` }} />
+                                        ))}
+                                    </View>
+                                    <View className="flex-row justify-between mb-6">
+                                        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                                            <Text key={d} className="text-[10px] font-bold text-slate-500 w-[10%] text-center">{d}</Text>
+                                        ))}
+                                    </View>
+                                    <View className="flex-row items-center gap-6 justify-center">
+                                        <View className="flex-row items-center gap-2"><View className="w-2 h-2 rounded-full bg-[#4DB9F2]" /><Text className="text-xs font-semibold text-slate-400">Adequate</Text></View>
+                                        <View className="flex-row items-center gap-2"><View className="w-2 h-2 rounded-full bg-[#1E293B]" /><Text className="text-xs font-semibold text-slate-400">Deficit</Text></View>
+                                    </View>
+                                </View>
                             </View>
-                        </>
-                    ) : (
-                        <>
-                            {/* Weekly sleep distribution */}
-                            <Text className="text-[15px] font-semibold text-white mb-4">Weekly sleep distribution</Text>
-                            <View className="flex-row justify-between items-end h-16 mb-2 px-2">
-                                {[40, 20, 60, 30, 80, 50, 70].map((h, i) => (
-                                    <View key={i} className={`w-[12%] rounded-t-md ${h > 50 ? 'bg-indigo-400' : 'bg-indigo-900/40'}`} style={{ height: h }} />
+                        )}
+
+                        <View className="mb-8">
+                            <Text className="text-lg font-bold text-white mb-4">Trends breakdown</Text>
+                            <View className="bg-[#151E33] rounded-3xl p-6 border border-[#1E293B]">
+                                <View className="flex-row border-b border-[#1E293B] pb-3 mb-3">
+                                    <Text className="flex-1 font-semibold text-slate-500 text-xs">Period</Text>
+                                    <Text className="flex-1 font-semibold text-slate-500 text-xs">Change</Text>
+                                    <Text className="flex-1 font-semibold text-slate-500 text-xs text-right">Trend</Text>
+                                </View>
+                                {analysisData.map((item, idx) => (
+                                    <View key={idx} className={`flex-row items-center py-4 ${idx !== analysisData.length - 1 ? 'border-b border-[#1E293B40]' : ''}`}>
+                                        <Text className="flex-1 font-bold text-white text-sm">{item.period}</Text>
+                                        <View className="flex-1 flex-row items-center gap-2">
+                                            <Ionicons name={item.trend === 'down' ? 'arrow-down' : 'arrow-up'} size={14} color={item.trend === 'down' ? '#EF4444' : '#4DB9F2'} />
+                                            <Text className={`font-bold text-sm ${item.trend === 'down' ? 'text-rose-500' : 'text-[#4DB9F2]'}`}>{item.change}</Text>
+                                        </View>
+                                        <View className="flex-1 items-end justify-center">
+                                            <View className={`w-8 h-1 rounded-full ${item.trend === 'down' ? 'bg-rose-500' : 'bg-[#4DB9F2]'}`} />
+                                        </View>
+                                    </View>
                                 ))}
                             </View>
-                            <View className="flex-row justify-between px-2 mb-4">
-                                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-                                    <Text key={d} className="text-[10px] font-medium text-gray-500 w-[12%] text-center">{d}</Text>
-                                ))}
-                            </View>
-                            <View className="flex-row gap-4 mb-8">
-                                <View className="flex-row items-center gap-1.5"><View className="w-2 h-2 rounded-full bg-indigo-400" /><Text className="text-[11px] text-gray-500">More sleep</Text></View>
-                                <View className="flex-row items-center gap-1.5"><View className="w-2 h-2 rounded-full bg-indigo-900/40" /><Text className="text-[11px] text-gray-500">Less sleep</Text></View>
-                            </View>
-                        </>
-                    )}
-
-                    {/* Trends Analysis */}
-                    <Text className="text-[15px] font-semibold text-white mb-1">Trends Analysis</Text>
-                    <Text className="text-[12px] font-medium text-gray-500 mb-4">Last data point on 14 Sep 2025</Text>
-
-                    <View className="bg-[#22273B] rounded-[20px] p-2 border border-[#2A3047] mb-2">
-                        <View className="flex-row justify-between px-4 py-3 border-b border-[#2A3047]">
-                            <Text className="text-[11px] font-semibold text-gray-500 w-1/3">Period</Text>
-                            <Text className="text-[11px] font-semibold text-gray-500 w-1/3 text-center">Change</Text>
-                            <Text className="text-[11px] font-semibold text-gray-500 w-1/3 text-right">Trend</Text>
                         </View>
-                        {analysisData.map((item, idx) => (
-                            <View key={idx} className={`flex-row items-center justify-between px-4 py-4 ${idx !== analysisData.length - 1 ? 'border-b border-[#2A3047]' : ''}`}>
-                                <Text className="text-[13px] font-semibold text-gray-400 w-1/3">{item.period}</Text>
-                                <View className="w-1/3 items-center flex-row justify-center gap-1">
-                                    <Ionicons name={item.trend === 'down' ? 'arrow-down-circle' : 'arrow-up-circle'} size={14} color={item.trend === 'down' ? '#F97316' : '#818CF8'} />
-                                    <Text className={`text-[13px] font-semibold ${item.trend === 'down' ? 'text-orange-500' : 'text-indigo-400'}`}>{item.change}</Text>
-                                </View>
-                                <View className="w-1/3 items-end justify-center">
-                                     <View className="w-12 h-4 items-end justify-end"><Ionicons name="pulse" size={18} color={item.trend === 'down' ? '#F97316' : '#818CF8'} /></View>
-                                </View>
-                            </View>
-                        ))}
+
+                        <View className="mb-8">
+                            <Text className="text-lg font-bold text-white mb-4">Educational resources</Text>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingRight: 20 }}>
+                                <TouchableOpacity
+                                    onPress={() => resourceSheetRef.current?.present()}
+                                    activeOpacity={0.8}
+                                    className="w-64 bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-5 mr-4"
+                                >
+                                    <View className="w-10 h-10 bg-[#151E33] border border-[#2D3748] rounded-xl items-center justify-center mb-4">
+                                        <Ionicons name="moon-outline" size={16} color="#4DB9F2" />
+                                    </View>
+                                    <Text className="font-bold text-slate-100 text-base mb-1">What is Sleep Score?</Text>
+                                    <Text className="text-xs text-slate-400 leading-5">Understand the quality and duration of your rest metrics...</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    className="w-64 bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-5"
+                                >
+                                    <View className="w-10 h-10 bg-[#151E33] border border-[#2D3748] rounded-xl items-center justify-center mb-4">
+                                        <Ionicons name="book-outline" size={16} color="#4DB9F2" />
+                                    </View>
+                                    <Text className="font-bold text-slate-100 text-base mb-1">Sleep Hygiene</Text>
+                                    <Text className="text-xs text-slate-400 leading-5">Tips for improving your sleep environment and daily habits...</Text>
+                                </TouchableOpacity>
+                            </ScrollView>
+                        </View>
+
                     </View>
-                    <Text className="text-center text-[10px] text-gray-600 mb-8">Based on 7-day rolling averages for the select period.</Text>
-
-                    {/* Resources */}
-                    <Text className="text-[15px] font-semibold text-white mb-4">Resources</Text>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-10 overflow-visible">
-                        <TouchableOpacity
-                            onPress={() => resourceSheetRef.current?.present()}
-                            activeOpacity={0.8}
-                            className="w-[240px] mr-4"
-                        >
-                            <View className="h-[140px] bg-[#22273B] rounded-[24px] mb-3 p-4 flex-row justify-between items-start overflow-hidden relative border border-[#2A3047]">
-                                <LinearGradient colors={['rgba(99, 102, 241, 0.4)', 'rgba(99, 102, 241, 0)']} className="absolute inset-0" />
-                                <Text className="text-white font-semibold text-[18px] mt-auto">Sleep Score</Text>
-                                <View className="w-10 h-10 bg-[#181B28] rounded-full items-center justify-center border-2 border-[#2A3047]">
-                                    <Ionicons name="moon" size={20} color="#818CF8" />
-                                </View>
-                            </View>
-                            <Text className="text-[14px] font-semibold text-white mb-1">What is Sleep Score?</Text>
-                            <Text className="text-[12px] font-medium text-gray-500 leading-4">Understand the quality and duration of your rest...</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity className="w-[240px]">
-                            <View className="h-[140px] bg-[#22273B] rounded-[24px] mb-3 p-4 flex-row justify-between items-start overflow-hidden relative border border-[#2A3047]">
-                                <LinearGradient colors={['rgba(168, 85, 247, 0.3)', 'rgba(168, 85, 247, 0)']} className="absolute inset-0" />
-                                <Text className="text-white font-semibold text-[18px] mt-auto">Sleep Hygiene</Text>
-                            </View>
-                            <Text className="text-[14px] font-semibold text-white mb-1">The Basics: Sleep</Text>
-                            <Text className="text-[12px] font-medium text-gray-500 leading-4">Tips for improving your sleep environment and habits...</Text>
-                        </TouchableOpacity>
-                    </ScrollView>
-
                 </ScrollView>
-
-                <View className="absolute bottom-10 self-center rounded-full overflow-hidden border border-[#3A415C]">
-                    <BlurView intensity={20} tint="dark" className="px-5 py-3 flex-row items-center bg-[#2A3047]/40">
-                         <Ionicons name="analytics" size={16} color="#818CF8" className="mr-2" />
-                        <Text className="font-semibold text-[14px] text-white">
-                            {isSleepScore ? 'Sleep Score Trending Down' : 'Sleep Check-in'}
-                        </Text>
-                        <Ionicons name="chevron-up" size={16} color="#9CA3AF" className="ml-2" />
-                    </BlurView>
-                </View>
 
                 <ResourceDetailSheet ref={resourceSheetRef} title={selectedTab} />
             </View>
         </BottomSheetModalProvider>
-
     );
 }

@@ -5,110 +5,183 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 export default function StrengthProgressionModal() {
     return (
-        <View className="flex-1 bg-[#F9FAFB]">
-            <View className="items-center py-3"><View className="w-10 h-1 bg-gray-300 rounded-full" /></View>
-            <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+        <View className="flex-1 bg-[#090D16]">
 
-                <View className="flex-row items-center gap-2 mb-4">
-                    <Ionicons name="barbell" size={18} color="#9CA3AF" />
-                    <Text className="text-[16px] font-bold text-gray-500">Strength Progression</Text>
+            {/* Custom Modal Handle */}
+            <View className="items-center py-3">
+                <View className="w-10 h-1 bg-[#1E293B] rounded-full" />
+            </View>
+
+            {/* Custom Header */}
+            <View className="px-5 pb-5 flex-row items-center justify-between border-b border-[#1E293B]">
+                <View className="flex-row items-center gap-3">
+                    <View className="w-10 h-10 bg-[#1E1E1E] rounded-xl items-center justify-center border border-[#2D3748]">
+                        <Ionicons name="barbell-outline" size={18} color="#4DB9F2" />
+                    </View>
+                    <Text className="text-xl font-bold text-slate-100">Strength progression</Text>
                 </View>
+            </View>
 
-                <View className="flex-row justify-between items-end mb-6">
-                    <View>
-                        <Text className="text-[12px] font-medium text-gray-500 mb-1">All exercises</Text>
-                        <Text className="text-[32px] font-bold text-gray-900 tracking-tight">15.306 kg</Text>
-                        <View className="flex-row items-center gap-1 mt-1">
-                            <View className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                            <Text className="text-[11px] font-bold text-gray-500">14 Sep 2025</Text>
-                        </View>
-                    </View>
-                    <View className="items-end">
-                        <Text className="text-[16px] font-bold text-gray-900">0 kg</Text>
-                        <View className="flex-row items-center gap-1 mt-1">
-                            <View className="w-1.5 h-1.5 rounded-full bg-gray-300" />
-                            <Text className="text-[11px] font-bold text-gray-500">14 Aug 2025</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-8">
-                    <TouchableOpacity className="flex-row items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1.5 shadow-sm mr-2">
-                        <Ionicons name="filter" size={14} color="#4B5563" />
-                        <Ionicons name="chevron-down" size={12} color="#4B5563" />
-                    </TouchableOpacity>
-                    <TouchableOpacity className="bg-white border border-gray-200 rounded-full w-8 h-8 items-center justify-center shadow-sm mr-2"><Ionicons name="list" size={16} color="#4B5563" /></TouchableOpacity>
-                    <TouchableOpacity className="rounded-full px-4 py-1.5 justify-center mr-2 bg-[#111827]"><Text className="text-[13px] font-bold text-white">All</Text></TouchableOpacity>
-                    <TouchableOpacity className="bg-gray-100 rounded-full px-4 py-1.5 justify-center mr-2 flex-row items-center gap-1"><Ionicons name="barbell" size={12} color="#9CA3AF" /><Text className="text-[13px] font-bold text-gray-500">Bench Press</Text></TouchableOpacity>
-                    <TouchableOpacity className="bg-gray-100 rounded-full px-4 py-1.5 justify-center mr-2 flex-row items-center gap-1"><Ionicons name="barbell" size={12} color="#9CA3AF" /><Text className="text-[13px] font-bold text-gray-500">Back Squat</Text></TouchableOpacity>
-                </ScrollView>
-
-                {/* Line Chart Mock */}
-                <View className="h-56 relative justify-end pb-6 border-b-2 border-emerald-400 mb-6">
-                    <View className="absolute right-0 top-0 bottom-6 justify-between items-end z-0 opacity-40">
-                        <Text className="text-[10px] font-bold text-gray-400">16,8K</Text>
-                        <Text className="text-[10px] font-bold text-gray-400 border-b border-dashed w-full text-right border-gray-200">11,2K</Text>
-                        <Text className="text-[10px] font-bold text-gray-400 border-b border-dashed w-full text-right border-gray-200">5,61K</Text>
-                        <Text className="text-[10px] font-bold text-gray-400">0</Text>
-                    </View>
-                    {/* Stepped Line Graph Mock */}
-                    <View className="absolute bottom-6 left-0 right-10 h-40 flex-row items-end">
-                        <View className="flex-1 h-[20%] border-t-4 border-blue-300 relative"><View className="absolute -left-1 -top-1.5 w-3 h-3 rounded-full border-2 border-blue-400 bg-white" /></View>
-                        <View className="flex-1 h-[20%] border-t-4 border-blue-300 relative" />
-                        <View className="w-1 h-[20%] border-l-4 border-blue-300" />
-                        <View className="flex-1 h-[40%] border-t-4 border-blue-300 relative"><View className="absolute -left-1 -top-1.5 w-3 h-3 rounded-full border-2 border-blue-400 bg-white" /></View>
-                        <View className="w-1 h-[20%] border-l-4 border-blue-300" />
-                        <View className="flex-1 h-[60%] border-t-4 border-blue-300 relative"><View className="absolute -left-1 -top-1.5 w-3 h-3 rounded-full border-2 border-blue-400 bg-white" /></View>
-                        <View className="flex-1 h-[60%] border-t-4 border-blue-300 relative" />
-                        <View className="w-1 h-[30%] border-l-4 border-blue-300" />
-                        <View className="flex-1 h-[90%] border-t-4 border-blue-300 relative"><View className="absolute -left-1 -top-1.5 w-3 h-3 rounded-full border-2 border-blue-400 bg-white" /></View>
-                        <View className="absolute right-0 top-[10%] w-3 h-3 rounded-full border-[2px] border-blue-500 bg-white" />
-                        <View className="absolute -right-2 top-[5%] w-7 h-7 rounded-full bg-blue-400 opacity-20" />
-                    </View>
-                </View>
-
-                {/* Timeframe Selector */}
-                <View className="flex-row items-center justify-between mb-8">
-                    <TouchableOpacity className="w-8 h-8 rounded-full bg-white border border-gray-100 shadow-sm items-center justify-center"><Ionicons name="chevron-back" size={16} color="#9CA3AF" /></TouchableOpacity>
-                    <View className="flex-row items-center gap-1">
-                        {['1M', '3M', '6M', '1Y'].map(t => (
-                            <TouchableOpacity key={t} className={`w-10 h-8 items-center justify-center rounded-full ${t === '1M' ? 'bg-white border border-gray-200 shadow-sm' : ''}`}>
-                                <Text className={`text-[12px] font-bold ${t === '1M' ? 'text-gray-900' : 'text-gray-400'}`}>{t}</Text>
+            {/* Timeframe Selector (Positioned at the top for radical structural shift) */}
+            <View className="px-5 py-4 bg-[#151E33] border-b border-[#1E293B] flex-row items-center justify-between">
+                <View className="flex-row gap-2 bg-[#090D16] p-1 rounded-xl border border-[#1E293B]">
+                    {['1M', '3M', '6M', '1Y'].map((t) => {
+                        const isActive = t === '1M';
+                        return (
+                            <TouchableOpacity
+                                key={t}
+                                className={`px-3 py-1.5 rounded-lg border ${isActive ? 'bg-[#1E1E1E] border-[#2C2C2C]' : 'border-transparent'
+                                    }`}
+                            >
+                                <Text className={`text-xs font-bold ${isActive ? 'text-[#4DB9F2]' : 'text-slate-400'}`}>
+                                    {t}
+                                </Text>
                             </TouchableOpacity>
+                        );
+                    })}
+                </View>
+
+                <View className="flex-row gap-2">
+                    <TouchableOpacity className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2D3748] items-center justify-center">
+                        <Ionicons name="chevron-back" size={16} color="#94A3B8" />
+                    </TouchableOpacity>
+                    <TouchableOpacity className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2D3748] items-center justify-center">
+                        <Ionicons name="calendar-outline" size={14} color="#94A3B8" />
+                    </TouchableOpacity>
+                    <TouchableOpacity className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2D3748] items-center justify-center">
+                        <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+            {/* Filters Area (Directly below Timeframe) */}
+            <View className="px-5 py-3 border-b border-[#1E293B] bg-[#090D16]">
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+                    <TouchableOpacity className="flex-row items-center gap-1.5 bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl px-3 py-2">
+                        <Ionicons name="filter-outline" size={14} color="#4DB9F2" />
+                        <Ionicons name="chevron-down" size={10} color="#4DB9F2" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl w-9 h-9 items-center justify-center">
+                        <Ionicons name="list" size={14} color="#94A3B8" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity className="rounded-xl px-4 py-2 justify-center border bg-[#1E293B] border-[#4DB9F2]">
+                        <Text className="text-xs font-semibold text-[#4DB9F2]">All</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity className="rounded-xl px-4 py-2 justify-center border bg-[#1E1E1E] border-[#2C2C2C] flex-row items-center gap-1.5">
+                        <Ionicons name="barbell-outline" size={12} color="#A0A0A0" />
+                        <Text className="text-xs font-semibold text-slate-400">Bench Press</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity className="rounded-xl px-4 py-2 justify-center border bg-[#1E1E1E] border-[#2C2C2C] flex-row items-center gap-1.5">
+                        <Ionicons name="barbell-outline" size={12} color="#A0A0A0" />
+                        <Text className="text-xs font-semibold text-slate-400">Back Squat</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </View>
+
+            <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+
+                {/* Highly Structured Technical Chart Panel */}
+                <View className="mx-5 mt-6 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5">
+                    <View className="flex-row justify-between items-center mb-4">
+                        <Text className="text-sm font-semibold text-slate-400">Muscular progression chart</Text>
+                        <View className="flex-row items-center gap-1.5">
+                            <View className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
+                            <Text className="text-xs text-slate-400">Strength load index</Text>
+                        </View>
+                    </View>
+
+                    <View className="h-44 relative justify-end mt-4">
+                        {/* Flat scale lines */}
+                        <View className="absolute inset-0 justify-between">
+                            <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">16,8k max</Text></View>
+                            <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">11,2k avg</Text></View>
+                            <View className="w-full h-[1px] bg-[#1E293B] flex-row justify-between"><Text className="text-[10px] text-slate-500 -mt-2">0 min</Text></View>
+                        </View>
+
+                        {/* Solid bar chart readout */}
+                        <View className="absolute bottom-0 left-0 right-0 h-32 flex-row items-end justify-between gap-[3px]">
+                            {Array.from({ length: 18 }).map((_, i) => {
+                                const height = Math.max(15, Math.random() * 90);
+                                const isTarget = i === 14; // Highlight current point
+                                return (
+                                    <View key={i} className="flex-1 flex-col items-center">
+                                        <View
+                                            className="w-full rounded-t-sm"
+                                            style={{ height: `${height}%`, backgroundColor: isTarget ? '#F59E0B' : '#2C2C2C' }}
+                                        />
+                                    </View>
+                                );
+                            })}
+                        </View>
+                    </View>
+
+                    <View className="flex-row justify-between mt-4 pt-3 border-t border-[#1E293B]">
+                        <Text className="text-[10px] font-bold text-slate-500">9 Aug</Text>
+                        <Text className="text-[10px] font-bold text-slate-500">24 Aug</Text>
+                        <Text className="text-[10px] font-bold text-slate-500">8 Sep</Text>
+                    </View>
+                </View>
+
+                {/* Integrated Summary Card (Positioned below the chart for layout difference) */}
+                <View className="mx-5 mt-4 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 flex-row justify-between items-center">
+                    <View className="flex-col">
+                        <Text className="text-xs text-slate-400 mb-1">Current load</Text>
+                        <Text className="text-2xl font-bold text-white">15.306 kg</Text>
+                        <Text className="text-[10px] text-[#4DB9F2] mt-1">14 Sep 2025</Text>
+                    </View>
+                    <View className="h-8 w-[1px] bg-[#1E293B]" />
+                    <View className="flex-col items-end">
+                        <Text className="text-xs text-slate-400 mb-1">Previous load</Text>
+                        <Text className="text-2xl font-bold text-slate-300">0 kg</Text>
+                        <Text className="text-[10px] text-slate-500 mt-1">14 Aug 2025</Text>
+                    </View>
+                </View>
+
+                {/* Integrated Success Tag Indicator */}
+                <View className="mx-5 mt-4 bg-amber-950/20 border border-amber-500/10 rounded-2xl p-4 flex-row items-center justify-between">
+                    <View className="flex-row items-center gap-3">
+                        <View className="w-8 h-8 rounded-lg bg-amber-500/10 items-center justify-center">
+                            <Ionicons name="trending-up" size={16} color="#F59E0B" />
+                        </View>
+                        <Text className="text-sm font-semibold text-white">Stronger than ever!</Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={16} color="#F59E0B" />
+                </View>
+
+                {/* Exercises List (Modular Grid Cards) */}
+                <View className="px-5 mt-8 mb-24">
+                    <View className="flex-row justify-between items-center mb-4">
+                        <Text className="text-lg font-bold text-white">Exercises breakdown</Text>
+                        <TouchableOpacity className="w-8 h-8 bg-[#1E1E1E] border border-[#2C2C2C] rounded-lg items-center justify-center">
+                            <Ionicons name="add" size={16} color="#4DB9F2" />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View className="gap-3">
+                        {STRENGTH_PROGRESSION.map((ex, idx) => (
+                            <View key={ex.id} className="bg-[#151E33] border border-[#1E293B] p-4 rounded-2xl flex-row justify-between items-center">
+                                <View className="flex-row items-center gap-4 flex-1">
+                                    <View className="w-12 h-12 bg-[#1E1E1E] rounded-xl border border-[#2D3748] items-center justify-center">
+                                        <Ionicons name="barbell-outline" size={22} color="#F59E0B" />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="font-bold text-base text-white">{ex.name}</Text>
+                                        <Text className="text-xs text-slate-400 mt-1">{ex.type} • {ex.sessions} sessions</Text>
+                                    </View>
+                                </View>
+                                <TouchableOpacity className="w-8 h-8 rounded-lg bg-[#1E1E1E] border border-[#2C2C2C] items-center justify-center">
+                                    <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                                </TouchableOpacity>
+                            </View>
                         ))}
                     </View>
-                    <View className="flex-row gap-2">
-                        <TouchableOpacity className="w-8 h-8 rounded-full bg-white border border-gray-100 shadow-sm items-center justify-center"><Ionicons name="calendar-outline" size={14} color="#9CA3AF" /></TouchableOpacity>
-                        <TouchableOpacity className="w-8 h-8 rounded-full bg-white border border-gray-100 shadow-sm items-center justify-center"><Ionicons name="chevron-forward" size={16} color="#9CA3AF" /></TouchableOpacity>
-                    </View>
                 </View>
 
-                {/* Exercises List */}
-                <Text className="text-[16px] font-bold text-gray-900 mb-4">Exercises</Text>
-                <View className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5 gap-6">
-                    {STRENGTH_PROGRESSION.map(ex => (
-                        <View key={ex.id} className="flex-row justify-between items-center">
-                            <View>
-                                <Text className="text-[15px] font-bold text-gray-900">{ex.name}</Text>
-                                <Text className="text-[12px] font-medium text-gray-500">{ex.type} • {ex.sessions} sessions</Text>
-                            </View>
-                            {/* Tiny Sparkline */}
-                            <View className="w-16 h-8 border-b-2 border-blue-200 relative items-end justify-end pb-1">
-                                <View className="w-full border-t-2 border-blue-300 transform -rotate-12 translate-y-1" />
-                                <View className="w-2 h-2 rounded-full border border-blue-500 bg-white" />
-                            </View>
-                        </View>
-                    ))}
-                </View>
             </ScrollView>
-
-            <View className="absolute bottom-10 self-center">
-                <TouchableOpacity activeOpacity={0.8} className="bg-white/95 px-5 py-3.5 rounded-full flex-row items-center shadow-lg shadow-black/10 border border-gray-100">
-                    <Text className="text-[16px] mr-2">📈</Text>
-                    <Text className="font-bold text-[14px] text-gray-900 mr-2">Stronger than ever!</Text>
-                    <Ionicons name="chevron-up" size={16} color="#9CA3AF" />
-                </TouchableOpacity>
-            </View>
         </View>
     );
 }

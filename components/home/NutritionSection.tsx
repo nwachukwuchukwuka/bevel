@@ -3,50 +3,52 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-const NutritionRow = ({ icon, label }: { icon: any, label: string }) => (
-    <View className="flex-row items-center gap-2">
-        <Ionicons name={icon} size={14} color="#D1D5DB" />
-        <Text className="text-sm font-semibold text-gray-900">{label}</Text>
-        <View className="flex-1 h-[1px] border-b border-dotted border-gray-200" />
-    </View>
-);
 
 export const NutritionSection = () => {
-    const router = useRouter(); // <-- Add this
+    const router = useRouter();
 
     return (
         <View>
-            <TouchableOpacity onPress={() => router.push('/nutrition')}
-                className="bg-white rounded-3xl p-5 shadow-sm shadow-black/5 border border-gray-50">
-                <View className="flex-row justify-between items-center mb-6">
-                    <Text className="text-gray-700 font-semibold">Today's foods</Text>
-                    <Ionicons name="arrow-forward" size={18} color="#9CA3AF" />
+            <TouchableOpacity 
+                onPress={() => router.push('/nutrition')}
+                className="bg-[#151E33] rounded-[24px] p-5 border border-slate-800/80"
+            >
+                {/* Header */}
+                <View className="flex-row justify-between items-center mb-5">
+                    <Text className="text-slate-200 font-semibold text-[15px]">Today's foods</Text>
+                    <Ionicons name="arrow-forward" size={18} color="#94A3B8" />
                 </View>
 
-                <View className="flex-row items-center">
-                    {/* Circular Graph Graphic Placeholder */}
-                    <View className="w-[88px] h-[88px] items-center justify-center relative mr-6">
-                        <View className="absolute w-full h-full border-[5px] border-dashed border-gray-100 rounded-full" />
-                        <View className="w-4 h-[2px] bg-gray-300" />
-                    </View>
-
-                    {/* Right List */}
-                    <View className="flex-1 gap-4">
-                        <NutritionRow icon="nutrition" label="0g" />
-                        <NutritionRow icon="leaf" label="0g" />
-                        <NutritionRow icon="fish" label="0g" />
-                    </View>
-                </View>
-
-                {/* NEW: Blood Glucose Row */}
-                <View className="h-[1px] border-b border-dashed border-gray-100 my-4" />
-                <View className="flex-row items-center justify-between">
+                {/* Blood Glucose Banner at the Top */}
+                <View className="bg-slate-900/30 rounded-xl p-3 border border-slate-800/50 flex-row items-center justify-between mb-5">
                     <View className="flex-row items-center gap-2">
-                        <View className="w-2 h-2 rounded-full bg-gray-300" />
-                        <Text className="text-[13px] font-semibold text-gray-600">Blood glucose</Text>
+                        <View className="w-1.5 h-1.5 rounded-full bg-slate-500" />
+                        <Text className="text-[12px] font-semibold text-slate-400">Blood glucose</Text>
                     </View>
-                    <Text className="text-[14px] font-bold text-gray-900">— <Text className="font-medium text-gray-400">mmol/L</Text></Text>
+                    <Text className="text-[13px] font-bold text-slate-100">— <Text className="font-medium text-slate-500 text-[10px]">mmol/L</Text></Text>
                 </View>
+
+                {/* 3-Column Nutrient Grid */}
+                <View className="flex-row justify-between">
+                    <View className="w-[30%] bg-slate-800/40 border border-slate-800/60 rounded-2xl p-3 items-center">
+                        <Ionicons name="nutrition" size={20} color="#F59E0B" />
+                        <Text className="text-[11px] font-semibold text-slate-400 mt-1">Carbs</Text>
+                        <Text className="text-sm font-bold text-slate-100 mt-2">0g</Text>
+                    </View>
+                    
+                    <View className="w-[30%] bg-slate-800/40 border border-slate-800/60 rounded-2xl p-3 items-center">
+                        <Ionicons name="leaf" size={20} color="#10B981" />
+                        <Text className="text-[11px] font-semibold text-slate-400 mt-1">Fats</Text>
+                        <Text className="text-sm font-bold text-slate-100 mt-2">0g</Text>
+                    </View>
+
+                    <View className="w-[30%] bg-slate-800/40 border border-slate-800/60 rounded-2xl p-3 items-center">
+                        <Ionicons name="fish" size={20} color="#3B82F6" />
+                        <Text className="text-[11px] font-semibold text-slate-400 mt-1">Protein</Text>
+                        <Text className="text-sm font-bold text-slate-100 mt-2">0g</Text>
+                    </View>
+                </View>
+
             </TouchableOpacity>
         </View>
     );

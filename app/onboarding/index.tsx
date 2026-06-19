@@ -1,124 +1,106 @@
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import {
-    Dimensions,
     Pressable,
     Text,
     TouchableOpacity,
     View
 } from 'react-native';
-import Animated, {
-    FadeInDown,
-    useAnimatedScrollHandler,
-    useSharedValue
-} from 'react-native-reanimated';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { FitnessWidgets } from '../../components/FitnessWidgets';
-import Pagination from '../../components/Pagination';
-import { COLORS, ONBOARDING_DATA } from '../../constants';
-
-const { width } = Dimensions.get('window');
+import { ONBOARDING_DATA } from '../../constants';
 
 export default function OnboardingScreen() {
-    const scrollX = useSharedValue(0);
     const router = useRouter();
 
-    const onScroll = useAnimatedScrollHandler({
-        onScroll: (event) => {
-            scrollX.value = event.contentOffset.x;
-        },
-    });
+    const item = ONBOARDING_DATA[0];
 
-    const renderItem = ({ item }: { item: typeof ONBOARDING_DATA[0] }) => {
-        return (
-            <View style={{ width }} className="px-6 pt-10">
-                <View className="flex-1">
-                    {/* SLIDE 1: Intro Logo */}
-                    {item.type === 'intro' && (
-                        <View className="flex-1 justify-center items-center -mt-20">
-                            <View className="w-48 h-48 relative justify-center items-center">
-                                <View className="absolute w-32 h-32 border-[12px] border-white/20 rounded-full top-0 right-4 transform rotate-12" />
-                                <View className="absolute w-32 h-32 border-[12px] border-white/30 rounded-full bottom-0 left-4 transform -rotate-12" />
-                                <LinearGradient
-                                    colors={['rgba(255,255,255,0.4)', 'rgba(255,255,255,0.05)']}
-                                    style={{ width: 140, height: 140, borderRadius: 40, transform: [{ skewX: '-10deg' }] }}
-                                    className="items-center justify-center border border-white/20"
-                                />
-                            </View>
+    return (
+        <View className="flex-1 bg-[#090D16]">
+            <StatusBar style="light" />
+
+            <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
+
+                <View className="flex-1 px-6 pt-10">
+
+                    <Animated.View
+                        entering={FadeInDown.duration(800).delay(100)}
+                        className="bg-[#151E33] border border-[#1E293B] rounded-[40px] h-[45vh] items-center justify-center mb-10 relative overflow-hidden"
+                        style={{ shadowColor: '#4DB9F2', shadowOpacity: 0.1, shadowRadius: 20, elevation: 10 }}
+                    >
+                        <View className="absolute inset-0 bg-[#090D16]/60" />
+
+                        {/* Matrix Lines */}
+                        <View className="w-full flex-row justify-evenly opacity-15 h-full absolute">
+                            {[...Array(7)].map((_, i) => (
+                                <View key={i} className="w-[1px] h-full bg-[#4DB9F2]" />
+                            ))}
                         </View>
-                    )}
 
-                    {/* SLIDE 2: Fitness Widgets */}
-                    {item.type === 'widget' && (
-                        <View className="mt-10">
-                            <FitnessWidgets />
-                        </View>
-                    )}
+                        {/* Radar Circles */}
+                        <View className="absolute w-[220px] h-[220px] border-[0.5px] border-[#4DB9F2] rounded-full opacity-20" />
+                        <View className="absolute w-[150px] h-[150px] border border-[#4DB9F2] rounded-full opacity-40" />
 
-                    {/* Typography */}
-                    <View className={item.type === 'intro' ? 'mb-20' : 'mt-8'}>
-                        <Animated.Text
-                            entering={FadeInDown.duration(600).delay(200)}
-                            className={`text-4xl ${item.type === 'intro' ? 'text-center' : ''} font-semibold text-neutral-800 tracking-tight leading-tight`}
+                        {/* Glowing Center Chip */}
+                        <View
+                            className="w-[90px] h-[90px] bg-[#090D16] border-2 border-[#4DB9F2] rounded-full items-center justify-center z-10"
+                            style={{ shadowColor: '#4DB9F2', shadowOpacity: 0.5, shadowRadius: 15, elevation: 8 }}
                         >
-                            {item.title}
+                            <Ionicons name="hardware-chip" size={38} color="#4DB9F2" />
+                        </View>
+                    </Animated.View>
+
+                    {/* Typography Block */}
+                    <View className="flex-1 justify-start">
+
+
+                        {/* Title */}
+                        <Animated.Text
+                            entering={FadeInDown.duration(600).delay(300)}
+                            className="text-[36px] font-extrabold text-slate-100 leading-[44px] mb-4 tracking-tight"
+                        >
+                            {item?.title || "Initialize System"}
                         </Animated.Text>
 
-                        {item.subtitle ? (
+                        {/* Subtitle */}
+                        {item?.subtitle ? (
                             <Animated.Text
-                                entering={FadeInDown.duration(600).delay(300)}
-                                className="text-neutral-500 text-lg mt-3 leading-6"
+                                entering={FadeInDown.duration(600).delay(400)}
+                                className="text-slate-400 text-3xl  font-medium"
                             >
                                 {item.subtitle}
                             </Animated.Text>
                         ) : null}
                     </View>
                 </View>
-            </View>
-        );
-    };
 
-    return (
-        <View className="flex-1 bg-neutral-200">
-            <StatusBar style="dark" />
+                {/* Bottom Action Area */}
+                <View className="px-6 pb-4 bg-[#090D16] pt-4 mt-auto">
+                    <View className="flex-col gap-4">
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            className="w-full bg-[#1E293B] border border-[#2D3748] h-16 rounded-[20px] flex-row justify-center items-center gap-3"
+                        >
+                            <Ionicons name="logo-apple" size={22} color="white" />
+                            <Text className="text-white font-bold text-[17px]">Continue with Apple</Text>
+                        </TouchableOpacity>
 
-            <LinearGradient
-                colors={[COLORS.bgGradientStart, COLORS.bgGradientEnd]}
-                style={{ position: 'absolute', width: '100%', height: '100%' }}
-            />
-
-            <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-                <Animated.FlatList
-                    data={ONBOARDING_DATA}
-                    renderItem={renderItem}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    onScroll={onScroll}
-                    scrollEventThrottle={16}
-                    keyExtractor={(item) => item.id}
-                    bounces={false}
-                />
-
-                <View className="px-6 pb-4">
-                    <Pagination data={ONBOARDING_DATA} scrollX={scrollX} screenWidth={width} />
-
-                    <TouchableOpacity
-                        activeOpacity={0.8}
-                        className="w-full bg-black h-14 rounded-full flex-row justify-center items-center gap-2 shadow-lg"
-                    >
-                        <Ionicons name="logo-apple" size={20} color="white" />
-                        <Text className="text-white font-semibold text-lg">Continue with Apple</Text>
-                    </TouchableOpacity>
-
-                    <Pressable onPress={() => router.push('/onboarding/email')} className="mt-5 mb-2 items-center">
-                        <Text className="text-neutral-700 font-medium text-sm">Use email instead</Text>
-                    </Pressable>
+                        <Pressable
+                            onPress={() => router.push('/onboarding/email')}
+                            className="w-full bg-[#4DB9F2] h-16 rounded-[20px] flex-row justify-center items-center"
+                            style={({ pressed }) => [
+                                { opacity: pressed ? 0.8 : 1 },
+                                { shadowColor: '#4DB9F2', shadowOpacity: 0.25, shadowRadius: 10, elevation: 5 }
+                            ]}
+                        >
+                            <Text className="text-[#090D16] font-bold text-[17px]">Use email instead</Text>
+                        </Pressable>
+                    </View>
                 </View>
+
             </SafeAreaView>
         </View>
     );

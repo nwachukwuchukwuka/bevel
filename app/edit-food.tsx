@@ -3,7 +3,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useRouter } from 'expo-router';
 import React, { useRef } from 'react';
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EditFoodScreen() {
     const router = useRouter();
@@ -17,113 +18,135 @@ export default function EditFoodScreen() {
     ];
 
     return (
-        <SafeAreaView className="flex-1 bg-white">
-            {/* Header */}
-            <View className="flex-row items-center justify-between px-5 py-2">
-                <TouchableOpacity onPress={() => router.back()} className="p-2 -ml-2">
-                    <Ionicons name="chevron-back" size={24} color="#6B7280" />
+        <SafeAreaView className="flex-1 bg-[#090D16]" edges={['top']}>
+
+            <View className="flex-row items-center justify-between px-5 py-4 border-b border-[#1E293B] bg-[#151E33]">
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    activeOpacity={0.7}
+                    className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                >
+                    <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
                 </TouchableOpacity>
-                <Text className="font-bold text-gray-900 text-[15px]">Edit food details</Text>
-                <TouchableOpacity className="border border-gray-200 p-2 rounded-xl shadow-sm bg-white">
-                    <Ionicons name="star" size={16} color="#D1D5DB" />
+                <View className="items-center">
+                    <Text className="text-lg font-bold text-slate-100">Edit food details</Text>
+                </View>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                >
+                    <Ionicons name="star-outline" size={18} color="#F59E0B" />
                 </TouchableOpacity>
             </View>
 
-            <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 100 }}>
-                {/* Title Section */}
-                <View className="w-14 h-14 bg-gray-50 rounded-2xl items-center justify-center border border-gray-100 mb-4 shadow-sm">
-                    <Text className="text-2xl">🥑</Text>
-                </View>
-                <Text className="text-2xl font-bold text-gray-900">Avocado Toast with Fried Egg</Text>
-                <Text className="text-gray-500 font-medium mb-8">Common</Text>
+            <ScrollView contentContainerStyle={{ paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
 
-                {/* Nutrition Facts Header */}
-                <View className="flex-row items-center gap-1 mb-4">
-                    <Text className="font-bold text-gray-900 text-base">Nutrition Facts</Text>
-                    <Ionicons name="information-circle-outline" size={16} color="#9CA3AF" />
-                </View>
-
-                {/* Macro Nutrients Data Row */}
-                <View className="flex-row items-center justify-between mb-8">
-                    <MacroItem label="Fat" value="26.8g" pct="20%" color="#60A5FA" />
-                    <MacroItem label="Carbs" value="85.1g" pct="64%" color="#FBBF24" />
-                    <MacroItem label="Protein" value="20.7g" pct="16%" color="#F472B6" />
-
-                    {/* Fake Ring Chart */}
-                    <View className="w-20 h-20 rounded-full border-[6px] border-[#FBBF24] items-center justify-center relative">
-                        {/* Overlay borders to fake segments */}
-                        <View className="absolute inset-0 border-[6px] border-[#60A5FA] rounded-full border-b-transparent border-l-transparent -rotate-45" />
-                        <View className="absolute inset-0 border-[6px] border-[#F472B6] rounded-full border-t-transparent border-r-transparent border-l-transparent rotate-45" />
-
-                        <Text className="font-bold text-xl text-gray-900 leading-6">577</Text>
-                        <Text className="text-[10px] text-gray-500 font-medium -mt-1">kcal</Text>
+                <View className="px-5 py-6 bg-[#151E33] border-b border-[#1E293B] flex-row items-center gap-4">
+                    <View className="w-16 h-16 bg-[#1E293B] rounded-2xl items-center justify-center border border-[#2D3748]">
+                        <Text className="text-3xl">🥑</Text>
+                    </View>
+                    <View className="flex-1">
+                        <Text className="text-xl font-bold text-white leading-6 mb-1">Avocado Toast with Fried Egg</Text>
+                        <Text className="text-sm font-semibold text-[#4DB9F2]">Common</Text>
                     </View>
                 </View>
 
-                {/* Portion Size */}
-                <Text className="font-bold text-gray-900 text-base mb-3">Portion size</Text>
-                <View className="flex-row items-center gap-3 mb-8">
-                    <TouchableOpacity className="flex-1 border border-gray-200 rounded-xl px-4 py-3 flex-row justify-between items-center bg-white shadow-sm">
-                        <Text className="font-semibold text-gray-900">1 serving</Text>
-                        <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
-                    </TouchableOpacity>
-                    <TouchableOpacity className="w-12 h-12 border border-gray-200 rounded-xl items-center justify-center bg-white shadow-sm">
-                        <Ionicons name="remove" size={20} color="#6B7280" />
-                    </TouchableOpacity>
-                    <TouchableOpacity className="w-12 h-12 border border-gray-200 rounded-xl items-center justify-center bg-white shadow-sm">
-                        <Ionicons name="add" size={20} color="#6B7280" />
-                    </TouchableOpacity>
-                </View>
+                <View className="px-5 py-6">
+                    <View className="flex-row items-center justify-between mb-6">
+                        <View className="flex-row items-center gap-2">
+                            <Ionicons name="pie-chart-outline" size={18} color="#4DB9F2" />
+                            <Text className="font-bold text-white text-base">Nutrition Facts</Text>
+                        </View>
+                        <Ionicons name="information-circle-outline" size={18} color="#94A3B8" />
+                    </View>
 
-                {/* Ingredients */}
-                <View className="flex-row items-center justify-between mb-1">
-                    <Text className="font-bold text-gray-900 text-base">Ingredients</Text>
-                    <TouchableOpacity className="w-8 h-8 bg-gray-100 rounded-full items-center justify-center">
-                        <Ionicons name="add" size={18} color="#4B5563" />
-                    </TouchableOpacity>
-                </View>
-                <Text className="text-sm text-gray-400 mb-4 leading-5">The listed ingredient amounts are measured for a single serving.</Text>
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-5 mb-8 flex-row items-center justify-between">
+                        <View className="w-24 h-24 rounded-full border-[8px] border-[#F59E0B] items-center justify-center relative">
+                            <View className="absolute inset-0 border-[8px] border-[#4DB9F2] rounded-full border-b-transparent border-l-transparent -rotate-45" />
+                            <View className="absolute inset-0 border-[8px] border-[#EF4444] rounded-full border-t-transparent border-r-transparent border-l-transparent rotate-45" />
 
-                <View className="gap-3">
-                    {INGREDIENTS.map(ing => (
-                        <TouchableOpacity
-                            key={ing.id}
-                            onPress={() => router.push({ pathname: '/edit-ingredient', params: { name: ing.name } })}
-                            className="flex-row items-center justify-between border border-gray-100 bg-white p-3 rounded-2xl shadow-sm"
-                        >
-                            <View className="flex-row items-center gap-3">
-                                <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center">
-                                    <Text>{ing.icon}</Text>
-                                </View>
-                                <View>
-                                    <View className="flex-row items-center gap-1">
-                                        <Text className="font-bold text-gray-900">{ing.name}</Text>
-                                        {ing.verified && <Ionicons name="checkmark-circle" size={14} color="#3B82F6" />}
-                                    </View>
-                                    <Text className="text-xs text-gray-500">{ing.amount}</Text>
-                                </View>
-                            </View>
-                            <Ionicons name="arrow-forward" size={16} color="#9CA3AF" />
+                            <Text className="font-bold text-2xl text-white">577</Text>
+                            <Text className="text-xs text-slate-500 font-semibold -mt-1">kcal</Text>
+                        </View>
+
+                        <View className="flex-1 ml-6 gap-3">
+                            <MacroItem label="Fat" value="26.8g" pct="20%" color="#4DB9F2" />
+                            <MacroItem label="Carbs" value="85.1g" pct="64%" color="#F59E0B" />
+                            <MacroItem label="Protein" value="20.7g" pct="16%" color="#EF4444" />
+                        </View>
+                    </View>
+
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 mb-8 flex-row items-center justify-between">
+                        <View>
+                            <Text className="text-xs font-semibold text-slate-400 mb-1">Portion size</Text>
+                            <Text className="font-bold text-white text-lg">1 serving</Text>
+                        </View>
+                        <View className="flex-row items-center gap-3">
+                            <TouchableOpacity className="w-10 h-10 border border-[#2D3748] rounded-xl items-center justify-center bg-[#1E293B]">
+                                <Ionicons name="remove" size={18} color="#4DB9F2" />
+                            </TouchableOpacity>
+                            <TouchableOpacity className="w-10 h-10 border border-[#2D3748] rounded-xl items-center justify-center bg-[#1E293B]">
+                                <Ionicons name="add" size={18} color="#4DB9F2" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View className="flex-row items-center justify-between mb-4">
+                        <Text className="font-bold text-white text-base">Ingredients</Text>
+                        <TouchableOpacity className="w-8 h-8 bg-[#1E293B] rounded-lg items-center justify-center border border-[#2D3748]">
+                            <Ionicons name="add" size={16} color="#4DB9F2" />
                         </TouchableOpacity>
-                    ))}
+                    </View>
+                    <Text className="text-xs text-slate-500 mb-4 leading-5">The listed ingredient amounts are measured for a single serving.</Text>
 
-                    {/* Add Custom Ingredient Trigger */}
-                    <TouchableOpacity
-                        onPress={() => addIngredientRef.current?.present()}
-                        className="border border-dashed border-gray-300 bg-gray-50/50 p-4 rounded-2xl flex-row items-center justify-between mt-2">
-                        <Text className="font-medium text-gray-500">Add ingredient</Text>
-                        <Ionicons name="add" size={20} color="#4B5563" />
-                    </TouchableOpacity>
+                    <View className="gap-3">
+                        {INGREDIENTS.map(ing => (
+                            <TouchableOpacity
+                                key={ing.id}
+                                onPress={() => router.push({ pathname: '/edit-ingredient', params: { name: ing.name } })}
+                                activeOpacity={0.8}
+                                className="flex-row items-center justify-between border border-[#1E293B] bg-[#151E33] p-4 rounded-2xl"
+                            >
+                                <View className="flex-row items-center gap-4 flex-1">
+                                    <View className="w-12 h-12 bg-[#1E293B] rounded-xl items-center justify-center border border-[#2D3748]">
+                                        <Text className="text-xl">{ing.icon}</Text>
+                                    </View>
+                                    <View className="flex-1 pr-2">
+                                        <View className="flex-row items-center gap-1.5 mb-1">
+                                            <Text className="font-bold text-slate-100 text-sm" numberOfLines={1}>{ing.name}</Text>
+                                            {ing.verified && <Ionicons name="shield-checkmark" size={14} color="#10B981" />}
+                                        </View>
+                                        <Text className="text-xs font-semibold text-slate-500">{ing.amount}</Text>
+                                    </View>
+                                </View>
+                                <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                            </TouchableOpacity>
+                        ))}
+
+                        <TouchableOpacity
+                            onPress={() => addIngredientRef.current?.present()}
+                            activeOpacity={0.7}
+                            className="border border-dashed border-[#4DB9F2] bg-[#151E33]/50 p-4 rounded-2xl flex-row items-center justify-center gap-2 mt-2"
+                        >
+                            <Ionicons name="add" size={18} color="#4DB9F2" />
+                            <Text className="font-bold text-[#4DB9F2] text-sm">Add ingredient</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ScrollView>
 
-            {/* Footer Fixed Buttons */}
-            <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-5 gap-3 pt-4 pb-8">
-                <TouchableOpacity className="bg-gray-100 py-4 rounded-full items-center">
-                    <Text className="text-[#F87171] font-bold text-[15px]">Remove</Text>
+            <View className="absolute bottom-0 left-0 right-0 bg-[#090D16] border-t border-[#1E293B] p-5 pt-4 pb-8 flex-row gap-3">
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    className="flex-1 bg-rose-950/20 border border-rose-500/20 py-4 rounded-2xl items-center justify-center"
+                >
+                    <Text className="text-rose-500 font-bold text-sm">Remove</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="bg-[#1A1A1A] py-4 rounded-full items-center shadow-lg">
-                    <Text className="text-white font-bold text-[15px]">Save</Text>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    className="flex-[2] bg-[#4DB9F2] border border-[#4DB9F2] py-4 rounded-2xl items-center justify-center"
+                >
+                    <Text className="text-[#090D16] font-bold text-base">Save configuration</Text>
                 </TouchableOpacity>
             </View>
 
@@ -133,11 +156,15 @@ export default function EditFoodScreen() {
     );
 }
 
-// Sub Component
 const MacroItem = ({ label, value, pct, color }: any) => (
-    <View>
-        <Text style={{ color }} className="font-medium text-[11px] mb-1">{label}</Text>
-        <Text className="font-bold text-gray-900 text-lg">{value}</Text>
-        <Text className="text-xs text-gray-400 mt-1">{pct}</Text>
+    <View className="flex-row items-center justify-between w-full">
+        <View className="flex-row items-center gap-2">
+            <View className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
+            <Text className="font-semibold text-slate-400 text-xs w-10">{label}</Text>
+        </View>
+        <Text className="font-bold text-white text-sm">{value}</Text>
+        <View className="bg-[#1E293B] px-1.5 py-0.5 rounded border border-[#2D3748] w-10 items-center">
+            <Text className="text-[10px] font-bold" style={{ color }}>{pct}</Text>
+        </View>
     </View>
 );

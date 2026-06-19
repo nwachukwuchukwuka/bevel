@@ -118,7 +118,7 @@ export default function PaywallScreen() {
                 {/* Footer Button */}
                 <View className="px-6 w-full" style={{ paddingBottom: insets.bottom || 20 }}>
                     <TouchableOpacity
-                        onPress={() => router.push('/onboarding/tutorial')}
+                        onPress={() => router.push('/(tabs)')}
                         className="w-full bg-transparent h-[56px] rounded-full items-center justify-center border border-white mb-4"
                     >
                         <Text className="text-white font-semibold text-[16px]">Continue</Text>

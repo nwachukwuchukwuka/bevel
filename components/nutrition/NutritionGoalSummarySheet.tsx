@@ -12,11 +12,13 @@ interface Props {
 
 export const NutritionGoalSummarySheet = forwardRef<NutritionGoalSummarySheetRef, Props>(({ onEditGoal }, ref) => {
     const insets = useSafeAreaInsets();
-    const snapPoints = useMemo(() => ['70%'], []);
+    const snapPoints = useMemo(() => ['85%'], []);
 
     const renderBackdrop = useCallback((props: any) => (
-        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.4} />
+        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.6} />
     ), []);
+
+    const dismiss = () => (ref as any).current?.dismiss();
 
     return (
         <BottomSheetModal
@@ -24,78 +26,104 @@ export const NutritionGoalSummarySheet = forwardRef<NutritionGoalSummarySheetRef
             index={0}
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
-            handleIndicatorStyle={{ display: 'none' }}
-            backgroundStyle={{ backgroundColor: '#FFFFFF', borderRadius: 32 }}
+            handleIndicatorStyle={{ backgroundColor: '#1E2D4A', width: 40 }}
+            backgroundStyle={{ backgroundColor: '#090D16', borderRadius: 32 }}
             stackBehavior='push'
             enableDynamicSizing={false}
         >
             <BottomSheetView style={{ flex: 1, paddingBottom: insets.bottom }}>
-                {/* Header */}
-                <View className="flex-row items-center justify-between px-5 pt-2 pb-8">
-                    <TouchableOpacity onPress={() => (ref as any).current?.dismiss()}>
-                        <Ionicons name="close" size={24} color="#D1D5DB" />
-                    </TouchableOpacity>
-                    <Text className="font-bold text-[15px] text-gray-900">Your Nutrition Goal</Text>
-                    <TouchableOpacity className="w-8 h-8 rounded-lg bg-white items-center justify-center border border-gray-100 shadow-sm shadow-black/5">
-                        <Ionicons name="information" size={16} color="#6B7280" />
-                    </TouchableOpacity>
-                </View>
 
-                <View className="flex-1 px-8 items-center">
-                    {/* Main Chart */}
-                    <View className="w-48 h-48 rounded-full border-[10px] border-gray-50 relative items-center justify-center mb-10">
-                        {/* Fake Arc segments */}
-                        <View className="absolute inset-0 rounded-full border-[10px] border-blue-400 border-b-transparent border-l-transparent -rotate-45" />
-                        <View className="absolute inset-0 rounded-full border-[10px] border-yellow-400 border-t-transparent border-r-transparent border-l-transparent rotate-45" />
-                        <View className="absolute inset-0 rounded-full border-[10px] border-pink-400 border-t-transparent border-r-transparent border-b-transparent -rotate-135" />
-
-                        <View className="items-center">
-                            <Text className="text-[28px] font-bold text-gray-900">1.892</Text>
-                            <Text className="text-[13px] font-bold text-gray-400">kcal</Text>
-                        </View>
+                {/* Header Row (No bottom border, restructured) */}
+                <View className="flex-row items-center justify-between px-6 pt-4 pb-8">
+                    <View>
+                        <Text className="text-[22px] font-bold text-[#F1F5F9]">Nutrition Goal</Text>
+                        <Text className="text-[14px] text-[#64748B] mt-1">Caloric & macro targets</Text>
                     </View>
-
-                    {/* Stats List */}
-                    <View className="w-full gap-4 mb-10">
-                        <StatRow label="Fat" value="63,1g" pct="30%" color="#60A5FA" icon="sparkles" />
-                        <StatRow label="Carbs" value="189,2g" pct="40%" color="#FBBF24" icon="flash" />
-                        <StatRow label="Protein" value="141,9g" pct="30%" color="#F472B6" icon="flame" />
-                    </View>
-
-                    <Text className="text-center text-[13px] text-gray-400 leading-5 mb-8">
-                        Your daily maintenance (TDEE) is <Text className="font-bold text-gray-700">1.892 kcal</Text>. Your goal is at maintenance.
-                    </Text>
-
-                    {/* Action Buttons */}
-                    <View className="w-full flex-row gap-4 mb-4">
-                        <TouchableOpacity className="flex-1 bg-gray-100 h-[56px] rounded-full items-center justify-center">
-                            <Text className="text-gray-900 font-bold text-[16px]">New goal</Text>
+                    <View className="flex-row gap-3">
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            className="w-10 h-10 bg-[#151E33] border border-[#1E2D4A] rounded-[12px] items-center justify-center"
+                        >
+                            <Ionicons name="information" size={20} color="#94A3B8" />
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => {
-                                onEditGoal();
-                            }}
-                            className="flex-1 bg-[#1A1A1A] h-[56px] rounded-full items-center justify-center"
+                            onPress={dismiss}
+                            activeOpacity={0.7}
+                            className="w-10 h-10 bg-[#151E33] border border-[#1E2D4A] rounded-[12px] items-center justify-center"
                         >
-                            <Text className="text-white font-bold text-[16px]">Edit Goal</Text>
+                            <Ionicons name="close" size={20} color="#94A3B8" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View className="flex-1 px-6">
+
+                    {/* Central Metric Block (Completely replaced the pie chart layout) */}
+                    <View className="bg-[#151E33] border border-[#1E2D4A] rounded-[24px] p-8 mb-6 items-center">
+                        <View className="w-14 h-14 bg-[#0F172A] border border-[#1E2D4A] rounded-[16px] items-center justify-center mb-4">
+                            <Ionicons name="flame" size={28} color="#4DB9F2" />
+                        </View>
+                        <Text className="text-[14px] text-[#64748B] mb-2 font-medium">Daily Target</Text>
+                        <Text className="text-[56px] font-bold text-[#F1F5F9] leading-none tracking-tight">1.892</Text>
+                        <Text className="text-[18px] text-[#4DB9F2] font-bold mt-2">kcal</Text>
+                    </View>
+
+                    {/* Vertical Stats List (Replaced horizontal matrix) */}
+                    <View className="flex-col gap-3 mb-6">
+                        <StatRow label="Fat" value="63,1g" pct="30%" color="#4DB9F2" />
+                        <StatRow label="Carbs" value="189,2g" pct="40%" color="#F59E0B" />
+                        <StatRow label="Protein" value="141,9g" pct="30%" color="#EF4444" />
+                    </View>
+
+                    {/* Context Panel */}
+                    <View className="bg-[#0F172A] border border-[#1E2D4A] p-5 rounded-[20px] mb-8 flex-row items-center gap-4">
+                        <View className="w-10 h-10 bg-[#151E33] rounded-[12px] items-center justify-center border border-[#1E2D4A]">
+                            <Ionicons name="analytics" size={20} color="#4DB9F2" />
+                        </View>
+                        <Text className="flex-1 text-[13px] text-[#64748B] leading-5">
+                            Your daily maintenance (TDEE) is <Text className="font-bold text-[#F1F5F9]">1.892 kcal</Text>. Your goal is at maintenance.
+                        </Text>
+                    </View>
+
+                    {/* Vertical Actions */}
+                    <View className="mt-auto mb-4 flex-col gap-3">
+                        <TouchableOpacity
+                            onPress={onEditGoal}
+                            activeOpacity={0.8}
+                            className="w-full bg-[#4DB9F2] h-[56px] rounded-[16px] items-center justify-center"
+                        >
+                            <Text className="text-[#090D16] font-bold text-[16px]">Edit Goal</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            className="w-full bg-[#151E33] h-[56px] rounded-[16px] items-center justify-center border border-[#1E2D4A]"
+                        >
+                            <Text className="text-[#F1F5F9] font-bold text-[16px]">New goal</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity activeOpacity={0.7} className="py-3 items-center">
+                            <Text className="text-[#EF4444] font-bold text-[15px]">Clear goal</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity>
-                        <Text className="text-red-500 font-bold text-[13px]">Clear goal</Text>
-                    </TouchableOpacity>
                 </View>
             </BottomSheetView>
         </BottomSheetModal>
     );
 });
 
-const StatRow = ({ label, value, pct, color, icon }: any) => (
-    <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center gap-2">
-            <Ionicons name={icon} size={14} color={color} />
-            <Text className="text-[14px] font-bold" style={{ color }}>{label}</Text>
-            <Text className="text-[14px] font-bold text-gray-400 ml-1">{value} • {pct}</Text>
+const StatRow = ({ label, value, pct, color }: any) => (
+    <View className="flex-row items-center justify-between bg-[#151E33] border border-[#1E2D4A] rounded-[20px] p-4">
+        <View className="flex-row items-center gap-4">
+            <View className="w-12 h-12 rounded-[14px] items-center justify-center bg-[#0F172A] border border-[#1E2D4A]">
+                <View className="w-4 h-4 rounded-full shadow-sm" style={{ backgroundColor: color }} />
+            </View>
+            <View>
+                <Text className="text-[#F1F5F9] font-bold text-[15px]">{label}</Text>
+                <Text className="text-[#64748B] text-[13px] mt-0.5">{pct} of total</Text>
+            </View>
         </View>
+        <Text className="text-[#F1F5F9] font-bold text-[16px]">{value}</Text>
     </View>
 );

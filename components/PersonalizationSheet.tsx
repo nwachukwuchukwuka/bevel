@@ -11,7 +11,7 @@ export const PersonalizationSheet = forwardRef<BottomSheetModal>((props, ref) =>
     const [selectedTone, setSelectedTone] = useState<'Gentle' | 'Neutral' | 'Direct'>('Neutral');
 
     const renderBackdrop = useCallback(
-        (props: any) => <BottomSheetBackdrop {...props} opacity={0.4} />,
+        (props: any) => <BottomSheetBackdrop {...props} opacity={0.7} />,
         []
     );
 
@@ -52,63 +52,62 @@ export const PersonalizationSheet = forwardRef<BottomSheetModal>((props, ref) =>
     return (
         <BottomSheetModal
             ref={ref}
-            snapPoints={['100%']}
+            snapPoints={['90%']}
             backdropComponent={renderBackdrop}
-            handleIndicatorStyle={{ display: 'none' }}
+            backgroundStyle={{ backgroundColor: '#090D16' }}
+            handleIndicatorStyle={{ backgroundColor: '#1E293B', width: 40 }}
             enableDynamicSizing={false}
         >
             <BottomSheetView className="flex-1">
                 {view === 'main' ? (
-                    // --- MAIN PERSONALIZATION VIEW ---
-                    <View className="flex-1 px-5 pt-2">
-                        {/* Header */}
-                        <View className="flex-row items-center justify-center mb-8 relative">
-                            <TouchableOpacity onPress={handleDismiss} className="absolute left-0">
-                                <Ionicons name="close" size={24} color="#9CA3AF" />
+                    <View className="flex-1 px-5 pt-4">
+                        <View className="flex-row items-center justify-between mb-8">
+                            <View>
+                                <Text className="text-[24px] font-bold text-slate-100 mb-1">Personalization</Text>
+                                <Text className="text-[13px] font-medium text-slate-400">Configure AI assistant traits</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={handleDismiss}
+                                className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-[12px] items-center justify-center"
+                            >
+                                <Ionicons name="close" size={20} color="#94A3B8" />
                             </TouchableOpacity>
-                            <Text className="font-bold text-gray-900 text-base">Personalization</Text>
                         </View>
 
-                        {/* Tone & Detail */}
-                        <Text className="text-gray-500 font-medium text-[13px] mb-3 ml-1">Tone & Detail</Text>
-
-                        <View className="bg-white rounded-[20px]  shadow-black/5 border border-gray-100 mb-6 flex-col overflow-hidden">
-                            {/* Tone Item */}
+                        <Text className="text-slate-500 font-bold text-[12px] mb-3 ml-1">Tone & Detail</Text>
+                        <View className="bg-[#151E33] rounded-[20px] border border-[#1E293B] mb-8 overflow-hidden">
                             <TouchableOpacity
                                 onPress={() => setView('tone')}
-                                className="flex-row justify-between items-center p-4 border-b border-gray-100/80"
+                                className="flex-row justify-between items-center p-4 border-b border-[#1E293B]"
                             >
                                 <View className="flex-row items-center gap-4">
-                                    <View className="w-8 h-8 rounded-full bg-gray-50 items-center justify-center">
-                                        <Ionicons name="chatbubble-ellipses" size={16} color="#4B5563" />
+                                    <View className="w-12 h-12 rounded-[14px] bg-[#1E293B] border border-[#2D3748] items-center justify-center">
+                                        <Ionicons name="chatbubbles" size={20} color="#4DB9F2" />
                                     </View>
                                     <View>
-                                        <Text className="font-bold text-gray-900 text-base mb-0.5">{selectedTone}</Text>
-                                        <Text className="text-gray-400 text-xs font-medium">Tone</Text>
+                                        <Text className="font-bold text-slate-100 text-[16px] mb-1">{selectedTone}</Text>
+                                        <Text className="text-slate-500 text-[13px] font-medium">Tone</Text>
                                     </View>
                                 </View>
-                                <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
+                                <Ionicons name="chevron-forward" size={18} color="#64748B" />
                             </TouchableOpacity>
 
-                            {/* Detail Item */}
                             <TouchableOpacity className="flex-row justify-between items-center p-4">
                                 <View className="flex-row items-center gap-4">
-                                    <View className="w-8 h-8 rounded-full bg-gray-50 items-center justify-center">
-                                        <Ionicons name="document-text" size={16} color="#4B5563" />
+                                    <View className="w-12 h-12 rounded-[14px] bg-[#1E293B] border border-[#2D3748] items-center justify-center">
+                                        <Ionicons name="document-text" size={20} color="#4DB9F2" />
                                     </View>
                                     <View>
-                                        <Text className="font-bold text-gray-900 text-base mb-0.5">Moderate</Text>
-                                        <Text className="text-gray-400 text-xs font-medium">Detail</Text>
+                                        <Text className="font-bold text-slate-100 text-[16px] mb-1">Moderate</Text>
+                                        <Text className="text-slate-500 text-[13px] font-medium">Detail</Text>
                                     </View>
                                 </View>
-                                <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
+                                <Ionicons name="chevron-forward" size={18} color="#64748B" />
                             </TouchableOpacity>
                         </View>
 
-                        {/* Memory */}
-                        <Text className="text-gray-500 font-medium text-[13px] mb-3 ml-1">Memory</Text>
-
-                        <View className="bg-white rounded-[20px]  shadow-black/5 border border-gray-100 overflow-hidden">
+                        <Text className="text-slate-500 font-bold text-[12px] mb-3 ml-1">Memory</Text>
+                        <View className="bg-[#151E33] rounded-[20px] border border-[#1E293B] overflow-hidden">
                             <TouchableOpacity
                                 onPress={() => {
                                     handleDismiss();
@@ -117,54 +116,58 @@ export const PersonalizationSheet = forwardRef<BottomSheetModal>((props, ref) =>
                                 className="flex-row justify-between items-center p-4"
                             >
                                 <View className="flex-row items-center gap-4">
-                                    <View className="w-8 h-8 rounded-full bg-gray-50 items-center justify-center">
-                                        <Ionicons name="settings" size={16} color="#4B5563" />
+                                    <View className="w-12 h-12 rounded-[14px] bg-[#1E293B] border border-[#2D3748] items-center justify-center">
+                                        <Ionicons name="server" size={20} color="#4DB9F2" />
                                     </View>
-                                    <Text className="font-bold text-gray-900 text-base">Manage memory</Text>
+                                    <View>
+                                        <Text className="font-bold text-slate-100 text-[16px] mb-1">Manage memory</Text>
+                                        <Text className="text-slate-500 text-[13px] font-medium">Review saved contexts</Text>
+                                    </View>
                                 </View>
-                                <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
+                                <Ionicons name="chevron-forward" size={18} color="#64748B" />
                             </TouchableOpacity>
                         </View>
                     </View>
 
                 ) : (
-
-                    // --- TONE SETTINGS VIEW ---
-                    <View className="flex-1 px-5 pt-2 pb-8">
-                        {/* Header */}
-                        <View className="flex-row items-center justify-center mb-6 relative">
-                            <TouchableOpacity onPress={() => setView('main')} className="absolute left-0">
-                                <Ionicons name="close" size={24} color="#9CA3AF" />
+                    <View className="flex-1 px-5 pt-4 pb-8">
+                        <View className="flex-row items-center justify-between mb-8">
+                            <View>
+                                <Text className="text-[24px] font-bold text-slate-100 mb-1">Response Tone</Text>
+                                <Text className="text-[13px] font-medium text-slate-400">Set preferred voice of responses</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => setView('main')}
+                                className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-[12px] items-center justify-center"
+                            >
+                                <Ionicons name="arrow-back" size={20} color="#94A3B8" />
                             </TouchableOpacity>
-                            <Text className="font-medium text-gray-600 text-sm">Tone</Text>
                         </View>
 
-                        <Text className="font-bold text-gray-900 text-[18px] text-center mb-8 px-4 leading-7">
-                            Set preferred tone and{'\n'}voice of responses
-                        </Text>
-
-                        {/* Chat Previews */}
-                        <View className="flex-1 items-start gap-4">
+                        <View className="flex-1 gap-4 mt-2">
                             {TONE_CONTENT[selectedTone].previews.map((text, idx) => (
-                                <View key={idx} className="bg-[#F8F9FA] px-4 py-3 rounded-3xl rounded-tl-sm max-w-[85%]">
-                                    <Text className="text-gray-900 text-[14px] font-medium leading-5 z-10">{text}</Text>
-
-                                    {/* Multi-color glow effects behind the bubble */}
-                                    <View className="absolute -inset-[3px] border border-[#FDE68A] rounded-3xl rounded-tl-sm opacity-30 z-0" />
-                                    <View className="absolute -inset-[6px] border border-[#93C5FD] rounded-3xl rounded-tl-sm opacity-20 -z-10" />
+                                <View
+                                    key={idx}
+                                    className="bg-[#151E33] border border-[#1E293B] px-5 py-4 rounded-[20px] rounded-tl-sm max-w-[85%] self-start"
+                                >
+                                    <Text className="text-slate-200 text-[14px] font-medium leading-6">{text}</Text>
                                 </View>
                             ))}
                         </View>
 
-                        {/* Tone Selector & Description */}
-                        <View className="mt-8">
-                            <Text className="text-center font-bold text-gray-900 text-[18px] mb-2">{selectedTone}</Text>
-                            <Text className="text-center text-gray-400 text-[12px] font-medium leading-5 mb-8 px-4">
+                        <View className="mt-6 bg-[#151E33] border border-[#1E293B] rounded-[24px] p-6">
+                            <View className="flex-row items-center justify-between mb-2">
+                                <Text className="font-bold text-slate-100 text-[18px]">{selectedTone}</Text>
+                                <View className="bg-blue-950/30 border border-blue-500/20 px-2 py-1 rounded-md">
+                                    <Text className="text-blue-400 font-bold text-[10px]">Active Profile</Text>
+                                </View>
+                            </View>
+
+                            <Text className="text-slate-400 text-[13px] font-medium leading-5 mb-8">
                                 {TONE_CONTENT[selectedTone].desc}
                             </Text>
 
-                            {/* Slider */}
-                            <View className="mb-4 relative justify-center px-4">
+                            <View className="mb-8">
                                 <Slider
                                     style={{ width: '100%', height: 40 }}
                                     minimumValue={0}
@@ -172,23 +175,21 @@ export const PersonalizationSheet = forwardRef<BottomSheetModal>((props, ref) =>
                                     step={1}
                                     value={toneStops.indexOf(selectedTone)}
                                     onValueChange={(val) => setSelectedTone(toneStops[val])}
-                                    minimumTrackTintColor="#1A1A1A"
-                                    maximumTrackTintColor="#E5E7EB"
-                                    thumbTintColor="#1A1A1A"
+                                    minimumTrackTintColor="#4DB9F2"
+                                    maximumTrackTintColor="#1E293B"
+                                    thumbTintColor="#4DB9F2"
                                 />
-                                {/* Labels below slider */}
-                                <View className="flex-row justify-between w-full mt-2 px-1 pointer-events-none">
-                                    <Text className="text-gray-400 text-xs font-medium text-left  text-center">Gentle</Text>
-                                    <Text className="text-gray-400 text-xs font-medium text-right text-center">Direct</Text>
+                                <View className="flex-row justify-between mt-2 px-1">
+                                    <Text className="text-slate-500 text-[12px] font-bold">Gentle</Text>
+                                    <Text className="text-slate-500 text-[12px] font-bold">Direct</Text>
                                 </View>
                             </View>
 
-                            {/* Save Button */}
                             <TouchableOpacity
                                 onPress={handleDismiss}
-                                className="bg-[#1A1A1A] py-4 rounded-full items-center mt-4"
+                                className="bg-[#4DB9F2] py-4 rounded-[16px] items-center border border-[#4DB9F2]"
                             >
-                                <Text className="text-white font-bold text-base">Save</Text>
+                                <Text className="text-[#090D16] font-bold text-[16px]">Save Configuration</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

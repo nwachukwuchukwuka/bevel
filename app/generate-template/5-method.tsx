@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
@@ -17,30 +18,33 @@ export default function MethodScreen() {
             onNext={() => router.push('/generate-template/6-duration')}
             onRightIconPress={() => router.push('/generate-template/advanced-settings')}
         >
-            <View className="gap-4">
+            <View className="flex-row justify-between gap-x-4 mt-2">
                 {/* Card 1 */}
                 <TouchableOpacity
                     onPress={() => setSelected('guided')}
-                    className={`bg-white p-5 rounded-3xl border-[1.5px] shadow-sm ${selected === 'guided' ? 'border-black' : 'border-transparent'}`}
+                    className={`flex-1 p-5 rounded-[24px] border justify-between min-h-[220px] ${selected === 'guided' ? 'bg-[#15233A] border-[#38BDF8]' : 'bg-[#151E33] border-[#1E2D4A]'}`}
                 >
-                    <View className="h-28 bg-gray-50 rounded-xl mb-4 items-end justify-center px-4 border border-gray-100">
-                        <View className="w-8 h-8 rounded-full bg-black items-center justify-center"><Text className="text-white">✓</Text></View>
+                    <View className="mb-4">
+                        <View className={`w-12 h-12 rounded-full items-center justify-center mb-6 border ${selected === 'guided' ? 'bg-[#38BDF8] border-[#38BDF8]' : 'bg-[#0F172A] border-[#1E2D4A]'}`}>
+                            <Ionicons name="compass" size={24} color={selected === 'guided' ? '#090D16' : '#64748B'} />
+                        </View>
+                        <Text className={`font-bold text-[18px] mb-2 ${selected === 'guided' ? 'text-[#F1F5F9]' : 'text-[#CBD5E1]'}`}>Guided</Text>
+                        <Text className="text-[#64748B] leading-5 text-[13px] font-medium">Choose your ideal duration, intensity, focus areas, and equipment.</Text>
                     </View>
-                    <Text className="font-bold text-gray-900 text-lg mb-1">Guided template</Text>
-                    <Text className="text-gray-500 leading-5 text-[13px]">Choose your ideal duration, intensity, focus areas, and equipment.</Text>
                 </TouchableOpacity>
 
                 {/* Card 2 */}
                 <TouchableOpacity
                     onPress={() => setSelected('freeform')}
-                    className={`bg-white p-5 rounded-3xl border-[1.5px] shadow-sm ${selected === 'freeform' ? 'border-black' : 'border-transparent'}`}
+                    className={`flex-1 p-5 rounded-[24px] border justify-between min-h-[220px] ${selected === 'freeform' ? 'bg-[#15233A] border-[#38BDF8]' : 'bg-[#151E33] border-[#1E2D4A]'}`}
                 >
-                    <View className="h-28 bg-gray-50 rounded-xl mb-4 justify-center px-6 border border-gray-100">
-                        <Text className="text-gray-300 font-bold text-xs mb-1">What kind of workout do you want today?</Text>
-                        <Text className="font-bold text-gray-800">30 min all core—no</Text>
+                    <View className="mb-4">
+                        <View className={`w-12 h-12 rounded-full items-center justify-center mb-6 border ${selected === 'freeform' ? 'bg-[#38BDF8] border-[#38BDF8]' : 'bg-[#0F172A] border-[#1E2D4A]'}`}>
+                            <Ionicons name="chatbubbles" size={24} color={selected === 'freeform' ? '#090D16' : '#64748B'} />
+                        </View>
+                        <Text className={`font-bold text-[18px] mb-2 ${selected === 'freeform' ? 'text-[#F1F5F9]' : 'text-[#CBD5E1]'}`}>Freeform</Text>
+                        <Text className="text-[#64748B] leading-5 text-[13px] font-medium">Tell us what you're aiming for—we'll create one that fits.</Text>
                     </View>
-                    <Text className="font-bold text-gray-900 text-lg mb-1">Freeform template</Text>
-                    <Text className="text-gray-500 leading-5 text-[13px]">Tell us what you're aiming for in your routine—we'll help create one that fits.</Text>
                 </TouchableOpacity>
             </View>
         </StepLayout>

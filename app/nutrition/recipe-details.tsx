@@ -15,108 +15,164 @@ export default function RecipeDetailsScreen() {
     const router = useRouter();
 
     return (
-        <SafeAreaView className="flex-1 bg-white" edges={['top']}>
+        <SafeAreaView className="flex-1 bg-[#090D16]" edges={['top']}>
 
-            {/* Header */}
-            <View className="flex-row items-center justify-between px-5 py-4 border-b border-gray-50">
-                <TouchableOpacity onPress={() => router.dismissAll()} className="w-8 h-8 bg-orange-50 rounded-full items-center justify-center">
-                    <Ionicons name="trash-outline" size={16} color="#EA580C" />
+            {/* Header / Title Area Left Aligned Rule */}
+            <View className="flex-row items-start justify-between px-5 pt-6 pb-6">
+                <View className="flex-row items-center flex-1">
+                    <View className="w-14 h-14 bg-[#1E293B] border border-[#2D3748] rounded-[16px] items-center justify-center mr-4">
+                        <Text className="text-[28px]">🥗</Text>
+                    </View>
+                    <View className="flex-1">
+                        <Text className="text-[24px] font-bold text-slate-100 mb-1">Caprese Salad</Text>
+                        <View className="flex-row items-center gap-2">
+                            <Text className="text-[13px] font-medium text-[#4DB9F2]">Add recipe</Text>
+                            <View className="w-[4px] h-[4px] rounded-full bg-slate-600" />
+                            <Text className="text-[13px] font-medium text-slate-400">Edit Name</Text>
+                            <Ionicons name="pencil" size={12} color="#94A3B8" />
+                        </View>
+                    </View>
+                </View>
+                <TouchableOpacity
+                    onPress={() => router.dismissAll()}
+                    className="w-10 h-10 bg-rose-950/20 border border-rose-500/30 rounded-[12px] items-center justify-center ml-2 mt-1"
+                >
+                    <Ionicons name="trash" size={18} color="#EF4444" />
                 </TouchableOpacity>
-                <Text className="font-semibold text-gray-500 text-[13px]">Add recipe</Text>
-                <View className="w-8" />
             </View>
 
-            <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 100 }}>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
 
-                {/* Title Section */}
-                <View className="items-center mb-8 relative">
-                    <View className="w-20 h-20 bg-gray-50 rounded-full items-center justify-center border border-gray-100 mb-4 shadow-sm">
-                        <Text className="text-4xl">🥗</Text>
-                    </View>
-                    <View className="absolute top-14 ml-12 bg-gray-200 w-6 h-6 rounded-full items-center justify-center border border-white shadow-sm">
-                        <Ionicons name="pencil" size={12} color="#4B5563" />
-                    </View>
-
-                    <Text className="text-2xl font-bold text-gray-900 mb-1">Caprese Salad</Text>
-                    <Text className="text-gray-400 text-sm font-medium">Edit Name</Text>
-                </View>
-
-                {/* Serving Inputs */}
-                <View className="flex-row gap-4 mb-3">
-                    <View className="flex-1">
-                        <Text className="text-xs font-bold text-gray-500 mb-2">Serving Quantity</Text>
-                        <View className="border border-gray-200 rounded-xl px-4 py-3 flex-row justify-between items-center bg-white shadow-sm">
-                            <Text className="font-semibold text-gray-900 text-[15px]">4</Text>
-                            <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                {/* Serving Data Grid */}
+                <View className="flex-row gap-3 mb-2">
+                    <View className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-[20px] p-4">
+                        <Text className="text-slate-500 text-[12px] font-semibold mb-3">Serving Quantity</Text>
+                        <View className="flex-row items-center justify-between">
+                            <Text className="text-slate-100 text-[20px] font-bold">4</Text>
+                            <Ionicons name="chevron-forward" size={16} color="#4DB9F2" />
                         </View>
                     </View>
-                    <View className="flex-1">
-                        <Text className="text-xs font-bold text-gray-500 mb-2">Total Amount</Text>
-                        <View className="border border-gray-200 rounded-xl px-4 py-3 flex-row justify-between items-center bg-white shadow-sm">
-                            <Text className="font-semibold text-gray-900 text-[15px]">640,89 g</Text>
-                            <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                    <View className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-[20px] p-4">
+                        <Text className="text-slate-500 text-[12px] font-semibold mb-3">Total Amount</Text>
+                        <View className="flex-row items-center justify-between">
+                            <Text className="text-slate-100 text-[20px] font-bold">
+                                640,89 <Text className="text-[14px] font-medium text-slate-500">g</Text>
+                            </Text>
+                            <Ionicons name="chevron-forward" size={16} color="#4DB9F2" />
                         </View>
                     </View>
                 </View>
-                <Text className="text-center text-gray-400 text-xs mb-8">This recipe is <Text className="font-bold text-gray-700">160,22 g</Text> per serving</Text>
+                <Text className="text-slate-400 text-[13px] font-medium mb-8 px-2">
+                    This recipe is <Text className="font-bold text-slate-200">160,22 g</Text> per serving
+                </Text>
 
-                {/* Nutritional Info */}
-                <View className="flex-row items-center justify-between mb-4">
-                    <Text className="font-bold text-gray-900 text-[15px]">Nutritional Information</Text>
-                    <Ionicons name="information-circle-outline" size={20} color="#9CA3AF" />
-                </View>
-                <Text className="text-gray-400 text-xs mb-4">1 serving</Text>
-
-                <View className="flex-row items-center mb-8">
-                    {/* Ring Mock */}
-                    <View className="w-24 h-24 rounded-full border-[8px] border-yellow-400 items-center justify-center relative mr-8">
-                        <View className="absolute inset-0 border-[8px] border-blue-400 rounded-full border-b-transparent border-l-transparent -rotate-45" />
-                        <View className="absolute inset-0 border-[8px] border-pink-400 rounded-full border-t-transparent border-r-transparent border-l-transparent rotate-45" />
-                        <Text className="font-bold text-2xl text-gray-900 leading-6 mt-1">228</Text>
-                        <Text className="text-[10px] text-gray-500 font-medium">kcal</Text>
+                {/* Nutritional Information (Segmented Bar Design) */}
+                <View className="mb-10">
+                    <View className="flex-row items-center justify-between mb-1">
+                        <Text className="font-bold text-slate-100 text-[18px]">Nutritional Information</Text>
+                        <View className="w-8 h-8 bg-[#151E33] border border-[#1E293B] rounded-[12px] items-center justify-center">
+                            <Ionicons name="information" size={16} color="#94A3B8" />
+                        </View>
                     </View>
+                    <Text className="text-slate-500 text-[13px] mb-4 font-medium">1 serving</Text>
 
-                    <View className="flex-1 gap-2">
-                        <View className="flex-row justify-between"><Text className="text-blue-400 font-semibold text-xs">Fat <Text className="text-gray-400 font-normal">47%</Text></Text><Text className="font-bold text-gray-900 text-sm">17g</Text></View>
-                        <View className="flex-row justify-between"><Text className="text-yellow-400 font-semibold text-xs">Carbs <Text className="text-gray-400 font-normal">22%</Text></Text><Text className="font-bold text-gray-900 text-sm">8,1g</Text></View>
-                        <View className="flex-row justify-between"><Text className="text-pink-400 font-semibold text-xs">Protein <Text className="text-gray-400 font-normal">30%</Text></Text><Text className="font-bold text-gray-900 text-sm">10,9g</Text></View>
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-[24px] p-5">
+                        <View className="flex-row items-end gap-1 mb-5">
+                            <Text className="text-[48px] font-bold text-slate-100 leading-[52px]">228</Text>
+                            <Text className="text-slate-500 font-medium text-[15px] mb-1">kcal</Text>
+                        </View>
+
+                        {/* Flat segmented horizontal bar replacing donut chart */}
+                        <View className="flex-row h-2 w-full mb-6 rounded-full overflow-hidden">
+                            <View className="bg-blue-500 h-full flex-[47]" />
+                            <View className="bg-[#090D16] w-1 h-full" />
+                            <View className="bg-amber-500 h-full flex-[22]" />
+                            <View className="bg-[#090D16] w-1 h-full" />
+                            <View className="bg-rose-500 h-full flex-[30]" />
+                        </View>
+
+                        {/* Breakdown */}
+                        <View className="gap-2">
+                            <View className="flex-row justify-between items-center bg-[#090D16] px-4 py-3 rounded-[16px] border border-[#1E293B]">
+                                <View className="flex-row items-center gap-2.5">
+                                    <View className="w-2.5 h-2.5 rounded-sm bg-blue-500" />
+                                    <Text className="text-slate-300 font-semibold text-[13px]">
+                                        Fat <Text className="text-slate-500 font-normal ml-1">47%</Text>
+                                    </Text>
+                                </View>
+                                <Text className="font-bold text-slate-100 text-[14px]">17g</Text>
+                            </View>
+
+                            <View className="flex-row justify-between items-center bg-[#090D16] px-4 py-3 rounded-[16px] border border-[#1E293B]">
+                                <View className="flex-row items-center gap-2.5">
+                                    <View className="w-2.5 h-2.5 rounded-sm bg-amber-500" />
+                                    <Text className="text-slate-300 font-semibold text-[13px]">
+                                        Carbs <Text className="text-slate-500 font-normal ml-1">22%</Text>
+                                    </Text>
+                                </View>
+                                <Text className="font-bold text-slate-100 text-[14px]">8,1g</Text>
+                            </View>
+
+                            <View className="flex-row justify-between items-center bg-[#090D16] px-4 py-3 rounded-[16px] border border-[#1E293B]">
+                                <View className="flex-row items-center gap-2.5">
+                                    <View className="w-2.5 h-2.5 rounded-sm bg-rose-500" />
+                                    <Text className="text-slate-300 font-semibold text-[13px]">
+                                        Protein <Text className="text-slate-500 font-normal ml-1">30%</Text>
+                                    </Text>
+                                </View>
+                                <Text className="font-bold text-slate-100 text-[14px]">10,9g</Text>
+                            </View>
+                        </View>
                     </View>
                 </View>
 
                 {/* Ingredients List */}
-                <View className="flex-row items-center justify-between mb-2">
-                    <Text className="font-bold text-gray-900 text-[15px]">Ingredients</Text>
-                    <TouchableOpacity className="w-6 h-6 bg-gray-100 rounded-full items-center justify-center"><Ionicons name="add" size={16} color="#4B5563" /></TouchableOpacity>
-                </View>
-                <Text className="text-gray-400 text-xs mb-4 leading-4 pr-10">The listed ingredient amounts are measured for the entire recipe.</Text>
+                <View className="mb-4">
+                    <View className="flex-row items-center justify-between mb-1">
+                        <Text className="font-bold text-slate-100 text-[18px]">Ingredients</Text>
+                        <TouchableOpacity className="w-8 h-8 bg-[#151E33] border border-[#1E293B] rounded-[12px] items-center justify-center">
+                            <Ionicons name="add" size={16} color="#4DB9F2" />
+                        </TouchableOpacity>
+                    </View>
+                    <Text className="text-slate-500 text-[13px] font-medium leading-5 mb-5 pr-4">
+                        The listed ingredient amounts are measured for the entire recipe.
+                    </Text>
 
-                <View className="gap-3">
-                    {INGREDIENTS.map((ing, i) => (
-                        <View key={i} className="flex-row items-center justify-between bg-white border border-gray-100 p-3 rounded-2xl shadow-sm">
-                            <View className="flex-row items-center gap-3">
-                                <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center"><Text>{ing.icon}</Text></View>
-                                <View>
-                                    <View className="flex-row items-center gap-1">
-                                        <Text className="font-bold text-gray-900">{ing.name}</Text>
-                                        <Ionicons name="checkmark-circle" size={12} color="#3B82F6" />
+                    <View className="gap-3">
+                        {INGREDIENTS.map((ing, i) => (
+                            <View
+                                key={i}
+                                className="flex-row items-center justify-between bg-[#151E33] border border-[#1E293B] p-4 rounded-[20px]"
+                            >
+                                <View className="flex-row items-center gap-4">
+                                    <View className="w-12 h-12 bg-[#1E293B] border border-[#2D3748] rounded-[14px] items-center justify-center">
+                                        <Text className="text-[20px]">{ing.icon}</Text>
                                     </View>
-                                    <Text className="text-gray-400 text-xs">{ing.detail}</Text>
+                                    <View>
+                                        <View className="flex-row items-center gap-1.5 mb-1">
+                                            <Text className="font-bold text-slate-100 text-[15px]">{ing.name}</Text>
+                                            <Ionicons name="checkmark-circle" size={14} color="#4DB9F2" />
+                                        </View>
+                                        <Text className="text-slate-400 text-[13px] font-medium">{ing.detail}</Text>
+                                    </View>
                                 </View>
+                                <Ionicons name="chevron-forward" size={18} color="#64748B" />
                             </View>
-                            <Ionicons name="arrow-forward" size={16} color="#9CA3AF" />
-                        </View>
-                    ))}
+                        ))}
+                    </View>
                 </View>
-
             </ScrollView>
 
-            {/* Footer Buttons */}
-            <View className="absolute bottom-0 w-full bg-white px-5 pt-4 pb-8 border-t border-white flex-row gap-3">
-                <TouchableOpacity className="bg-gray-100 py-4 rounded-full items-center flex-1">
-                    <Text className="text-gray-900 font-bold text-base">Redo</Text>
+            {/* Hard Boxed Footer Area */}
+            <View className="absolute bottom-0 w-full bg-[#090D16] px-5 pt-4 pb-8 flex-row gap-3">
+                <TouchableOpacity className="bg-[#1E293B] border border-[#2D3748] py-4 rounded-[16px] items-center flex-1">
+                    <Text className="text-slate-100 font-bold text-[16px]">Redo</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.dismissAll()} className="bg-[#1A1A1A] py-4 rounded-full items-center shadow-lg flex-[2]">
-                    <Text className="text-white font-bold text-base">Save</Text>
+                <TouchableOpacity
+                    onPress={() => router.dismissAll()}
+                    className="bg-[#4DB9F2] border border-[#4DB9F2] py-4 rounded-[16px] items-center flex-[2]"
+                >
+                    <Text className="text-[#090D16] font-bold text-[16px]">Save</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

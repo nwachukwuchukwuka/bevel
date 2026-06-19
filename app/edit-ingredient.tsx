@@ -11,112 +11,152 @@ export default function EditIngredientScreen() {
     const router = useRouter();
     const editFoodSheetRef = useRef<BottomSheetModal>(null);
 
-
-    // State for Keyboard & Value
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const [amount, setAmount] = useState('100');
     const [unit, setUnit] = useState('g');
 
-    // Dynamic Kcal calculation (Simulated base on amount)
     const baseKcalPerGram = 2.51;
     const currentKcal = Math.round(parseFloat(amount || '0') * baseKcalPerGram);
 
     return (
         <BottomSheetModalProvider>
-            <SafeAreaView className="flex-1 bg-white">
-                {/* Header */}
-                <View className="flex-row items-center justify-between px-5 py-2">
-                    <TouchableOpacity onPress={() => router.back()} className="p-2 -ml-2">
-                        <Ionicons name="chevron-back" size={24} color="#6B7280" />
+            <SafeAreaView className="flex-1 bg-[#090D16]" edges={['top']}>
+
+                <View className="flex-row items-center justify-between px-5 py-4 border-b border-[#1E293B] bg-[#151E33]">
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        activeOpacity={0.7}
+                        className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                    >
+                        <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
                     </TouchableOpacity>
-                    <Text className="font-bold text-gray-900 text-[15px]">Edit Ingredient</Text>
-                    <TouchableOpacity className="border border-gray-200 p-2 rounded-xl bg-white shadow-sm">
-                        <Ionicons name="star" size={16} color="#D1D5DB" />
+                    <View className="items-center">
+                        <Text className="text-lg font-bold text-slate-100">Edit Ingredient</Text>
+                    </View>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                    >
+                        <Ionicons name="star-outline" size={18} color="#F59E0B" />
                     </TouchableOpacity>
                 </View>
 
-                <View className="p-5 flex-1">
-                    <View className="w-12 h-12 bg-gray-50 rounded-xl items-center justify-center border border-gray-100 mb-4 shadow-sm">
-                        <Text className="text-xl">🌶️</Text>
-                    </View>
-                    <Text className="text-2xl font-bold text-gray-900">Ground Black Pepper</Text>
-                    <Text className="text-gray-500 font-medium mb-8">My Foods</Text>
+                <View className="flex-1 px-5 pt-8">
 
-                    <View className="flex-row items-center gap-1 mb-4">
-                        <Text className="font-bold text-gray-900 text-base">Nutrition Facts</Text>
-                        <Ionicons name="information-circle-outline" size={16} color="#9CA3AF" />
-                    </View>
-
-                    {/* Macros & Chart */}
-                    <View className="flex-row items-center justify-between mb-10">
-                        <View>
-                            <Text className="text-[#60A5FA] font-medium text-[11px] mb-1">Fat</Text>
-                            <Text className="font-bold text-gray-900 text-base">3.3g</Text>
-                            <Text className="text-[10px] text-gray-400 mt-1">4%</Text>
+                    <View className="flex-row items-center gap-4 mb-8">
+                        <View className="w-16 h-16 bg-[#151E33] border border-[#1E293B] rounded-2xl items-center justify-center">
+                            <Text className="text-3xl">🌶️</Text>
                         </View>
-                        <View>
-                            <Text className="text-[#FBBF24] font-medium text-[11px] mb-1">Carbs</Text>
-                            <Text className="font-bold text-gray-900 text-base">64g</Text>
-                            <Text className="text-[10px] text-gray-400 mt-1">82%</Text>
-                        </View>
-                        <View>
-                            <Text className="text-[#F472B6] font-medium text-[11px] mb-1">Protein</Text>
-                            <Text className="font-bold text-gray-900 text-base">10.4g</Text>
-                            <Text className="text-[10px] text-gray-400 mt-1">13%</Text>
-                        </View>
-
-                        <View className="w-20 h-20 rounded-full border-[6px] border-[#FBBF24] items-center justify-center relative">
-                            <View className="absolute inset-0 border-[6px] border-[#60A5FA] rounded-full border-b-transparent border-l-transparent -rotate-45" />
-                            <View className="absolute inset-0 border-[6px] border-[#F472B6] rounded-full border-t-transparent border-r-transparent border-l-transparent rotate-[60deg]" />
-
-                            {/* Dynamic Kcal text */}
-                            <Text className="font-bold text-xl text-gray-900 leading-6">{currentKcal}</Text>
-                            <Text className="text-[10px] text-gray-500 font-medium -mt-1">kcal</Text>
+                        <View className="flex-1">
+                            <Text className="text-2xl font-bold text-white leading-7 mb-1">Ground Black Pepper</Text>
+                            <Text className="text-sm font-semibold text-[#4DB9F2]">My Foods Database</Text>
                         </View>
                     </View>
 
-                    {/* Interactive Amount Section */}
-                    <View className="flex-row justify-between items-center mb-3">
-                        <Text className="font-bold text-gray-900 text-base">Amount</Text>
-                        <Text className="text-xs text-gray-400">100 g per 100 g</Text>
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-5 mb-8">
+                        <View className="flex-row items-center justify-between mb-6 border-b border-[#1E293B] pb-4">
+                            <View className="flex-row items-center gap-2">
+                                <Ionicons name="pie-chart-outline" size={18} color="#4DB9F2" />
+                                <Text className="font-bold text-white text-base">Nutrition Facts</Text>
+                            </View>
+                            <Ionicons name="information-circle-outline" size={18} color="#94A3B8" />
+                        </View>
+
+                        <View className="flex-row items-center justify-between">
+                            <View className="w-24 h-24 rounded-full border-[8px] border-[#F59E0B] items-center justify-center relative">
+                                <View className="absolute inset-0 border-[8px] border-[#4DB9F2] rounded-full border-b-transparent border-l-transparent -rotate-45" />
+                                <View className="absolute inset-0 border-[8px] border-[#EF4444] rounded-full border-t-transparent border-r-transparent border-l-transparent rotate-[60deg]" />
+
+                                <Text className="font-bold text-2xl text-white">{currentKcal}</Text>
+                                <Text className="text-[10px] text-slate-500 font-semibold -mt-1">kcal</Text>
+                            </View>
+
+                            <View className="flex-1 ml-6 gap-3">
+                                <View className="bg-[#1E293B40] border border-[#1E293B] p-2 rounded-xl flex-row justify-between items-center">
+                                    <View className="flex-row items-center gap-2">
+                                        <View className="w-2 h-2 rounded-full bg-[#4DB9F2]" />
+                                        <Text className="text-xs font-semibold text-slate-300">Fat</Text>
+                                    </View>
+                                    <Text className="text-sm font-bold text-white">3.3g <Text className="text-[10px] text-[#4DB9F2] ml-1">4%</Text></Text>
+                                </View>
+                                <View className="bg-[#1E293B40] border border-[#1E293B] p-2 rounded-xl flex-row justify-between items-center">
+                                    <View className="flex-row items-center gap-2">
+                                        <View className="w-2 h-2 rounded-full bg-[#F59E0B]" />
+                                        <Text className="text-xs font-semibold text-slate-300">Carbs</Text>
+                                    </View>
+                                    <Text className="text-sm font-bold text-white">64g <Text className="text-[10px] text-[#F59E0B] ml-1">82%</Text></Text>
+                                </View>
+                                <View className="bg-[#1E293B40] border border-[#1E293B] p-2 rounded-xl flex-row justify-between items-center">
+                                    <View className="flex-row items-center gap-2">
+                                        <View className="w-2 h-2 rounded-full bg-[#EF4444]" />
+                                        <Text className="text-xs font-semibold text-slate-300">Protein</Text>
+                                    </View>
+                                    <Text className="text-sm font-bold text-white">10.4g <Text className="text-[10px] text-[#EF4444] ml-1">13%</Text></Text>
+                                </View>
+                            </View>
+                        </View>
                     </View>
 
-                    <View className="flex-row items-center gap-3">
-                        <TouchableOpacity
-                            onPress={() => setKeyboardVisible(true)}
-                            className="flex-1 border border-gray-300 rounded-xl px-4 py-3.5 flex-row justify-between items-center bg-white shadow-sm"
-                        >
-                            <Text className="font-semibold text-gray-900 text-[15px]">{amount} {unit}</Text>
-                            <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
-                        </TouchableOpacity>
-                        <TouchableOpacity className="w-12 h-[50px] border border-gray-200 rounded-xl items-center justify-center bg-white shadow-sm">
-                            <Ionicons name="remove" size={20} color="#6B7280" />
-                        </TouchableOpacity>
-                        <TouchableOpacity className="w-12 h-[50px] border border-gray-200 rounded-xl items-center justify-center bg-white shadow-sm">
-                            <Ionicons name="add" size={20} color="#6B7280" />
-                        </TouchableOpacity>
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-5">
+                        <View className="flex-row justify-between items-center mb-4">
+                            <Text className="font-bold text-white text-base">Amount</Text>
+                            <View className="bg-[#1E293B] px-2 py-1 rounded border border-[#2D3748]">
+                                <Text className="text-[10px] text-slate-400 font-semibold">100 g per 100 g</Text>
+                            </View>
+                        </View>
+
+                        <View className="flex-row items-center gap-4">
+                            <TouchableOpacity
+                                onPress={() => setKeyboardVisible(true)}
+                                activeOpacity={0.8}
+                                className="flex-1 border border-[#1E293B] rounded-xl px-4 py-3.5 flex-row justify-between items-center bg-[#090D16]"
+                            >
+                                <Text className="font-bold text-white text-base">{amount} {unit}</Text>
+                                <Ionicons name="chevron-down" size={16} color="#4DB9F2" />
+                            </TouchableOpacity>
+                            <View className="flex-row gap-2">
+                                <TouchableOpacity
+                                    activeOpacity={0.7}
+                                    className="w-12 h-12 border border-[#2D3748] rounded-xl items-center justify-center bg-[#1E293B]"
+                                >
+                                    <Ionicons name="remove" size={20} color="#4DB9F2" />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    activeOpacity={0.7}
+                                    className="w-12 h-12 border border-[#2D3748] rounded-xl items-center justify-center bg-[#1E293B]"
+                                >
+                                    <Ionicons name="add" size={20} color="#4DB9F2" />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 </View>
 
-                {/* Footer Fixed Buttons */}
-                <View className="bg-white p-5 gap-3 pt-4 pb-8">
+                <View className="bg-[#090D16] border-t border-[#1E293B] p-5 pt-4 pb-8 flex-col gap-3">
                     <View className="flex-row gap-3">
-                        <TouchableOpacity className="bg-gray-100 py-3.5 rounded-full items-center flex-1">
-                            <Text className="text-[#F87171] font-bold text-[15px]">Remove</Text>
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            className="bg-rose-950/20 border border-rose-500/20 py-3.5 rounded-2xl items-center flex-1"
+                        >
+                            <Text className="text-rose-500 font-bold text-sm">Remove</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => editFoodSheetRef.current?.present()} // Trigger the modal
-                            className="bg-gray-100 py-3.5 rounded-full items-center flex-1"
+                            onPress={() => editFoodSheetRef.current?.present()}
+                            activeOpacity={0.8}
+                            className="bg-[#1E293B] border border-[#2D3748] py-3.5 rounded-2xl items-center flex-1"
                         >
-                            <Text className="text-gray-700 font-bold text-[15px]">Edit</Text>
+                            <Text className="text-white font-bold text-sm">Modify Data</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={() => router.back()} className="bg-[#1A1A1A] py-4 rounded-full items-center shadow-lg">
-                        <Text className="text-white font-bold text-[15px]">Save</Text>
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        activeOpacity={0.8}
+                        className="bg-[#4DB9F2] py-4 rounded-2xl items-center border border-[#4DB9F2]"
+                    >
+                        <Text className="text-[#090D16] font-bold text-base">Save configuration</Text>
                     </TouchableOpacity>
                 </View>
 
-                {/* Custom Keyboard Modal Overlay */}
                 <UnitInputModal
                     isVisible={isKeyboardVisible}
                     initialValue={amount}
@@ -132,6 +172,5 @@ export default function EditIngredientScreen() {
                 <EditFoodSheet ref={editFoodSheetRef} />
             </SafeAreaView>
         </BottomSheetModalProvider>
-
     );
 }

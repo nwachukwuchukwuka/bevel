@@ -4,139 +4,134 @@ import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+type MetricNodeProps = {
+    category: string;
+    label: string;
+    value: string;
+    unit: string;
+    status: string;
+    statusColor: string;
+    icon: keyof typeof Ionicons.glyphMap;
+    onPress?: () => void;
+    isLast?: boolean;
+};
+
+const MetricNode = ({ category, label, value, unit, status, statusColor, icon, onPress, isLast = false }: MetricNodeProps) => {
+    const Container = onPress ? TouchableOpacity : View;
+
+    return (
+        <View className="flex-row items-stretch min-h-[120px]">
+            {/* Timeline Axis Column */}
+            <View className="w-14 items-center">
+                {!isLast && <View className="w-[1px] h-full bg-[#1E293B] absolute left-7" />}
+                <View className="w-4 h-4 rounded-full bg-[#090D16] border border-[#4DB9F2] z-10 mt-6" />
+            </View>
+
+            {/* Metric Node Card */}
+            <Container
+                onPress={onPress}
+                activeOpacity={0.8}
+                className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 mb-4 ml-1 mr-5 flex-row justify-between items-center"
+            >
+                <View className="flex-1 pr-4 gap-1">
+                    <Text className="text-xs text-slate-500 font-semibold">{category}</Text>
+                    <Text className="text-base font-bold text-white">{label}</Text>
+
+                    <View className="flex-row items-center gap-1.5 mt-2">
+                        <View className={`w-1.5 h-1.5 rounded-full ${statusColor}`} />
+                        <Text className="text-xs font-semibold text-slate-400">{status}</Text>
+                    </View>
+                </View>
+
+                <View className="items-end gap-1">
+                    <View className="w-8 h-8 rounded-lg bg-[#1E293B] items-center justify-center border border-[#2C3748] mb-1">
+                        <Ionicons name={icon} size={16} color="#4DB9F2" />
+                    </View>
+                    <Text className="text-2xl font-bold text-white">{value}</Text>
+                    <Text className="text-xs text-slate-500 font-medium">{unit}</Text>
+                </View>
+            </Container>
+        </View>
+    );
+};
+
 export default function BiologyScreen() {
     const router = useRouter();
 
     return (
-        <View className="flex-1 bg-[#F9FAFB]">
+        <View className="flex-1 bg-[#090D16]">
             <SafeAreaView edges={['top']} className="flex-1">
-                <View className="px-5 pt-2 mb-6">
-                    <Text className="text-[24px] font-bold text-gray-900">Biology</Text>
+
+                {/* Custom Tech Header */}
+                <View className="px-6 pt-4 pb">
+                    <Text className="text-2xl font-bold text-slate-100">Biological markers</Text>
+                    <Text className="text-xs text-slate-400 mt-1">Physiological metrics index timeline</Text>
                 </View>
 
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 24 }}>
 
-                    {/* VO2 Max Card */}
-                    <TouchableOpacity onPress={() => router.push('/biology/vo2-max')} className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5 mb-4">
-                        <View className="flex-row items-center gap-1.5 mb-4">
-                            <Ionicons name="fitness" size={14} color="#9CA3AF" />
-                            <Text className="text-[12px] font-bold text-gray-500">VO₂ Max</Text>
-                        </View>
-                        <View className="flex-row justify-between items-center">
-                            <View>
-                                <Text className="text-[28px] font-bold text-gray-900 tracking-tight">29.9</Text>
-                                <Text className="text-[13px] font-bold text-yellow-500">Fair</Text>
-                            </View>
-                            {/* Horizontal Bar Graphic Mock */}
-                            <View className="w-32 gap-1 items-end">
-                                <View className="w-full h-1.5 bg-orange-50 rounded-full" />
-                                <View className="w-full h-1.5 bg-orange-100 rounded-full" />
-                                <View className="w-full h-4 bg-orange-200 rounded-full relative justify-center">
-                                    <View className="absolute right-[40%] w-3 h-3 bg-white border-2 border-orange-400 rounded-full" />
-                                </View>
-                                <View className="w-full h-1.5 bg-orange-100 rounded-full" />
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                    <MetricNode
+                        category="Autonomic nervous system"
+                        label="Heart rate variability"
+                        value="65.2"
+                        unit="ms"
+                        status="Stable"
+                        statusColor="bg-emerald-500"
+                        icon="pulse"
+                    />
 
-                    {/* HRV & RHR Row */}
-                    <View className="flex-row gap-4 mb-4">
-                        <View className="flex-1 bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5">
-                            <View className="flex-row items-center gap-1.5 mb-6">
-                                <Ionicons name="pulse" size={14} color="#9CA3AF" />
-                                <Text className="text-[12px] font-bold text-gray-500">HRV Baselines</Text>
-                            </View>
-                            {/* Sparkline Mock */}
-                            <View className="h-10 mb-4 items-end justify-end border-b border-gray-100">
-                                <View className="w-full border-t-2 border-gray-400 transform -rotate-12 translate-y-1 relative">
-                                    <View className="absolute right-0 -top-2 w-3 h-3 bg-white border-2 border-gray-400 rounded-full" />
-                                </View>
-                            </View>
-                            <Text className="text-[20px] font-bold text-gray-900">65.2 <Text className="text-[12px] text-gray-400 font-medium">ms</Text></Text>
-                            <View className="flex-row items-center gap-1 mt-1">
-                                <Ionicons name="arrow-forward-circle" size={14} color="#9CA3AF" />
-                                <Text className="text-[12px] font-bold text-gray-500">Stabilizing</Text>
-                            </View>
-                        </View>
+                    <MetricNode
+                        category="Autonomic nervous system"
+                        label="Resting heart rate"
+                        value="57.9"
+                        unit="bpm"
+                        status="Fair"
+                        statusColor="bg-amber-500"
+                        icon="heart-outline"
+                    />
 
-                        <View className="flex-1 bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5">
-                            <View className="flex-row items-center gap-1.5 mb-6">
-                                <Ionicons name="heart" size={14} color="#9CA3AF" />
-                                <Text className="text-[12px] font-bold text-gray-500">RHR Baselines</Text>
-                            </View>
-                            <Text className="text-[20px] font-bold text-gray-900">57.9 <Text className="text-[12px] text-gray-400 font-medium">bpm</Text></Text>
-                            <Text className="text-[13px] font-bold text-yellow-500 mb-4">Fair</Text>
-                            {/* Arch Gauge Mock */}
-                            <View className="h-10 items-center justify-end overflow-hidden relative">
-                                <View className="w-24 h-24 rounded-full border-[4px] border-dashed border-gray-200" />
-                                <View className="absolute w-24 h-24 rounded-full border-[4px] border-yellow-400 border-b-transparent border-r-transparent -rotate-45" />
-                                <View className="absolute left-[20%] top-[40%] w-3 h-3 bg-white border-2 border-yellow-400 rounded-full" />
-                                <Text className="absolute bottom-0 left-0 text-[10px] font-bold text-blue-400">-</Text>
-                                <Text className="absolute bottom-0 right-0 text-[10px] font-bold text-red-400">+</Text>
-                            </View>
-                        </View>
-                    </View>
+                    <MetricNode
+                        category="Cardiovascular fitness"
+                        label="Vo2 max index"
+                        value="29.9"
+                        unit="score"
+                        status="Fair"
+                        statusColor="bg-amber-500"
+                        icon="fitness-outline"
+                        onPress={() => router.push('/biology/vo2-max')}
+                    />
 
-                    {/* Weight Card */}
-                    <TouchableOpacity onPress={() => router.push('/biology/weight')} className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5 mb-4">
-                        <View className="flex-row items-center gap-1.5 mb-6">
-                            <Ionicons name="scale" size={14} color="#9CA3AF" />
-                            <Text className="text-[12px] font-bold text-gray-500">Weight</Text>
-                        </View>
-                        <View className="flex-row justify-between items-end">
-                            <View>
-                                <Text className="text-[24px] font-bold text-gray-900 tracking-tight">63.1 <Text className="text-[14px] text-gray-400 font-medium">kg</Text></Text>
-                                <View className="flex-row items-center gap-1 mt-1">
-                                    <Ionicons name="arrow-up-circle" size={14} color="#6B7280" />
-                                    <Text className="text-[12px] font-bold text-gray-700">Increasing</Text>
-                                </View>
-                            </View>
-                            {/* Mini line chart mock */}
-                            <View className="w-32 h-16 relative items-end justify-end border-b border-dashed border-gray-200 pb-1">
-                                <View className="w-full h-full border-b-[2px] border-blue-400 transform rotate-12 -translate-y-2 relative">
-                                    <View className="absolute right-0 -bottom-1 w-2.5 h-2.5 bg-white border-2 border-blue-400 rounded-full" />
-                                </View>
-                                <View className="absolute inset-0 border-b-[2px] border-dashed border-purple-400 transform -rotate-12 translate-y-4" />
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                    <MetricNode
+                        category="Body composition"
+                        label="Total body weight"
+                        value="63.1"
+                        unit="kg"
+                        status="Increasing"
+                        statusColor="bg-slate-500"
+                        icon="scale-outline"
+                        onPress={() => router.push('/biology/weight')}
+                    />
 
-                    {/* Lean Body Mass & Body Fat Row */}
-                    <View className="flex-row gap-4 mb-8">
-                        <View className="flex-1 bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5">
-                            <View className="flex-row items-center gap-1.5 mb-6">
-                                <Ionicons name="body" size={14} color="#9CA3AF" />
-                                <Text className="text-[12px] font-bold text-gray-500">Lean Body Mass</Text>
-                            </View>
-                            <View className="h-10 mb-4 items-end justify-end border-b border-gray-100">
-                                <View className="w-full border-t-2 border-gray-600 transform -rotate-[20deg] translate-y-3 relative">
-                                    <View className="absolute right-0 -top-2 w-3 h-3 bg-white border-2 border-gray-600 rounded-full" />
-                                </View>
-                            </View>
-                            <Text className="text-[20px] font-bold text-gray-900">45.4 <Text className="text-[12px] text-gray-400 font-medium">kg</Text></Text>
-                            <View className="flex-row items-center gap-1 mt-1">
-                                <Ionicons name="arrow-up-circle" size={14} color="#6B7280" />
-                                <Text className="text-[12px] font-bold text-gray-700">Increasing</Text>
-                            </View>
-                        </View>
+                    <MetricNode
+                        category="Body composition"
+                        label="Lean body mass"
+                        value="45.4"
+                        unit="kg"
+                        status="Increasing"
+                        statusColor="bg-slate-500"
+                        icon="body-outline"
+                    />
 
-                        <View className="flex-1 bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm shadow-black/5">
-                            <View className="flex-row items-center gap-1.5 mb-6">
-                                <Ionicons name="water" size={14} color="#9CA3AF" />
-                                <Text className="text-[12px] font-bold text-gray-500">Body Fat</Text>
-                            </View>
-                            <Text className="text-[20px] font-bold text-gray-900">26.9 <Text className="text-[12px] text-gray-400 font-medium">%</Text></Text>
-                            <Text className="text-[13px] font-bold text-emerald-500 mb-4">Acceptable</Text>
-
-                            <View className="h-10 items-center justify-end overflow-hidden relative">
-                                <View className="w-24 h-24 rounded-full border-[4px] border-dashed border-gray-200" />
-                                <View className="absolute w-24 h-24 rounded-full border-[6px] border-emerald-400 border-b-transparent border-r-transparent -rotate-[60deg]" />
-                                <View className="absolute left-[45%] top-[20%] w-3 h-3 bg-white border-2 border-emerald-500 rounded-full" />
-                                <Text className="absolute bottom-0 left-0 text-[10px] font-bold text-blue-400">-</Text>
-                                <Text className="absolute bottom-0 right-0 text-[10px] font-bold text-orange-400">+</Text>
-                            </View>
-                        </View>
-                    </View>
+                    <MetricNode
+                        category="Body composition"
+                        label="Body fat percentage"
+                        value="26.9"
+                        unit="%"
+                        status="Optimal"
+                        statusColor="bg-emerald-500"
+                        icon="water-outline"
+                        isLast={true}
+                    />
 
                 </ScrollView>
             </SafeAreaView>

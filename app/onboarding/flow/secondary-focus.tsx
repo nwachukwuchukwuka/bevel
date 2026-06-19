@@ -14,57 +14,64 @@ export default function SecondaryFocusScreen() {
             id: 'sleep',
             label: 'Better sleep',
             desc: 'Feeling rested every night and maintaining good sleep habits.',
-            icon: <Ionicons name="moon" size={32} color="#A3A3A3" className="bg-blue-50 p-2 rounded-full" />
+            icon: <Ionicons name="moon-outline" size={24} color="#818CF8" />
         },
         {
             id: 'fitness',
             label: 'Lasting fitness',
             desc: 'Building strength and endurance to be at your best.',
-            icon: <Ionicons name="barbell-outline" size={32} color="#D4D4D4" className="bg-neutral-50 p-2 rounded-full" />
+            icon: <Ionicons name="barbell-outline" size={24} color="#F59E0B" />
         }
     ];
 
     const handleContinue = () => {
-        // Logic: If they chose sleep, go to sleep goals. Otherwise, maybe skip to end.
-        // For this flow, we'll route to Sleep Goals.
         router.push('/onboarding/flow/sleep-goals');
     };
 
     return (
-        <View className="flex-1">
-            <View className="mt-6 mb-8 items-center">
-                <Text className="text-2xl font-bold text-center text-neutral-900 px-4">
+        <View className="flex-1 flex-col">
+
+            <View className="mb-6">
+                <Text className="text-3xl font-bold text-white mb-2">
                     Is there anything else you’d like to focus on?
+                </Text>
+                <Text className="text-sm text-slate-400 font-medium">
+                    Optional secondary configuration
                 </Text>
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-                {options.map((opt) => (
-                    <SelectionCard
-                        key={opt.id}
-                        label={opt.label}
-                        description={opt.desc}
-                        icon={opt.icon}
-                        selected={selected === opt.id}
-                        onSelect={() => setSelected(opt.id === selected ? null : opt.id)}
-                    />
-                ))}
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
+                <View className="flex-col gap-4">
+                    {options.map((opt) => (
+                        <SelectionCard
+                            key={opt.id}
+                            label={opt.label}
+                            description={opt.desc}
+                            icon={opt.icon}
+                            selected={selected === opt.id}
+                            onSelect={() => setSelected(opt.id === selected ? null : opt.id)}
+                        />
+                    ))}
+                </View>
             </ScrollView>
 
-            <View className="mt-4 mb-2 gap-3">
-                {/* Skip Button */}
+            <View className="mt-auto pt-4 flex-row gap-3">
                 <TouchableOpacity
                     onPress={handleContinue}
-                    className="w-full h-14 rounded-full items-center justify-center bg-neutral-100"
+                    activeOpacity={0.7}
+                    className="flex-1 h-14 rounded-2xl items-center justify-center bg-[#151E33] border border-[#2D3748]"
                 >
-                    <Text className="text-base font-bold text-neutral-900">Skip</Text>
+                    <Text className="text-slate-300 font-bold text-base">Skip phase</Text>
                 </TouchableOpacity>
 
-                <ContinueButton
-                    enabled={!!selected}
-                    onPress={handleContinue}
-                />
+                <View className="flex-1">
+                    <ContinueButton
+                        enabled={!!selected}
+                        onPress={handleContinue}
+                    />
+                </View>
             </View>
+
         </View>
     );
 }

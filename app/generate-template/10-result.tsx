@@ -76,7 +76,6 @@ export default function ResultScreen() {
         setReplacingExerciseId(null);
         setAddSheetMode('add');
 
-        // Auto-dismiss toast after 3 seconds
         setTimeout(() => setLastReplacedName(null), 3000);
     };
 
@@ -103,16 +102,13 @@ export default function ResultScreen() {
     };
 
     const handleUpdateSuperset = (selectedIds: string[]) => {
-        // Find existing superset ID from current selection
         const existingId = exercises.find(ex => currentSupersetIds.includes(ex.id))?.supersetId;
         if (!existingId) return;
 
         setExercises(prev => prev.map(ex => {
-            // Remove from old superset if it was there but not in new list
             if (ex.supersetId === existingId && !selectedIds.includes(ex.id)) {
                 return { ...ex, supersetId: undefined };
             }
-            // Add to superset
             if (selectedIds.includes(ex.id)) {
                 return { ...ex, supersetId: existingId };
             }
@@ -202,35 +198,16 @@ export default function ResultScreen() {
         setExercises(prev => {
             const existsInList = prev.find(ex => ex.id === savedEx.id);
             if (existsInList) {
-                // If editing an exercise already in the workout, update it in place
                 return prev.map(ex => ex.id === savedEx.id ? { ...ex, ...newExerciseData, sets: ex.sets } : ex);
             }
-            // If it's a brand new exercise, add it to the bottom
             return [...prev, newExerciseData];
         });
     };
-
-    // const handleSaveCustom = (savedEx: CustomExercise) => {
-    //     setCustomLibrary(prev => {
-    //         const exists = prev.find(e => e.id === savedEx.id);
-    //         if (exists) return prev.map(e => e.id === savedEx.id ? savedEx : e);
-    //         return [...prev, savedEx];
-    //     });
-    //     // Also auto-add to the current workout list
-    //     // handleAddExercise(savedEx as Exercise);
-    //     handleAddExercise({
-    //         ...savedEx,
-    //         type: savedEx.equipment,
-    //         sets: 3,
-    //         setTypes: ['normal', 'normal', 'normal']
-    //     } as Exercise);
-    // };
 
     const handleDeleteCustom = (id: string) => {
         setCustomLibrary(prev => prev.filter(e => e.id !== id));
     };
 
-    // UI Triggers
     const handleOpenCopier = () => {
         setAddSheetMode('copy');
         addRef.current?.present();
@@ -238,7 +215,7 @@ export default function ResultScreen() {
 
     const handleSelectForCopy = (exercise: Exercise) => {
         setCopiedExerciseData(exercise);
-        setAddSheetMode('add'); // reset mode for next time
+        setAddSheetMode('add');
     };
 
     const handlePreviewExercise = (exercise: CustomExercise) => {
@@ -248,7 +225,7 @@ export default function ResultScreen() {
 
     const handleEditCustom = () => {
         setEditingCustomData(previewingExercise);
-        setCopiedExerciseData(null); // Clear copy data so we don't mix them
+        setCopiedExerciseData(null);
         customRef.current?.present();
     };
 
@@ -271,7 +248,6 @@ export default function ResultScreen() {
     };
 
     const handleInfoPress = (ex: any) => {
-        // Wait slightly for animation to clear, then push the Expo Router Modal
         setTimeout(() => {
             router.push({
                 pathname: '/generate-template/components/exercise-details',
@@ -287,83 +263,83 @@ export default function ResultScreen() {
     return (
         <BottomSheetModalProvider>
             <MenuProvider>
-                <SafeAreaView className="flex-1 bg-white" edges={['top']}>
+                <SafeAreaView className="flex-1 bg-[#090D16]" edges={['top']}>
 
                     {/* Toast / Notification for replacement success */}
                     {lastReplacedName && (
-                        <View className="absolute top-12 left-5 right-5 z-50 bg-white rounded-2xl p-4 flex-row items-center justify-between shadow-lg border border-gray-100">
-                            <Text className="text-gray-900 font-bold">Replaced with "{lastReplacedName}"</Text>
+                        <View className="absolute top-12 left-5 right-5 z-50 bg-[#151E33] rounded-[16px] p-4 flex-row items-center justify-between border border-[#1E2D4A]">
+                            <Text className="text-[#F1F5F9] font-bold text-[15px]">Replaced with "{lastReplacedName}"</Text>
                             <TouchableOpacity onPress={() => setLastReplacedName(null)}>
-                                <Ionicons name="sync" size={18} color="#111827" />
+                                <Ionicons name="sync" size={18} color="#94A3B8" />
                             </TouchableOpacity>
                         </View>
                     )}
 
                     {/* Toast for superset creation */}
                     {lastSupersetCreated && (
-                        <View className="absolute top-12 left-5 right-5 z-50 bg-white rounded-2xl p-4 flex-row items-center justify-between shadow-lg border border-gray-100">
-                            <Text className="text-gray-900 font-bold">New superset created</Text>
-                            <View className="w-8 h-8 rounded-full bg-blue-50 items-center justify-center">
-                                <Ionicons name="link" size={18} color="#3B82F6" />
+                        <View className="absolute top-12 left-5 right-5 z-50 bg-[#151E33] rounded-[16px] p-4 flex-row items-center justify-between border border-[#1E2D4A]">
+                            <Text className="text-[#F1F5F9] font-bold text-[15px]">New superset created</Text>
+                            <View className="w-8 h-8 rounded-full bg-[#38BDF8]/10 items-center justify-center border border-[#38BDF8]/30">
+                                <Ionicons name="link" size={16} color="#38BDF8" />
                             </View>
                         </View>
                     )}
 
                     {/* Header */}
                     <View className="flex-row items-center justify-between px-5 py-4">
-                        <TouchableOpacity onPress={() => router.dismissAll()} className="w-10"><Ionicons name="close" size={24} color="#111827" /></TouchableOpacity>
-                        <Text className="font-semibold text-gray-500 text-[13px]">Create workout</Text>
-                        <View className="w-10" />
+                        <TouchableOpacity onPress={() => router.dismissAll()} className="w-9 h-9 bg-[#151E33] rounded-[10px] items-center justify-center border border-[#1E2D4A]">
+                            <Ionicons name="close" size={20} color="#94A3B8" />
+                        </TouchableOpacity>
+                        <Text className="font-semibold text-[#64748B] text-[13px]">Create workout</Text>
+                        <View className="w-9" />
                     </View>
 
-                    <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 120 }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 120 }}>
                         {/* Title Area */}
-                        <View className="flex-row justify-between items-start mb-8">
+                        <View className="flex-row justify-between items-start mb-8 mt-2">
                             <View>
-                                <Text className="text-3xl font-bold text-gray-900 mb-1">Full Body Workout</Text>
-                                <Text className="text-gray-500 font-medium">{exercises.length} exercises, 25 sets</Text>
+                                <Text className="text-[28px] font-bold text-[#F1F5F9] mb-1">Full Body Workout</Text>
+                                <Text className="text-[#64748B] font-medium text-[15px]">{exercises.length} exercises, 25 sets</Text>
                             </View>
-                            <TouchableOpacity className="w-8 h-8 bg-gray-50 rounded-full items-center justify-center border border-gray-100">
-                                <Ionicons name="pencil" size={14} color="#4B5563" />
+                            <TouchableOpacity className="w-9 h-9 bg-[#151E33] rounded-[10px] items-center justify-center border border-[#1E2D4A]">
+                                <Ionicons name="pencil" size={16} color="#94A3B8" />
                             </TouchableOpacity>
                         </View>
 
-                        {/* List Header with Reorder and Add Buttons */}
+                        {/* List Header */}
                         <View className="flex-row justify-between items-center mb-4">
-                            <Text className="font-bold text-gray-900 text-lg">Exercises</Text>
-                            <View className="flex-row gap-3">
-                                <TouchableOpacity onPress={() => reorderRef.current?.present()} className="p-1">
-                                    <Ionicons name="list" size={22} color="#4B5563" />
+                            <Text className="font-bold text-[#F1F5F9] text-[18px]">Exercises</Text>
+                            <View className="flex-row gap-2">
+                                <TouchableOpacity onPress={() => reorderRef.current?.present()} className="w-10 h-10 bg-[#151E33] rounded-[12px] items-center justify-center border border-[#1E2D4A]">
+                                    <Ionicons name="list" size={20} color="#94A3B8" />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => addRef.current?.present()} className="p-1">
-                                    <Ionicons name="add" size={24} color="#4B5563" />
+                                <TouchableOpacity onPress={() => addRef.current?.present()} className="w-10 h-10 bg-[#151E33] rounded-[12px] items-center justify-center border border-[#1E2D4A]">
+                                    <Ionicons name="add" size={22} color="#94A3B8" />
                                 </TouchableOpacity>
                             </View>
                         </View>
 
                         {/* Master List Rendering */}
-
-
                         {exercises.map(ex => (
-                            <View key={ex.id} className={`border rounded-[24px] p-4 mb-4 shadow-sm bg-white ${ex.supersetId ? 'border-blue-400' : 'border-gray-200'}`}>
+                            <View key={ex.id} className={`border rounded-[24px] p-5 mb-4 bg-[#151E33] ${ex.supersetId ? 'border-[#38BDF8]' : 'border-[#1E2D4A]'}`}>
 
                                 {/* Card Header */}
                                 <View className="flex-row items-center justify-between mb-5">
-                                    <View className="flex-row items-center gap-3">
-                                        <View className="w-11 h-11 bg-gray-50 rounded-xl items-center justify-center border border-gray-100 relative">
-                                            <Text className="text-xl">{ex.icon}</Text>
+                                    <View className="flex-row items-center gap-4">
+                                        <View className="w-12 h-12 bg-[#0F172A] rounded-[12px] items-center justify-center border border-[#1E2D4A] relative">
+                                            <Text className="text-[22px]">{ex.icon}</Text>
                                             {ex.supersetId && (
-                                                <View className="absolute -top-1.5 -left-1.5 w-5 h-5 bg-blue-500 rounded-full items-center justify-center border-2 border-white">
-                                                    <Ionicons name="link" size={10} color="white" />
+                                                <View className="absolute -top-2 -left-2 w-6 h-6 bg-[#38BDF8] rounded-[8px] items-center justify-center border-2 border-[#151E33]">
+                                                    <Ionicons name="link" size={12} color="#090D16" />
                                                 </View>
                                             )}
                                         </View>
                                         <View>
                                             <View className="flex-row items-center gap-1.5">
-                                                <Text className="font-bold text-gray-900 text-base">{ex.name}</Text>
-                                                {ex.supersetId && <Ionicons name="link" size={14} color="#3B82F6" />}
+                                                <Text className="font-bold text-[#F1F5F9] text-[16px]">{ex.name}</Text>
+                                                {ex.supersetId && <Ionicons name="link" size={14} color="#38BDF8" />}
                                             </View>
-                                            <Text className="text-gray-400 text-xs">{ex.type}</Text>
+                                            <Text className="text-[#64748B] text-[13px]">{ex.type}</Text>
                                         </View>
                                     </View>
                                     <Menu>
@@ -373,35 +349,35 @@ export default function ResultScreen() {
                                                 TriggerTouchableComponent: TouchableOpacity,
                                             }}
                                         >
-                                            <View className="w-8 h-8 bg-gray-50 rounded-full items-center justify-center border border-gray-100">
-                                                <Ionicons name="ellipsis-horizontal" size={16} color="#9CA3AF" />
+                                            <View className="w-8 h-8 bg-[#0F172A] rounded-[8px] items-center justify-center border border-[#1E2D4A]">
+                                                <Ionicons name="ellipsis-horizontal" size={16} color="#94A3B8" />
                                             </View>
                                         </MenuTrigger>
-                                        <MenuOptions customStyles={{ optionsContainer: { borderRadius: 12, width: 220, paddingVertical: 4 } }}>
+                                        <MenuOptions customStyles={{ optionsContainer: { borderRadius: 16, width: 220, paddingVertical: 4, backgroundColor: '#1E2D4A', borderColor: '#334155', borderWidth: 1 } }}>
                                             <MenuOption onSelect={() => handleOpenReplace(ex.id)}>
-                                                <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                                    <Text className="text-[15px] font-medium text-gray-900">Replace exercise</Text>
-                                                    <Ionicons name="sync" size={18} color="#111827" />
+                                                <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#334155]/50">
+                                                    <Text className="text-[15px] font-medium text-[#F1F5F9]">Replace exercise</Text>
+                                                    <Ionicons name="sync" size={18} color="#94A3B8" />
                                                 </View>
                                             </MenuOption>
                                             <MenuOption onSelect={() => handleOpenSuperset(ex)}>
-                                                <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                                    <Text className="text-[15px] font-medium text-gray-900">
+                                                <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#334155]/50">
+                                                    <Text className="text-[15px] font-medium text-[#F1F5F9]">
                                                         {ex.supersetId ? 'Edit superset/circuit' : 'Create superset/circuit'}
                                                     </Text>
-                                                    <Ionicons name="link" size={18} color="#111827" />
+                                                    <Ionicons name="link" size={18} color="#94A3B8" />
                                                 </View>
                                             </MenuOption>
                                             <MenuOption onSelect={() => handleInfoPress(ex)}>
-                                                <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                                    <Text className="text-[15px] font-medium text-gray-900">About exercise</Text>
-                                                    <Ionicons name="information-circle-outline" size={18} color="#111827" />
+                                                <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#334155]/50">
+                                                    <Text className="text-[15px] font-medium text-[#F1F5F9]">About exercise</Text>
+                                                    <Ionicons name="information-circle-outline" size={18} color="#94A3B8" />
                                                 </View>
                                             </MenuOption>
                                             <MenuOption onSelect={() => handleDeleteExercise(ex.id)}>
                                                 <View className="flex-row items-center justify-between px-4 py-3">
-                                                    <Text className="text-[15px] font-medium text-red-500">Delete exercise</Text>
-                                                    <Ionicons name="trash-outline" size={18} color="#EF4444" />
+                                                    <Text className="text-[15px] font-medium text-[#F87171]">Delete exercise</Text>
+                                                    <Ionicons name="trash-outline" size={18} color="#F87171" />
                                                 </View>
                                             </MenuOption>
                                         </MenuOptions>
@@ -422,52 +398,52 @@ export default function ResultScreen() {
                                                             TriggerTouchableComponent: TouchableOpacity,
                                                         }}
                                                     >
-                                                        <View className="w-8 h-8 rounded-full border-[1.5px] border-orange-400 items-center justify-center bg-white shadow-sm">
+                                                        <View className="w-10 h-10 rounded-[10px] items-center justify-center bg-[#0F172A] border border-[#1E2D4A]">
                                                             {setType === 'normal' ? (
-                                                                <Text className="text-[14px] font-bold text-gray-900">1</Text>
+                                                                <Text className="text-[14px] font-bold text-[#F1F5F9]">{index + 1}</Text>
                                                             ) : setType === 'warmup' ? (
-                                                                <Ionicons name="flame" size={14} color="#F59E0B" />
+                                                                <Ionicons name="flame" size={16} color="#FB923C" />
                                                             ) : setType === 'cooldown' ? (
-                                                                <Ionicons name="snow" size={14} color="#60A5FA" />
+                                                                <Ionicons name="snow" size={16} color="#38BDF8" />
                                                             ) : setType === 'failure' ? (
-                                                                <Ionicons name="warning" size={14} color="#F87171" />
+                                                                <Ionicons name="warning" size={16} color="#F87171" />
                                                             ) : (
-                                                                <Ionicons name="trending-down" size={14} color="#8B5CF6" />
+                                                                <Ionicons name="trending-down" size={16} color="#C084FC" />
                                                             )}
                                                         </View>
                                                     </MenuTrigger>
-                                                    <MenuOptions customStyles={{ optionsContainer: { borderRadius: 12, width: 200, paddingVertical: 4 } }}>
+                                                    <MenuOptions customStyles={{ optionsContainer: { borderRadius: 16, width: 200, paddingVertical: 4, backgroundColor: '#1E2D4A', borderColor: '#334155', borderWidth: 1 } }}>
                                                         <MenuOption onSelect={() => handleSetTypeChange(ex.id, index, 'normal')}>
-                                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
+                                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#334155]/50">
                                                                 <View className="flex-row items-center gap-2">
-                                                                    {setType === 'normal' && <Ionicons name="checkmark" size={18} color="#111827" />}
-                                                                    <Text className={`${setType === 'normal' ? 'font-bold' : 'font-medium'} text-[15px] text-gray-900`}>Normal</Text>
+                                                                    {setType === 'normal' && <Ionicons name="checkmark" size={18} color="#F1F5F9" />}
+                                                                    <Text className={`${setType === 'normal' ? 'font-bold' : 'font-medium'} text-[15px] text-[#F1F5F9]`}>Normal</Text>
                                                                 </View>
                                                             </View>
                                                         </MenuOption>
                                                         <MenuOption onSelect={() => handleSetTypeChange(ex.id, index, 'warmup')}>
-                                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
+                                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#334155]/50">
                                                                 <View className="flex-row items-center gap-2">
-                                                                    {setType === 'warmup' && <Ionicons name="checkmark" size={18} color="#111827" />}
-                                                                    <Text className={`${setType === 'warmup' ? 'font-bold' : 'font-medium'} text-[15px] text-gray-900`}>Warm Up</Text>
+                                                                    {setType === 'warmup' && <Ionicons name="checkmark" size={18} color="#F1F5F9" />}
+                                                                    <Text className={`${setType === 'warmup' ? 'font-bold' : 'font-medium'} text-[15px] text-[#F1F5F9]`}>Warm Up</Text>
                                                                 </View>
-                                                                <Ionicons name="flame" size={18} color="#F59E0B" />
+                                                                <Ionicons name="flame" size={18} color="#FB923C" />
                                                             </View>
                                                         </MenuOption>
                                                         <MenuOption onSelect={() => handleSetTypeChange(ex.id, index, 'cooldown')}>
-                                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
+                                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#334155]/50">
                                                                 <View className="flex-row items-center gap-2">
-                                                                    {setType === 'cooldown' && <Ionicons name="checkmark" size={18} color="#111827" />}
-                                                                    <Text className={`${setType === 'cooldown' ? 'font-bold' : 'font-medium'} text-[15px] text-gray-900`}>Cool Down</Text>
+                                                                    {setType === 'cooldown' && <Ionicons name="checkmark" size={18} color="#F1F5F9" />}
+                                                                    <Text className={`${setType === 'cooldown' ? 'font-bold' : 'font-medium'} text-[15px] text-[#F1F5F9]`}>Cool Down</Text>
                                                                 </View>
-                                                                <Ionicons name="snow" size={18} color="#60A5FA" />
+                                                                <Ionicons name="snow" size={18} color="#38BDF8" />
                                                             </View>
                                                         </MenuOption>
                                                         <MenuOption onSelect={() => handleSetTypeChange(ex.id, index, 'failure')}>
-                                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
+                                                            <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#334155]/50">
                                                                 <View className="flex-row items-center gap-2">
-                                                                    {setType === 'failure' && <Ionicons name="checkmark" size={18} color="#111827" />}
-                                                                    <Text className={`${setType === 'failure' ? 'font-bold' : 'font-medium'} text-[15px] text-gray-900`}>Failure</Text>
+                                                                    {setType === 'failure' && <Ionicons name="checkmark" size={18} color="#F1F5F9" />}
+                                                                    <Text className={`${setType === 'failure' ? 'font-bold' : 'font-medium'} text-[15px] text-[#F1F5F9]`}>Failure</Text>
                                                                 </View>
                                                                 <Ionicons name="warning" size={18} color="#F87171" />
                                                             </View>
@@ -475,10 +451,10 @@ export default function ResultScreen() {
                                                         <MenuOption onSelect={() => handleSetTypeChange(ex.id, index, 'dropset')}>
                                                             <View className="flex-row items-center justify-between px-4 py-3">
                                                                 <View className="flex-row items-center gap-2">
-                                                                    {setType === 'dropset' && <Ionicons name="checkmark" size={18} color="#111827" />}
-                                                                    <Text className={`${setType === 'dropset' ? 'font-bold' : 'font-medium'} text-[15px] text-gray-900`}>Dropset</Text>
+                                                                    {setType === 'dropset' && <Ionicons name="checkmark" size={18} color="#F1F5F9" />}
+                                                                    <Text className={`${setType === 'dropset' ? 'font-bold' : 'font-medium'} text-[15px] text-[#F1F5F9]`}>Dropset</Text>
                                                                 </View>
-                                                                <Ionicons name="trending-down" size={18} color="#8B5CF6" />
+                                                                <Ionicons name="trending-down" size={18} color="#C084FC" />
                                                             </View>
                                                         </MenuOption>
                                                     </MenuOptions>
@@ -487,30 +463,30 @@ export default function ResultScreen() {
                                                 {/* Weight Input Box */}
                                                 <TouchableOpacity
                                                     onPress={() => handleOpenSetEdit(ex.id, index, 'weight', (ex.weights && ex.weights[index]) || '')}
-                                                    className="flex-1 h-12 border border-gray-200 rounded-xl flex-row items-center px-4 bg-white"
+                                                    className="flex-1 h-12 border border-[#1E2D4A] rounded-[12px] flex-row items-center px-4 bg-[#0F172A]"
                                                 >
-                                                    <Text className={`flex-1 text-base ${ex.weights && ex.weights[index] ? 'text-gray-900 font-bold' : 'text-gray-400 font-medium'}`}>
+                                                    <Text className={`flex-1 text-[16px] ${ex.weights && ex.weights[index] ? 'text-[#F1F5F9] font-bold' : 'text-[#475569] font-medium'}`}>
                                                         {ex.weights && ex.weights[index] ? ex.weights[index] : '—'}
                                                     </Text>
-                                                    <Text className="text-gray-400 text-xs font-semibold">kg</Text>
+                                                    <Text className="text-[#64748B] text-[13px] font-semibold">kg</Text>
                                                 </TouchableOpacity>
 
                                                 {/* Reps/Time Input Box */}
                                                 <TouchableOpacity
                                                     onPress={() => handleOpenSetEdit(ex.id, index, ex.name.includes('Circles') ? 'duration' : 'reps', (ex.reps && ex.reps[index]) || '')}
-                                                    className="flex-1 h-12 border border-gray-200 rounded-xl flex-row items-center px-4 bg-white"
+                                                    className="flex-1 h-12 border border-[#1E2D4A] rounded-[12px] flex-row items-center px-4 bg-[#0F172A]"
                                                 >
-                                                    <Text className="font-bold text-gray-900 flex-1 text-base">
+                                                    <Text className="font-bold text-[#F1F5F9] flex-1 text-[16px]">
                                                         {(ex.reps && ex.reps[index]) || (ex.name.includes('Circles') ? '0:30' : '10')}
                                                     </Text>
                                                     {!ex.name.includes('Circles') && !((ex.reps && ex.reps[index])?.includes(':')) && (
-                                                        <Text className="text-gray-400 text-xs font-semibold">reps</Text>
+                                                        <Text className="text-[#64748B] text-[13px] font-semibold">reps</Text>
                                                     )}
                                                 </TouchableOpacity>
 
                                                 {/* Remove Icon */}
-                                                <TouchableOpacity onPress={() => handleRemoveSet(ex.id, index)}>
-                                                    <Ionicons name="remove-circle-outline" size={24} color="#F87171" />
+                                                <TouchableOpacity onPress={() => handleRemoveSet(ex.id, index)} className="p-1">
+                                                    <Ionicons name="remove-circle" size={24} color="#475569" />
                                                 </TouchableOpacity>
 
                                             </View>
@@ -519,13 +495,13 @@ export default function ResultScreen() {
                                 </View>
 
                                 {/* Bottom Action Row (Superset / Add set) */}
-                                <View className="flex-row border-t border-gray-100 pt-4 pb-1">
+                                <View className="flex-row border-t border-[#1E2D4A] pt-4 pb-1">
                                     <TouchableOpacity
                                         onPress={() => ex.supersetId ? handleUnlinkSuperset(ex.supersetId) : handleOpenSuperset(ex)}
-                                        className="flex-1 flex-row items-center justify-center gap-2 border-r border-gray-100"
+                                        className="flex-1 flex-row items-center justify-center gap-2 border-r border-[#1E2D4A]"
                                     >
-                                        <Ionicons name={ex.supersetId ? "link-outline" : "link"} size={16} color={ex.supersetId ? "#EF4444" : "#9CA3AF"} />
-                                        <Text className={`font-semibold text-[13px] ${ex.supersetId ? 'text-red-500' : 'text-gray-500'}`}>
+                                        <Ionicons name={ex.supersetId ? "link-outline" : "link"} size={16} color={ex.supersetId ? "#F87171" : "#64748B"} />
+                                        <Text className={`font-semibold text-[13px] ${ex.supersetId ? 'text-[#F87171]' : 'text-[#64748B]'}`}>
                                             {ex.supersetId ? 'Unlink' : 'Superset'}
                                         </Text>
                                     </TouchableOpacity>
@@ -533,8 +509,8 @@ export default function ResultScreen() {
                                         onPress={() => handleAddSet(ex.id)}
                                         className="flex-1 flex-row items-center justify-center gap-2"
                                     >
-                                        <Ionicons name="add" size={16} color="#9CA3AF" />
-                                        <Text className="font-semibold text-gray-500 text-[13px]">Add set</Text>
+                                        <Ionicons name="add" size={16} color="#64748B" />
+                                        <Text className="font-semibold text-[#64748B] text-[13px]">Add set</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -543,18 +519,17 @@ export default function ResultScreen() {
                     </ScrollView>
 
                     {/* Footer */}
-                    <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-white px-5 pt-4 pb-8">
+                    <View className="absolute bottom-0 left-0 right-0 bg-[#090D16] border-t border-[#1E2D4A] px-5 pt-4 pb-8">
                         <TouchableOpacity
                             onPress={() => router.replace({ pathname: '/(tabs)', params: { showPreview: 'true' } })}
-
-                            className="bg-[#1A1A1A] py-4 rounded-full items-center shadow-lg mb-3"
+                            className="bg-[#F1F5F9] py-4 rounded-full items-center mb-4"
                         >
-                            <Text className="text-white font-bold text-base">Save</Text>
+                            <Text className="text-[#090D16] font-bold text-[16px]">Save</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => router.push('/generate-template/report-issue')}
                         >
-                            <Text className="text-center text-gray-400 text-xs">Does this template look correct? If not, <Text className="underline">report an issue</Text></Text>
+                            <Text className="text-center text-[#64748B] text-[12px]">Does this template look correct? If not, <Text className="underline text-[#94A3B8]">report an issue</Text></Text>
                         </TouchableOpacity>
                     </View>
 

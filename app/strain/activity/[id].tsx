@@ -15,109 +15,113 @@ export default function ActivityDetailsScreen() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
 
-    // State for Title Editing
     const [title, setTitle] = useState('Indoor Walk');
     const [isEditing, setIsEditing] = useState(false);
 
-    // Ref for Share Sheet
     const shareSheetRef = useRef<ActivityShareSheetRef>(null);
 
     return (
         <BottomSheetModalProvider>
             <MenuProvider>
-                <View className="flex-1 bg-[#F9FAFB]">
-
-                    {/* Header */}
-                    <View className="px-5 pt-7 py-4 flex-row items-center justify-between border-b border-gray-100 bg-white" >
-                        <TouchableOpacity onPress={() => router.back()} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                            <Ionicons name="chevron-back" size={24} color="#111827" />
+                <View className="flex-1 bg-[#090D16]">
+                    {/* Dark Terminal Header */}
+                    <View className="px-5 pb-6 pt-5 border-b border-[#1E293B] bg-[#151E33] flex-row items-center justify-between">
+                        <TouchableOpacity
+                            onPress={() => router.back()}
+                            activeOpacity={0.7}
+                            className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                        >
+                            <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
                         </TouchableOpacity>
 
-                        <View className="items-center flex-1">
+                        <View className="flex-1 px-4">
                             {isEditing ? (
                                 <TextInput
                                     value={title}
                                     onChangeText={setTitle}
                                     autoFocus
                                     onBlur={() => setIsEditing(false)}
-                                    className="text-[18px] font-bold text-gray-900 border-b border-blue-500 pb-1 w-2/3 text-center"
+                                    className="text-lg font-bold text-white border-b border-[#4DB9F2] pb-1 w-full"
+                                    selectionColor="#4DB9F2"
                                 />
                             ) : (
-                                <Text className="text-[18px] font-bold text-gray-900">{title}</Text>
+                                <Text className="text-xl font-bold text-white" numberOfLines={1}>{title}</Text>
                             )}
-                            <Text className="text-[12px] font-medium text-gray-400">14 September 2025 at 8.22 AM</Text>
+                            <Text className="text-xs text-slate-400 mt-1">14 September 2025 at 8.22 AM</Text>
                         </View>
 
-                        {/* React Native Popup Menu for Ellipsis */}
                         <Menu>
-                            <MenuTrigger
-                                customStyles={{
-                                    triggerWrapper: { padding: 8, marginRight: -8 },
-                                    TriggerTouchableComponent: TouchableOpacity,
-                                    triggerTouchable: { activeOpacity: 1 }
-                                }}
-                            >
-                                <View className="w-8 h-8 rounded-full bg-gray-100 items-center justify-center">
-                                    <Ionicons name="ellipsis-horizontal" size={16} color="#9CA3AF" />
+                            <MenuTrigger customStyles={{ TriggerTouchableComponent: TouchableOpacity }}>
+                                <View className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center">
+                                    <Ionicons name="options-outline" size={20} color="#94A3B8" />
                                 </View>
                             </MenuTrigger>
-                            <MenuOptions customStyles={{ optionsContainer: { borderRadius: 14, width: 200, marginTop: 40, paddingVertical: 4 } }}>
+                            <MenuOptions customStyles={{ optionsContainer: { borderRadius: 14, width: 220, backgroundColor: '#1E1E1E', borderWidth: 1, borderColor: '#2C2C2C', paddingVertical: 4, marginTop: 40 } }}>
                                 <MenuOption onSelect={() => setIsEditing(true)}>
-                                    <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-50">
-                                        <Text className="text-[15px] text-gray-900">Edit title</Text>
-                                        <Ionicons name="pencil-outline" size={18} color="#111827" />
+                                    <View className="flex-row items-center justify-between px-4 py-3 border-b border-[#2C2C2C]">
+                                        <Text className="text-sm font-medium text-white">Edit title</Text>
+                                        <Ionicons name="create-outline" size={18} color="#4DB9F2" />
                                     </View>
                                 </MenuOption>
                                 <MenuOption onSelect={() => shareSheetRef.current?.present()}>
                                     <View className="flex-row items-center justify-between px-4 py-3">
-                                        <Text className="text-[15px] text-gray-900">Share</Text>
-                                        <Ionicons name="share-outline" size={18} color="#111827" />
+                                        <Text className="text-sm font-medium text-white">Share</Text>
+                                        <Ionicons name="share-social-outline" size={18} color="#4DB9F2" />
                                     </View>
                                 </MenuOption>
                             </MenuOptions>
                         </Menu>
                     </View>
 
-                    <ScrollView className="flex-1 px-5 pt-6" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100, paddingTop: 24 }} className="px-5">
 
-                        {/* 1. Strain Card */}
-                        <View className="bg-white rounded-full px-5 py-3 flex-row items-center justify-between border border-gray-100 shadow-sm shadow-black/5 mb-6">
-                            <Text className="text-[15px] font-bold text-gray-900">Activity Strain</Text>
-                            <View className="flex-row items-center gap-2">
-                                <Text className="text-[15px] font-bold text-gray-900">31%</Text>
-                                <View className="w-5 h-5 border-4 border-yellow-400 rounded-full border-t-transparent -rotate-45" />
-                            </View>
-                        </View>
-
-                        {/* 2. Grid Stats */}
-                        <View className="bg-white rounded-[24px] p-1 border border-gray-100 shadow-sm shadow-black/5 mb-6">
-                            <View className="flex-row border-b border-gray-50">
-                                <View className="flex-1 p-5 items-center border-r border-gray-50"><Text className="text-[11px] font-medium text-gray-400 mb-1">Total Duration</Text><Text className="text-[24px] font-bold text-gray-900">0:45:17</Text></View>
-                                <View className="flex-1 p-5 items-center"><Text className="text-[11px] font-medium text-gray-400 mb-1">Active Duration</Text><Text className="text-[24px] font-bold text-gray-400">0:45:17</Text></View>
-                            </View>
-                            <View className="flex-row border-b border-gray-50">
-                                <View className="flex-1 p-4 items-center border-r border-gray-50"><Ionicons name="location" size={14} color="#D1D5DB" className="mb-1" /><Text className="text-[16px] font-bold text-gray-900">3,22 <Text className="text-[12px] font-medium text-gray-400">km</Text></Text><Text className="text-[10px] text-gray-400">Distance</Text></View>
-                                <View className="flex-1 p-4 items-center"><Ionicons name="stopwatch" size={14} color="#D1D5DB" className="mb-1" /><Text className="text-[16px] font-bold text-gray-900">36:22 <Text className="text-[12px] font-medium text-gray-400">km</Text></Text><Text className="text-[10px] text-gray-400">Pace</Text></View>
-                            </View>
-                            <View className="flex-row">
-                                <View className="flex-1 p-4 items-center border-r border-gray-50"><Ionicons name="flame" size={14} color="#D1D5DB" className="mb-1" /><Text className="text-[16px] font-bold text-gray-900">294 <Text className="text-[12px] font-medium text-gray-400">kCal</Text></Text><Text className="text-[10px] text-gray-400">Total Energy</Text></View>
-                                <View className="flex-1 p-4 items-center"><Ionicons name="heart" size={14} color="#D1D5DB" className="mb-1" /><Text className="text-[16px] font-bold text-gray-900">128 <Text className="text-[12px] font-medium text-gray-400">bpm</Text></Text><Text className="text-[10px] text-gray-400">Heart Rate</Text></View>
-                            </View>
-                        </View>
-
-                        {/* 3. Insight Text */}
-                        <View className="bg-white rounded-[24px] p-5 border border-purple-100 shadow-sm mb-10">
-                            <View className="flex-row items-center justify-between mb-3">
-                                <View className="flex-row items-center gap-2">
-                                    <Ionicons name="walk" size={16} color="#8B5CF6" />
-                                    <Text className="text-[13px] font-bold text-gray-900">Recovery Walk</Text>
+                        {/* Top Highlights Split */}
+                        <View className="flex-row gap-4 mb-6">
+                            <View className="flex-1 bg-[#151E33] border border-[#1E293B] rounded-3xl p-5 flex-col justify-between min-h-[140px]">
+                                <Text className="text-sm font-semibold text-slate-400">Activity Strain</Text>
+                                <View className="flex-row items-baseline gap-2">
+                                    <Text className="text-5xl font-bold text-[#F59E0B]">31</Text>
+                                    <Text className="text-base font-semibold text-slate-500">%</Text>
                                 </View>
-                                <Ionicons name="expand-outline" size={14} color="#9CA3AF" />
+                                <View className="w-full h-1.5 bg-[#1E293B] rounded-full overflow-hidden mt-4">
+                                    <View className="h-full bg-[#F59E0B]" style={{ width: '31%' }} />
+                                </View>
                             </View>
-                            <Text className="text-[13px] text-gray-600 leading-5">This 3.22 km Indoor Walk kept you squarely in the Low Aerobic zone, which is a smart move given your current Overtraining Cardio Status...</Text>
+
+                            <View className="flex-1 bg-[#1E293B40] border border-[#1E293B] rounded-3xl p-5 flex-col gap-4 justify-center">
+                                <View className="flex-row items-center justify-between border-b border-[#1E293B] pb-3">
+                                    <Text className="text-xs text-slate-400 font-semibold">Total Duration</Text>
+                                    <Text className="text-base font-bold text-white">0:45:17</Text>
+                                </View>
+                                <View className="flex-row items-center justify-between">
+                                    <Text className="text-xs text-slate-400 font-semibold">Active Time</Text>
+                                    <Text className="text-base font-bold text-slate-300">0:45:17</Text>
+                                </View>
+                            </View>
                         </View>
 
-                        {/* --- NEW MODULAR SECTIONS --- */}
+                        {/* Telemetry Grid Nodes */}
+                        <View className="flex-row flex-wrap justify-between gap-y-4 mb-6">
+                            <TelemetryNode icon="location" value="3.22" unit="km" label="Distance" />
+                            <TelemetryNode icon="stopwatch" value="36:22" unit="km" label="Pace" />
+                            <TelemetryNode icon="flame" value="294" unit="kCal" label="Total Energy" />
+                            <TelemetryNode icon="heart" value="128" unit="bpm" label="Heart Rate" />
+                        </View>
+
+                        {/* Integrated Context Board */}
+                        <View className="bg-emerald-950/20 border border-emerald-500/20 rounded-2xl p-5 mb-10 flex-col">
+                            <View className="flex-row items-center gap-3 mb-3">
+                                <View className="w-8 h-8 rounded-lg bg-emerald-500/10 items-center justify-center border border-emerald-500/20">
+                                    <Ionicons name="fitness-outline" size={16} color="#10B981" />
+                                </View>
+                                <Text className="text-sm font-bold text-emerald-400">Recovery Walk</Text>
+                            </View>
+                            <Text className="text-xs text-slate-300 leading-6">
+                                This 3.22 km Indoor Walk kept you squarely in the Low Aerobic zone, which is a smart move given your current Overtraining Cardio Status.
+                            </Text>
+                        </View>
+
+                        {/* External Metric Modules */}
                         <CardioImpactCard />
                         <PerceivedEffortCard />
                         <HeartRateCard />
@@ -125,10 +129,24 @@ export default function ActivityDetailsScreen() {
 
                     </ScrollView>
 
-                    {/* Bottom Sheets */}
                     <ActivityShareSheet ref={shareSheetRef} />
                 </View>
             </MenuProvider>
         </BottomSheetModalProvider>
     );
 }
+
+const TelemetryNode = ({ icon, value, unit, label }: any) => (
+    <View className="w-[48%] bg-[#151E33] border border-[#1E293B] rounded-2xl p-4 flex-row items-center gap-4">
+        <View className="w-10 h-10 bg-[#1E293B] rounded-xl items-center justify-center border border-[#2D3748]">
+            <Ionicons name={icon} size={16} color="#4DB9F2" />
+        </View>
+        <View className="flex-1">
+            <View className="flex-row items-baseline gap-1">
+                <Text className="text-lg font-bold text-white">{value}</Text>
+                <Text className="text-[10px] text-slate-500 font-medium">{unit}</Text>
+            </View>
+            <Text className="text-[10px] text-slate-400 font-semibold">{label}</Text>
+        </View>
+    </View>
+);

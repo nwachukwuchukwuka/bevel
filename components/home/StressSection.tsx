@@ -8,46 +8,55 @@ interface StressSectionProps {
 
 export const StressSection = ({ onPress }: StressSectionProps) => (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-        <View className="bg-white rounded-3xl p-5 shadow-sm border border-gray-50 mb-3">
-            <View className="flex-row items-center justify-between mb-1">
+        <View className="bg-[#151E33] rounded-[24px] p-5 border border-slate-800/80 mb-3">
+            {/* Header */}
+            <View className="flex-row items-center justify-between mb-4">
                 <View className="flex-row items-center gap-2">
-                    <View className="w-2 h-2 rounded-full bg-green-500" />
-                    <Text className="text-gray-700 font-semibold">Today's stress</Text>
+                    <View className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                    <Text className="text-slate-200 font-semibold text-[15px]">Today's stress</Text>
                 </View>
-                <Ionicons name="arrow-forward" size={18} color="#9CA3AF" />
+                <Ionicons name="arrow-forward" size={18} color="#94A3B8" />
             </View>
-            <Text className="text-xs text-gray-400 mb-6 ml-4">Last updated at 7:54 AM</Text>
-            <View className="flex-row items-center">
-                <View className="flex-1 flex-row justify-between pr-4">
-                    <View>
-                        <Text className="text-yellow-500 text-lg font-bold">36</Text>
-                        <Text className="text-gray-400 text-xs">Highest</Text>
+
+            {/* Asymmetrical Columns */}
+            <View className="flex-row items-center gap-4">
+                {/* Left Side: Score Display */}
+                <View className="bg-slate-800/60 border border-slate-700/30 rounded-2xl p-4 items-center justify-center w-24 h-24">
+                    <Text className="text-[28px] font-bold text-slate-100 leading-8">36</Text>
+                    <Text className="text-[11px] font-semibold text-slate-400 mt-1">Stress Score</Text>
+                </View>
+
+                {/* Right Side: Stats Stack */}
+                <View className="flex-1 gap-2.5 pl-2">
+                    <View className="flex-row items-center justify-between">
+                        <Text className="text-xs text-slate-400 font-semibold">Highest</Text>
+                        <Text className="text-sm font-bold text-yellow-500">36</Text>
                     </View>
-                    <View className="border-l border-gray-100 h-8 mx-2" />
-                    <View>
-                        <Text className="text-green-500 text-lg font-bold">6</Text>
-                        <Text className="text-gray-400 text-xs">Lowest</Text>
+                    <View className="h-[1px] bg-slate-800/80" />
+                    <View className="flex-row items-center justify-between">
+                        <Text className="text-xs text-slate-400 font-semibold">Average</Text>
+                        <Text className="text-sm font-bold text-teal-500">11</Text>
                     </View>
-                    <View className="border-l border-gray-100 h-8 mx-2" />
-                    <View>
-                        <Text className="text-teal-500 text-lg font-bold">11</Text>
-                        <Text className="text-gray-400 text-xs">Average</Text>
+                    <View className="h-[1px] bg-slate-800/80" />
+                    <View className="flex-row items-center justify-between">
+                        <Text className="text-xs text-slate-400 font-semibold">Lowest</Text>
+                        <Text className="text-sm font-bold text-green-500">6</Text>
                     </View>
                 </View>
-                <View className="w-[72px] h-[72px] items-center justify-center relative">
-                    <View className="absolute w-full h-full border-4 border-gray-100 rounded-full border-dashed" />
-                    <Text className="text-xl font-bold text-gray-700">36</Text>
+            </View>
+
+            <View className="h-[1px] bg-slate-800/80 my-4" />
+
+            {/* Integrated Energy Meter */}
+            <View className="flex-row items-center gap-3">
+                <Ionicons name="flash" size={18} color="#22C55E" />
+                <View className="flex-1 h-5 flex-row items-end gap-[2px]">
+                    {Array.from({ length: 40 }).map((_, i) => (
+                        <View key={i} className={`w-[2px] rounded-full ${i < 30 ? 'bg-green-400 h-full' : 'bg-slate-800 h-3'}`} />
+                    ))}
                 </View>
+                <Text className="font-bold text-slate-100 text-sm">71%</Text>
             </View>
-        </View>
-        <View className="bg-white rounded-2xl p-4 shadow-sm border border-gray-50 flex-row items-center gap-3">
-            <Ionicons name="flash" size={20} color="#22C55E" />
-            <View className="flex-1 h-6 flex-row items-end gap-[2px]">
-                {Array.from({ length: 40 }).map((_, i) => (
-                    <View key={i} className={`w-[2px] rounded-full ${i < 30 ? 'bg-green-400 h-full' : 'bg-gray-100 h-3'}`} />
-                ))}
-            </View>
-            <Text className="font-bold text-gray-900">71%</Text>
         </View>
     </TouchableOpacity>
 );

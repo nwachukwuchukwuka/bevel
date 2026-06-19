@@ -18,59 +18,77 @@ export default function CustomizationScreen() {
     const categoryData = [
         { id: 'intel', label: 'Bevel Intelligence', icon: 'aperture', color: '#38BDF8' },
         { id: 'nut', label: 'Nutrition', icon: 'restaurant', color: '#C084FC', route: '/settings/nutrition' },
-        // { id: 'nut', label: 'Nutrition', icon: 'restaurant', color: '#C084FC' },
         { id: 'str', label: 'Strength Builder', icon: 'barbell', color: '#FBBF24' },
         { id: 'jour', label: 'Journal', icon: 'book', color: '#86EFAC' },
         { id: 'bio', label: 'Biology', icon: 'heart', color: '#F472B6' },
     ];
 
     return (
-        <SafeAreaView edges={['top']} className="flex-1 bg-[#F9FAFB] pt-4">
-            <View className="flex-row items-center justify-between px-5 py-2 mb-4 border-b border-gray-100 pb-4">
-                <TouchableOpacity onPress={() => router.back()} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                    <Ionicons name="chevron-back" size={24} color="#111827" />
+        <SafeAreaView edges={['top']} className="flex-1 bg-[#090D16]">
+            {/* Header */}
+            <View className="flex-row items-center justify-between px-5 py-4">
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    className="w-10 h-10 bg-[#151E33] border border-slate-800/80 rounded-xl items-center justify-center"
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                    <Ionicons name="chevron-back" size={20} color="#94A3B8" />
                 </TouchableOpacity>
-                <Text className="text-[16px] font-bold text-gray-900">Customization</Text>
-                <View className="w-6" />
+                <Text className="text-[17px] font-bold text-slate-100">Customization</Text>
+                <View className="w-10" />
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 60 }}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 60 }}>
 
-                <View className="bg-white rounded-[24px] shadow-sm shadow-black/5 border border-gray-100 overflow-hidden mb-6">
-                    {menuData.map((item, idx) => (
+                <View className="flex-row items-center gap-2 mb-4 ml-1">
+                    <Text className="text-[13px] font-bold text-slate-400">App settings</Text>
+                    <View className="flex-1 h-[1px] bg-slate-800/80" />
+                </View>
+
+                <View className="gap-3 mb-8">
+                    {menuData.map((item) => (
                         <TouchableOpacity
                             key={item.id}
                             onPress={() => item.route ? router.push(item.route as any) : null}
-                            className={`flex-row items-center justify-between p-4 ${idx !== menuData.length - 1 ? 'border-b border-gray-50' : ''}`}
+                            className="bg-[#151E33] border border-slate-800 rounded-2xl p-4 flex-row items-center justify-between"
                         >
-                            <View className="flex-row items-center gap-4">
-                                <View className="w-8 h-8 rounded-xl items-center justify-center border border-white shadow-sm shadow-black/10" style={{ backgroundColor: item.color }}>
-                                    <Ionicons name={item.icon as any} size={16} color="white" />
+                            <View className="flex-row items-center gap-3.5 flex-1 pr-4">
+                                <View className="w-9 h-9 rounded-xl items-center justify-center bg-slate-800 border border-slate-700/30">
+                                    <Ionicons name={item.icon as any} size={15} color={item.color} />
                                 </View>
-                                <View>
-                                    <Text className="text-[15px] font-bold text-gray-900 mb-0.5">{item.label}</Text>
-                                    <Text className="text-[12px] text-gray-500">{item.desc}</Text>
+                                <View className="flex-1">
+                                    <Text className="text-[14px] font-bold text-slate-100 mb-0.5">{item.label}</Text>
+                                    <Text className="text-[11px] text-slate-400" numberOfLines={1}>{item.desc}</Text>
                                 </View>
                             </View>
-                            <Ionicons name="chevron-forward" size={16} color="#D1D5DB" />
+                            <View className="w-7 h-7 rounded-lg bg-slate-800/40 border border-slate-700/20 items-center justify-center">
+                                <Ionicons name="chevron-forward" size={12} color="#94A3B8" />
+                            </View>
                         </TouchableOpacity>
                     ))}
                 </View>
 
-                <View className="bg-white rounded-[24px] shadow-sm shadow-black/5 border border-gray-100 overflow-hidden">
-                    {categoryData.map((item, idx) => (
+                <View className="flex-row items-center gap-2 mb-4 ml-1">
+                    <Text className="text-[13px] font-bold text-slate-400">Metrics & features</Text>
+                    <View className="flex-1 h-[1px] bg-slate-800/80" />
+                </View>
+
+                <View className="gap-3">
+                    {categoryData.map((item) => (
                         <TouchableOpacity
                             key={item.id}
-                            className={`flex-row items-center justify-between p-4 ${idx !== categoryData.length - 1 ? 'border-b border-gray-50' : ''}`}
+                            className="bg-[#151E33] border border-slate-800 rounded-2xl p-4 flex-row items-center justify-between"
                             onPress={() => item.route ? router.push(item.route as any) : null}
                         >
-                            <View className="flex-row items-center gap-4">
-                                <View className="w-8 h-8 rounded-xl items-center justify-center border border-white shadow-sm shadow-black/10" style={{ backgroundColor: item.color }}>
-                                    <Ionicons name={item.icon as any} size={16} color="white" />
+                            <View className="flex-row items-center gap-3.5">
+                                <View className="w-9 h-9 rounded-xl items-center justify-center bg-slate-800 border border-slate-700/30">
+                                    <Ionicons name={item.icon as any} size={15} color={item.color} />
                                 </View>
-                                <Text className="text-[15px] font-bold text-gray-900">{item.label}</Text>
+                                <Text className="text-[14px] font-bold text-slate-100">{item.label}</Text>
                             </View>
-                            <Ionicons name="chevron-forward" size={16} color="#D1D5DB" />
+                            <View className="w-7 h-7 rounded-lg bg-slate-800/40 border border-slate-700/20 items-center justify-center">
+                                <Ionicons name="chevron-forward" size={12} color="#94A3B8" />
+                            </View>
                         </TouchableOpacity>
                     ))}
                 </View>

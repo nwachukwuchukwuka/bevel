@@ -1,66 +1,98 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CGMSyncMethodScreen() {
     const router = useRouter();
 
     return (
-        <SafeAreaView className="flex-1 bg-[#F9FAFB]" edges={['top']}>
-            <View className="px-5 py-4 flex-row items-center mb-6">
-                <TouchableOpacity onPress={() => router.back()}><Ionicons name="chevron-back" size={24} color="#111827" /></TouchableOpacity>
-                <Text className="flex-1 text-center font-semibold text-gray-500 text-[13px] mr-6">Connect CGM</Text>
+        <SafeAreaView className="flex-1 bg-[#090D16]" edges={['top']}>
+
+            <View className="px-5 pt-4 pb-6 border-b border-[#1E293B] bg-[#151E33] flex-row items-center justify-between">
+                <View className="flex-row items-center gap-3">
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        activeOpacity={0.7}
+                        className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                    >
+                        <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
+                    </TouchableOpacity>
+                    <View>
+                        <Text className="text-xl font-bold text-slate-100">Connect CGM</Text>
+                        <Text className="text-xs text-slate-400 mt-1">Integration protocol</Text>
+                    </View>
+                </View>
             </View>
 
-            <View className="flex-1 px-5 pt-4">
-                {/* Hero Graphic */}
-                <View className="items-center justify-center mb-10">
-                    <View className="w-40 h-40 rounded-full bg-blue-50/60 absolute items-center justify-center">
-                        <View className="w-32 h-32 rounded-full bg-blue-100/50 absolute" />
+            <View className="flex-1 px-5 pt-8">
+
+                <View className="mb-10 flex-row items-center gap-4">
+                    <View className="w-14 h-14 bg-[#151E33] border border-[#1E293B] rounded-2xl items-center justify-center">
+                        <Ionicons name="git-network-outline" size={24} color="#4DB9F2" />
                     </View>
-                    <View className="w-24 h-24 bg-white rounded-full items-center justify-center shadow-lg" style={styles.shadow}>
-                        <View className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
+                    <View className="flex-1">
+                        <Text className="text-2xl font-bold text-white mb-1">Select sync method</Text>
+                        <Text className="text-sm text-slate-400">Choose data pipeline architecture</Text>
                     </View>
                 </View>
 
-                <Text className="text-2xl font-bold text-gray-900 text-center mb-8">Select sync method</Text>
-
-                {/* Dexcom Button - UPDATED ROUTE */}
                 <TouchableOpacity
-                    onPress={() => router.push('/nutrition/cgm/dexcom-step-1')}
-                    className="bg-white rounded-2xl p-5 mb-4 border border-gray-100 flex-row items-center justify-between" style={styles.shadow}
+                    onPress={() => router.push('/nutrition/cgm/dexcom-login')}
+                    activeOpacity={0.8}
+                    className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6 mb-6 flex-col gap-4"
                 >
-                    <View className="flex-1 pr-4">
-                        <View className="flex-row items-center gap-2 mb-1">
-                            <View className="w-5 h-5 bg-[#22C55E] rounded flex-row flex-wrap p-0.5 justify-between content-between">
-                                <View className="w-1.5 h-1.5 bg-white rounded-full" /><View className="w-1.5 h-1.5 bg-white rounded-full" />
-                                <View className="w-1.5 h-1.5 bg-white rounded-full" /><View className="w-1.5 h-1.5 bg-white rounded-full" />
+                    <View className="flex-row items-center justify-between border-b border-[#1E293B] pb-4">
+                        <View className="flex-row items-center gap-3">
+                            <View className="bg-[#1E293B] p-2 rounded-xl border border-[#2D3748]">
+                                <Ionicons name="flash" size={16} color="#10B981" />
                             </View>
-                            <Text className="font-bold text-gray-900 text-[15px]">Dexcom Follow</Text>
+                            <Text className="font-bold text-white text-lg">Dexcom Follow</Text>
                         </View>
-                        <Text className="text-gray-500 text-xs leading-5">Using the follow method ensures your data updates in real time without delays.</Text>
+                        <View className="bg-emerald-950/30 px-2.5 py-1 rounded-md border border-emerald-500/20">
+                            <Text className="text-[10px] font-bold text-[#10B981]">REAL-TIME</Text>
+                        </View>
                     </View>
-                    <Ionicons name="arrow-forward" size={16} color="#9CA3AF" />
+
+                    <Text className="text-slate-400 text-sm leading-6">
+                        Using the follow method ensures your data updates in real time without delays.
+                    </Text>
+
+                    <View className="bg-[#090D16] p-3 rounded-xl border border-[#1E293B] flex-row items-center justify-between mt-2">
+                        <Text className="text-xs font-semibold text-[#4DB9F2]">Initiate pairing</Text>
+                        <Ionicons name="arrow-forward" size={14} color="#4DB9F2" />
+                    </View>
                 </TouchableOpacity>
 
-                {/* Apple Health Button */}
                 <TouchableOpacity
                     onPress={() => router.push('/nutrition/cgm/apple-health-error')}
-                    className="bg-white rounded-2xl p-5 border border-gray-100 flex-row items-center justify-between" style={styles.shadow}
+                    activeOpacity={0.8}
+                    className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6 flex-col gap-4"
                 >
-                    <View className="flex-1 pr-4">
-                        <View className="flex-row items-center gap-2 mb-1">
-                            <Ionicons name="heart" size={16} color="#EF4444" />
-                            <Text className="font-bold text-gray-900 text-[15px]">Apple Health</Text>
+                    <View className="flex-row items-center justify-between border-b border-[#1E293B] pb-4">
+                        <View className="flex-row items-center gap-3">
+                            <View className="bg-[#1E293B] p-2 rounded-xl border border-[#2D3748]">
+                                <Ionicons name="heart" size={16} color="#EF4444" />
+                            </View>
+                            <Text className="font-bold text-white text-lg">Apple Health</Text>
                         </View>
-                        <Text className="text-gray-500 text-xs leading-5">Pulling glucose data from Apple Health will result in a 3-hour delay.</Text>
+                        <View className="bg-amber-950/30 px-2.5 py-1 rounded-md border border-amber-500/20">
+                            <Text className="text-[10px] font-bold text-amber-500">DELAYED</Text>
+                        </View>
                     </View>
-                    <Ionicons name="arrow-forward" size={16} color="#9CA3AF" />
+
+                    <Text className="text-slate-400 text-sm leading-6">
+                        Pulling glucose data from Apple Health will result in a 3-hour delay.
+                    </Text>
+
+                    <View className="bg-[#090D16] p-3 rounded-xl border border-[#1E293B] flex-row items-center justify-between mt-2">
+                        <Text className="text-xs font-semibold text-[#4DB9F2]">Initiate pairing</Text>
+                        <Ionicons name="arrow-forward" size={14} color="#4DB9F2" />
+                    </View>
                 </TouchableOpacity>
+
             </View>
         </SafeAreaView>
     );
 }
-const styles = StyleSheet.create({ shadow: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 } });

@@ -15,11 +15,11 @@ interface Props {
 
 export const LogAlcoholSheet = forwardRef<LogAlcoholSheetRef, Props>(({ initialAmount, onSave, onDelete, isEditing }, ref) => {
     const insets = useSafeAreaInsets();
-    const snapPoints = useMemo(() => ['45%'], []);
+    const snapPoints = useMemo(() => ['55%'], []);
     const [amount, setAmount] = useState(initialAmount);
 
     const renderBackdrop = useCallback((props: any) => (
-        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.4} />
+        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.6} />
     ), []);
 
     const dismiss = () => (ref as any).current?.dismiss();
@@ -30,50 +30,89 @@ export const LogAlcoholSheet = forwardRef<LogAlcoholSheetRef, Props>(({ initialA
             index={0}
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
-            handleComponent={null}
-            backgroundStyle={{ backgroundColor: '#FFFFFF', borderRadius: 24 }}
+            handleIndicatorStyle={{ backgroundColor: '#1E293B', width: 40, height: 4, marginTop: 8 }}
+            backgroundStyle={{ backgroundColor: '#151E33', borderRadius: 32, borderWidth: 1, borderColor: '#1E293B' }}
         >
-            <BottomSheetView style={{ paddingBottom: insets.bottom + 20 }} className="flex-1 px-5 pt-5">
+            <BottomSheetView style={{ paddingBottom: insets.bottom + 20 }} className="flex-1 px-5 pt-3">
 
-                {/* Header */}
-                <View className="flex-row items-center justify-between mb-8">
-                    <TouchableOpacity onPress={dismiss} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                        <Ionicons name="chevron-back" size={24} color="#9CA3AF" />
+                <View className="px-2 pb-6 border-b border-[#1E293B] flex-row justify-between items-center mb-6">
+                    <View>
+                        <Text className="text-2xl font-bold text-slate-100">Log Alcohol</Text>
+                        <Text className="text-sm text-slate-400 mt-1">Record a new journal entry</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={dismiss}
+                        activeOpacity={0.7}
+                        className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                    >
+                        <Ionicons name="close" size={20} color="#94A3B8" />
                     </TouchableOpacity>
-                    <Text className="text-[15px] font-bold text-gray-900">Log Alcohol</Text>
-                    {isEditing ? (
-                        <TouchableOpacity onPress={() => { onDelete?.(); dismiss(); }} className="w-8 h-8 bg-red-50 rounded-full items-center justify-center">
-                            <Ionicons name="trash" size={16} color="#EF4444" />
+                </View>
+
+                <View className="flex-row gap-4 mb-4 flex-1">
+                    <View className="bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-4 flex-1 items-center justify-center">
+                        <Text className="text-xs font-semibold text-slate-500 mb-6">Serving count</Text>
+                        <View className="flex-row items-center gap-5">
+                            <TouchableOpacity
+                                onPress={() => setAmount(Math.max(0, amount - 0.5))}
+                                activeOpacity={0.7}
+                                className="w-12 h-12 bg-[#1E293B] border border-[#2D3748] rounded-full items-center justify-center"
+                            >
+                                <Ionicons name="remove" size={24} color="#4DB9F2" />
+                            </TouchableOpacity>
+                            <View className="items-center">
+                                <Text className="text-4xl font-bold text-white mb-1">
+                                    {amount.toFixed(1).replace('.', ',')}
+                                </Text>
+                                <Text className="text-sm text-slate-400 font-medium">drinks</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => setAmount(amount + 0.5)}
+                                activeOpacity={0.7}
+                                className="w-12 h-12 bg-[#1E293B] border border-[#2D3748] rounded-full items-center justify-center"
+                            >
+                                <Ionicons name="add" size={24} color="#4DB9F2" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View className="w-[35%] flex-col gap-4">
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            className="bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-4 flex-1 justify-center"
+                        >
+                            <Text className="text-xs font-semibold text-slate-500 mb-1">Time</Text>
+                            <Text className="text-base font-bold text-white mb-2">4.35 PM</Text>
+                            <View className="w-8 h-8 rounded-lg bg-[#1E293B] border border-[#2D3748] items-center justify-center">
+                                <Ionicons name="time-outline" size={16} color="#4DB9F2" />
+                            </View>
                         </TouchableOpacity>
-                    ) : <View className="w-8" />}
-                </View>
 
-                {/* Amount Selector */}
-                <View className="flex-row items-center justify-center gap-6 mb-8">
-                    <TouchableOpacity onPress={() => setAmount(Math.max(0, amount - 0.5))} className="w-12 h-12 bg-gray-50 rounded-full items-center justify-center border border-gray-100">
-                        <Ionicons name="remove" size={24} color="#111827" />
-                    </TouchableOpacity>
-                    <Text className="text-[32px] font-bold text-gray-900 tracking-tighter">{amount.toFixed(1).replace('.', ',')} <Text className="text-[20px] font-bold">drinks</Text></Text>
-                    <TouchableOpacity onPress={() => setAmount(amount + 0.5)} className="w-12 h-12 bg-gray-50 rounded-full items-center justify-center border border-gray-100">
-                        <Ionicons name="add" size={24} color="#111827" />
-                    </TouchableOpacity>
-                </View>
-
-                {/* Time Row */}
-                <View className="flex-row items-center justify-between border border-gray-200 rounded-[16px] px-4 py-4 mb-6">
-                    <Text className="text-[15px] font-bold text-gray-900">Time</Text>
-                    <View className="flex-row items-center gap-1">
-                        <Text className="text-[15px] text-gray-600">4.35 PM</Text>
-                        <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                        {isEditing && (
+                            <TouchableOpacity
+                                onPress={() => { onDelete?.(); dismiss(); }}
+                                activeOpacity={0.7}
+                                className="bg-rose-950/20 border border-rose-500/20 rounded-2xl p-4 flex-row items-center justify-center gap-2"
+                            >
+                                <Ionicons name="trash-outline" size={16} color="#EF4444" />
+                                <Text className="text-xs font-bold text-rose-500">Delete</Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
                 </View>
 
-                <TouchableOpacity
-                    onPress={() => { onSave(amount, '4.35 PM'); dismiss(); }}
-                    className="bg-[#1C1C1E] h-[56px] rounded-full items-center justify-center mt-auto"
-                >
-                    <Text className="text-white font-semibold text-[16px]">{isEditing ? 'Save' : 'Add to journal'}</Text>
-                </TouchableOpacity>
+                <View className="mt-2 border-t border-[#1E293B] pt-4">
+                    <TouchableOpacity
+                        onPress={() => { onSave(amount, '4.35 PM'); dismiss(); }}
+                        activeOpacity={0.8}
+                        className="bg-[#4DB9F2] h-14 rounded-2xl items-center justify-center border border-[#4DB9F2]"
+                    >
+                        <Text className="text-[#090D16] font-bold text-base">
+                            {isEditing ? 'Save changes' : 'Add to journal'}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
             </BottomSheetView>
         </BottomSheetModal>
     );

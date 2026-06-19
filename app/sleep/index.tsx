@@ -13,207 +13,233 @@ export default function SleepScreen() {
     const addSheetRef = useRef<AddManualSleepSheetRef>(null);
     const alarmSheetRef = useRef<SleepAlarmSheetRef>(null);
 
-
     return (
-        <View className="flex-1 bg-[#181B28]">
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+        <View className="flex-1 bg-[#090D16]">
 
-                {/* Header */}
-                <View style={{ paddingTop: insets.top }} className="px-5 flex-row items-center justify-between mb-8">
-                    <TouchableOpacity onPress={() => router.back()} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                        <Ionicons name="chevron-back" size={24} color="#D1D5DB" />
-                    </TouchableOpacity>
-                    <View className="items-center">
-                        <Text className="text-[17px] font-semibold text-white">Sleep</Text>
-                        <View className="flex-row items-center gap-1">
-                            <Text className="text-[12px] font-medium text-gray-400">Today, 14 September</Text>
-                            <Ionicons name="chevron-down" size={12} color="#6B7280" />
-                        </View>
-                    </View>
+            <View style={{ paddingTop: insets.top }} className="px-5 pb-6 border-b border-[#1E293B] bg-[#151E33] flex-row items-center justify-between">
+                <View className="flex-row items-center gap-4">
                     <TouchableOpacity
-                        onPress={() => alarmSheetRef.current?.present()}
-                        className="w-8 h-8 bg-[#2A3047] rounded-full items-center justify-center"
+                        onPress={() => router.back()}
+                        activeOpacity={0.7}
+                        className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
                     >
-                        <Ionicons name="alarm-outline" size={18} color="#D1D5DB" />
+                        <Ionicons name="arrow-back" size={20} color="#4DB9F2" />
                     </TouchableOpacity>
-                </View>
-
-                {/* Hero Circle */}
-                <View className="items-center justify-center mb-8 px-5">
-                    <View className="w-48 h-48 bg-[#1F2437] rounded-full items-center justify-center relative">
-                        <View className="absolute w-full h-full border-[12px] border-[#2A3047] rounded-full" />
-                        <View className="absolute w-full h-full border-[12px] border-indigo-500 rounded-full border-l-transparent border-b-transparent -rotate-45" />
-                        <View className="items-center">
-                            <Text className="text-[36px] font-semibold text-white">67<Text className="text-[18px]">%</Text></Text>
-                            <Text className="text-[11px] font-medium text-gray-400 mt-1">Quality</Text>
-                        </View>
+                    <View>
+                        <Text className="text-xl font-bold text-slate-100">Sleep</Text>
+                        <Text className="text-xs text-slate-400 mt-1">Today, 14 September</Text>
                     </View>
                 </View>
 
-                <View className="px-5 gap-6">
-                    {/* Quick Stats */}
-                    <View className="flex-row gap-3">
-                        <View className="flex-1 bg-[#22273B] rounded-[20px] p-4">
-                            <View className="flex-row items-center gap-1.5 mb-2">
-                                <Ionicons name="bed" size={14} color="#9CA3AF" />
-                                <Text className="text-[12px] font-medium text-gray-400">Time in Bed</Text>
-                            </View>
-                            <View className="flex-row items-center justify-between">
-                                <Text className="text-[20px] font-semibold text-white">6h 32m</Text>
-                                <Ionicons name="caret-up" size={14} color="#3B82F6" />
+                <TouchableOpacity
+                    onPress={() => alarmSheetRef.current?.present()}
+                    activeOpacity={0.7}
+                    className="w-10 h-10 bg-[#1E293B] border border-[#2D3748] rounded-xl items-center justify-center"
+                >
+                    <Ionicons name="alarm-outline" size={20} color="#F59E0B" />
+                </TouchableOpacity>
+            </View>
+
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 60, paddingTop: 24 }}>
+
+                <View className="px-5 mb-8">
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6">
+                        <View className="flex-row justify-between items-center mb-6 border-b border-[#1E293B] pb-4">
+                            <Text className="text-sm font-semibold text-slate-400">Sleep Quality Index</Text>
+                            <View className="bg-emerald-950/30 px-3 py-1.5 rounded-xl border border-emerald-500/20">
+                                <Text className="text-xs font-bold text-emerald-500">Fair condition</Text>
                             </View>
                         </View>
-                        <View className="flex-1 bg-[#22273B] rounded-[20px] p-4">
-                            <View className="flex-row items-center gap-1.5 mb-2">
-                                <Ionicons name="time" size={14} color="#9CA3AF" />
-                                <Text className="text-[12px] font-medium text-gray-400">Time Asleep</Text>
+
+                        <View className="flex-row items-end gap-3 mb-6">
+                            <Text className="text-6xl font-bold text-[#4DB9F2]">67</Text>
+                            <Text className="text-base text-slate-500 font-medium mb-1">% quality</Text>
+                        </View>
+
+                        <View className="h-2 w-full bg-[#1E293B] rounded-full overflow-hidden flex-row">
+                            <View className="h-full bg-[#4DB9F2]" style={{ width: '67%' }} />
+                        </View>
+                    </View>
+                </View>
+
+                <View className="px-5 flex-row gap-4 mb-6">
+                    <View className="flex-1 bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-4 flex-row items-center gap-4">
+                        <View className="w-10 h-10 bg-[#151E33] rounded-xl border border-[#2D3748] items-center justify-center">
+                            <Ionicons name="bed-outline" size={18} color="#4DB9F2" />
+                        </View>
+                        <View>
+                            <Text className="text-xs text-slate-500 font-semibold mb-0.5">Time in Bed</Text>
+                            <View className="flex-row items-center gap-1.5">
+                                <Text className="text-lg font-bold text-white">6h 32m</Text>
+                                <Ionicons name="trending-up" size={12} color="#10B981" />
                             </View>
-                            <Text className="text-[20px] font-semibold text-white">6h 26m</Text>
                         </View>
                     </View>
 
-                    {/* Insight Card */}
-                    <View className="bg-[#2A3047]/50 rounded-[20px] p-4 border border-indigo-500/20 relative overflow-hidden">
-                        <View className="flex-row items-center justify-between mb-2">
-                            <Text className="text-[13px] font-semibold text-white">😴 Sleep Debt: A Call for More Rest</Text>
-                            <Ionicons name="expand-outline" size={14} color="#9CA3AF" />
+                    <View className="flex-1 bg-[#1E293B40] border border-[#1E293B] rounded-2xl p-4 flex-row items-center gap-4">
+                        <View className="w-10 h-10 bg-[#151E33] rounded-xl border border-[#2D3748] items-center justify-center">
+                            <Ionicons name="time-outline" size={18} color="#F59E0B" />
                         </View>
-                        <Text className="text-[13px] text-gray-300 leading-5">It looks like your sleep debt has increased to -3 hours 10 minutes, despite a good 98% sleep efficiency last night...</Text>
+                        <View>
+                            <Text className="text-xs text-slate-500 font-semibold mb-0.5">Time Asleep</Text>
+                            <Text className="text-lg font-bold text-white">6h 26m</Text>
+                        </View>
                     </View>
+                </View>
 
-                    {/* Clock Face Widget */}
-                    <View className="bg-[#2D354E] rounded-[32px] p-6 shadow-xl">
+                <View className="px-5 mb-8">
+                    <View className="bg-rose-950/20 border border-rose-500/10 rounded-2xl p-5 flex-row gap-4">
+                        <Ionicons name="warning-outline" size={20} color="#EF4444" />
+                        <View className="flex-1">
+                            <Text className="text-sm font-semibold text-rose-400 mb-1">Sleep Debt: A Call for More Rest</Text>
+                            <Text className="text-xs text-slate-400 leading-5">It looks like your sleep debt has increased to -3 hours 10 minutes, despite a good 98% sleep efficiency last night...</Text>
+                        </View>
+                    </View>
+                </View>
+
+                <View className="px-5 mb-8">
+                    <Text className="text-lg font-bold text-white mb-4">Chronotype parameters</Text>
+
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-3xl p-6">
                         <View className="flex-row justify-between mb-8">
-                            <View>
-                                <Text className="text-[12px] font-medium text-gray-400 mb-1">Wind down</Text>
-                                <Text className="text-[20px] font-semibold text-white">10.06 PM</Text>
+                            <View className="bg-[#1E293B] px-3 py-2 rounded-xl border border-[#2D3748]">
+                                <Text className="text-[10px] text-slate-400 font-medium mb-1 uppercase tracking-widest">Wind down</Text>
+                                <Text className="text-base font-bold text-white">10.06 PM</Text>
                             </View>
-                            <View className="items-end">
-                                <Text className="text-[12px] font-medium text-gray-400 mb-1">Target bedtime</Text>
-                                <Text className="text-[20px] font-semibold text-white">10.36 PM</Text>
-                            </View>
-                        </View>
-
-                        {/* Sophisticated Clock Face */}
-                        <View className="w-64 h-64 self-center items-center justify-center relative mb-8">
-                            {/* Outer Subtle Circle */}
-                            <View className="absolute inset-0 rounded-full border border-gray-100/5" />
-
-                            {/* Sleep Arc (Shaded Area) - Mocked with a larger circle and clip/border */}
-                            <View className="absolute inset-0 rounded-full border-[28px] border-gray-100/5" />
-                            <View
-                                className="absolute inset-0 rounded-full border-[28px] border-indigo-500/30"
-                                style={{ transform: [{ rotate: '45deg' }], borderLeftColor: 'transparent', borderBottomColor: 'transparent' }}
-                            />
-
-                            {/* Icons on the Arc */}
-                            <View className="absolute top-[8%] left-[32%] w-7 h-7 bg-[#4F46E5] rounded-full items-center justify-center z-20 border-2 border-[#2D354E]">
-                                <Ionicons name="bed" size={14} color="white" />
-                            </View>
-                            <View className="absolute bottom-[28%] right-[2%] w-7 h-7 bg-[#4F46E5] rounded-full items-center justify-center z-20 border-2 border-[#2D354E]">
-                                <Ionicons name="alarm" size={14} color="white" />
-                            </View>
-                            <View className="absolute top-[21%] left-[18%] w-6 h-6 bg-gray-500/40 rounded-full items-center justify-center z-10">
-                                <Ionicons name="body" size={12} color="white" />
-                            </View>
-
-                            {/* Inner Face with Ticks and Digits */}
-                            <View className="w-48 h-48 rounded-full border border-gray-100/10 items-center justify-center relative">
-                                {/* Center Icons */}
-                                <View className="absolute top-6"><Ionicons name="moon" size={14} color="#818CF8" /></View>
-                                <View className="absolute bottom-6"><Ionicons name="sunny" size={14} color="#FBBF24" /></View>
-
-                                {/* 24 Hour Digits Mock */}
-                                <Text className="text-white text-[11px] font-semibold absolute top-2">12AM</Text>
-                                <Text className="text-white text-[11px] font-semibold absolute bottom-2">12PM</Text>
-                                <Text className="text-gray-400 text-[10px] absolute right-2">6AM</Text>
-                                <Text className="text-gray-400 text-[10px] absolute left-2">6PM</Text>
-
-                                <Text className="text-gray-600 text-[9px] absolute top-[20%] right-[24%]">2</Text>
-                                <Text className="text-gray-600 text-[9px] absolute bottom-[20%] right-[24%]">8</Text>
-                                <Text className="text-gray-600 text-[9px] absolute bottom-[20%] left-[24%]">4</Text>
-                                <Text className="text-gray-600 text-[9px] absolute top-[20%] left-[24%]">10</Text>
-
-                                {/* Mimic Ticks around the circle */}
-                                {[...Array(24)].map((_, i) => (
-                                    <View
-                                        key={i}
-                                        className="absolute w-0.5 h-1.5 bg-gray-500/30"
-                                        style={{ transform: [{ rotate: `${i * 15}deg` }, { translateY: -88 }] }}
-                                    />
-                                ))}
+                            <View className="bg-[#1E293B] px-3 py-2 rounded-xl border border-[#2D3748]">
+                                <Text className="text-[10px] text-slate-400 font-medium mb-1 uppercase tracking-widest">Target bedtime</Text>
+                                <Text className="text-base font-bold text-white">10.36 PM</Text>
                             </View>
                         </View>
 
-                        <View className="flex-row justify-center items-center gap-2 mb-8">
-                            <Text className="text-[14px] font-medium text-gray-400">Wake up at</Text>
-                            <Text className="text-[14px] font-semibold text-white">7.00 AM</Text>
-                            <Ionicons name="chevron-forward" size={14} color="#9CA3AF" />
-                        </View>
-
-                        <View className="bg-[#3A4363] rounded-2xl p-4 flex-row justify-between items-center -mx-2 -mb-2">
-                            <Text className="text-[13px] font-semibold text-white">Tonight's sleep needed</Text>
-                            <View className="flex-row items-center gap-1">
-                                <Text className="text-[13px] font-semibold text-white">8h 23m</Text>
-                                <Ionicons name="arrow-forward" size={14} color="white" className="opacity-60" />
-                            </View>
-                        </View>
-                    </View>
-
-                    {/* Timeline */}
-                    <View>
-                        <View className="flex-row items-center justify-between mb-3">
-                            <Text className="text-[16px] font-bold text-white">Timeline</Text>
-                            <TouchableOpacity onPress={() => addSheetRef.current?.present()}>
-                                <Ionicons name="add" size={24} color="#9CA3AF" />
-                            </TouchableOpacity>
-                        </View>
-                        <TouchableOpacity onPress={() => router.push('/sleep/nap')} className="flex-row items-center justify-between bg-[#22273B] p-4 rounded-[20px] mb-3">
-                            <View className="flex-row items-center gap-4">
-                                <View className="w-12 h-12 bg-[#2A3047] rounded-[14px] items-center justify-center"><Ionicons name="moon" size={24} color="#818CF8" /></View>
-                                <View><Text className="font-bold text-[15px] text-white">Nap</Text><Text className="text-[12px] font-medium text-gray-400">14/09/25 at 10.31 AM</Text></View>
-                            </View>
-                            <Ionicons name="chevron-forward" size={18} color="#6B7280" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => router.push('/sleep/primary')} className="flex-row items-center justify-between bg-[#22273B] p-4 rounded-[20px]">
-                            <View className="flex-row items-center gap-4">
-                                <View className="w-12 h-12 bg-[#2A3047] rounded-[14px] items-center justify-center relative">
-                                    <Ionicons name="moon" size={24} color="#818CF8" />
-                                    <View className="absolute -bottom-1 -right-1 bg-[#181B28] rounded-full px-1"><Text className="text-[9px] font-bold text-white">67</Text></View>
+                        <View className="h-44 relative justify-center my-4">
+                            <View className="absolute inset-0 bg-[#090D16] border border-[#1E293B] rounded-2xl overflow-hidden">
+                                <View className="absolute top-0 bottom-0 left-1/4 right-1/4 bg-[#1E293B]/50" />
+                                <View className="flex-row justify-between h-full w-full opacity-20">
+                                    {Array.from({ length: 12 }).map((_, i) => (
+                                        <View key={i} className="w-[1px] h-full bg-[#4DB9F2]" />
+                                    ))}
                                 </View>
-                                <View><Text className="font-bold text-[15px] text-white">Primary sleep</Text><Text className="text-[12px] font-medium text-gray-400">14/09/25 at 1.01 AM</Text></View>
                             </View>
-                            <Ionicons name="chevron-forward" size={18} color="#6B7280" />
-                        </TouchableOpacity>
-                    </View>
 
-                    {/* Trends */}
-                    <View>
-                        <Text className="text-[16px] font-bold text-white mb-3">Trends</Text>
-                        <View className="gap-3">
-                            {SLEEP_TRENDS.map((trend) => (
-                                <TouchableOpacity
-                                    key={trend.id}
-                                    onPress={() => router.push({ pathname: '/sleep/score-details', params: { initialTab: trend.title } })}
-                                    className="bg-[#22273B] rounded-[20px] p-5 flex-row justify-between items-center"
-                                >
-                                    <View className="gap-2">
-                                        <View className="flex-row items-center gap-1.5">
-                                            <Ionicons name={trend.icon as any} size={14} color="#9CA3AF" />
-                                            <Text className="text-[12px] font-semibold text-gray-400">{trend.title}</Text>
-                                        </View>
-                                        <Text className="text-[20px] font-semibold text-white tracking-tight">{trend.value} <Text className="text-[13px] text-gray-400 font-medium">{trend.unit}</Text></Text>
-                                        <View className="flex-row items-center gap-1">
-                                            <Ionicons name={trend.statusType === 'warning' ? 'arrow-down-circle' : 'checkmark-circle'} size={14} color={trend.statusType === 'warning' ? '#F97316' : '#22C55E'} />
-                                            <Text className={`text-[11px] font-semibold ${trend.statusType === 'warning' ? 'text-orange-500' : 'text-green-500'}`}>{trend.status}</Text>
-                                        </View>
-                                    </View>
-                                    <View className="w-20 h-10 items-end justify-end"><Ionicons name="pulse" size={36} color="#818CF8" /></View>
-                                </TouchableOpacity>
-                            ))}
+                            <View className="absolute left-[15%] w-8 h-8 bg-[#1E293B] border border-[#4DB9F2] rounded-lg items-center justify-center -translate-y-4">
+                                <Ionicons name="bed" size={16} color="#4DB9F2" />
+                            </View>
+                            <View className="absolute right-[25%] w-8 h-8 bg-[#1E293B] border border-[#F59E0B] rounded-lg items-center justify-center -translate-y-4">
+                                <Ionicons name="alarm" size={16} color="#F59E0B" />
+                            </View>
+
+                            <View className="absolute bottom-2 left-4 right-4 flex-row justify-between">
+                                <Text className="text-[10px] font-bold text-slate-500">6PM</Text>
+                                <Text className="text-[10px] font-bold text-slate-500">12AM</Text>
+                                <Text className="text-[10px] font-bold text-slate-500">6AM</Text>
+                            </View>
+                        </View>
+
+                        <View className="flex-row justify-between items-center mt-6 pt-4 border-t border-[#1E293B]">
+                            <Text className="text-sm font-semibold text-slate-400">Wake up at</Text>
+                            <View className="flex-row items-center gap-2">
+                                <Text className="text-base font-bold text-white">7.00 AM</Text>
+                                <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                            </View>
+                        </View>
+
+                        <View className="flex-row justify-between items-center mt-4 bg-[#1E293B40] p-4 rounded-xl border border-[#1E293B]">
+                            <Text className="text-sm font-semibold text-slate-300">Tonight's sleep needed</Text>
+                            <View className="flex-row items-center gap-2">
+                                <Text className="text-sm font-bold text-white">8h 23m</Text>
+                                <Ionicons name="arrow-forward" size={16} color="#4DB9F2" />
+                            </View>
                         </View>
                     </View>
                 </View>
+
+                <View className="px-5 mb-8">
+                    <View className="flex-row justify-between items-center mb-4">
+                        <Text className="text-lg font-bold text-white">Event log</Text>
+                        <TouchableOpacity
+                            onPress={() => addSheetRef.current?.present()}
+                            activeOpacity={0.7}
+                            className="w-8 h-8 bg-[#1E293B] rounded-lg border border-[#2D3748] items-center justify-center"
+                        >
+                            <Ionicons name="add" size={16} color="#4DB9F2" />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View className="gap-3">
+                        <TouchableOpacity
+                            onPress={() => router.push('/sleep/nap')}
+                            activeOpacity={0.8}
+                            className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-4 flex-row items-center justify-between"
+                        >
+                            <View className="flex-row items-center gap-4">
+                                <View className="w-12 h-12 bg-[#1E293B] rounded-xl border border-[#2D3748] items-center justify-center">
+                                    <Ionicons name="moon-outline" size={20} color="#4DB9F2" />
+                                </View>
+                                <View>
+                                    <Text className="font-bold text-white text-base mb-1">Nap</Text>
+                                    <Text className="text-xs text-slate-500 font-medium">14/09/25 at 10.31 AM</Text>
+                                </View>
+                            </View>
+                            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => router.push('/sleep/primary')}
+                            activeOpacity={0.8}
+                            className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-4 flex-row items-center justify-between"
+                        >
+                            <View className="flex-row items-center gap-4">
+                                <View className="w-12 h-12 bg-[#1E293B] rounded-xl border border-[#2D3748] items-center justify-center relative">
+                                    <Ionicons name="moon" size={20} color="#4DB9F2" />
+                                    <View className="absolute -bottom-1.5 -right-1.5 bg-[#090D16] border border-[#1E293B] rounded px-1 py-0.5">
+                                        <Text className="text-[9px] font-bold text-white">67</Text>
+                                    </View>
+                                </View>
+                                <View>
+                                    <Text className="font-bold text-white text-base mb-1">Primary sleep</Text>
+                                    <Text className="text-xs text-slate-500 font-medium">14/09/25 at 1.01 AM</Text>
+                                </View>
+                            </View>
+                            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View className="px-5 mb-8">
+                    <Text className="text-lg font-bold text-white mb-4">Telemetry analysis</Text>
+
+                    <View className="gap-3">
+                        {SLEEP_TRENDS.map((trend) => (
+                            <TouchableOpacity
+                                key={trend.id}
+                                onPress={() => router.push({ pathname: '/sleep/score-details', params: { initialTab: trend.title } })}
+                                activeOpacity={0.8}
+                                className="bg-[#151E33] border border-[#1E293B] rounded-2xl p-5 flex-row justify-between items-center"
+                            >
+                                <View className="flex-1 gap-2.5">
+                                    <View className="flex-row items-center gap-2">
+                                        <Ionicons name={trend.icon as any} size={14} color="#4DB9F2" />
+                                        <Text className="text-xs font-semibold text-slate-400">{trend.title}</Text>
+                                    </View>
+                                    <View className="flex-row items-baseline gap-1">
+                                        <Text className="text-2xl font-bold text-white">{trend.value}</Text>
+                                        <Text className="text-sm font-medium text-slate-500">{trend.unit}</Text>
+                                    </View>
+                                    <View className="flex-row items-center gap-1.5 bg-[#1E293B] self-start px-2 py-1 rounded-lg border border-[#2D3748]">
+                                        <Ionicons name={trend.statusType === 'warning' ? 'warning-outline' : 'checkmark-circle-outline'} size={12} color={trend.statusType === 'warning' ? '#F59E0B' : '#10B981'} />
+                                        <Text className={`text-xs font-bold ${trend.statusType === 'warning' ? 'text-amber-500' : 'text-emerald-500'}`}>{trend.status}</Text>
+                                    </View>
+                                </View>
+
+                                <View className="w-16 h-12 rounded-xl bg-[#1E293B40] border border-[#1E293B] items-center justify-center">
+                                    <Ionicons name="pulse" size={24} color="#4DB9F2" />
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                </View>
+
             </ScrollView>
 
             <AddManualSleepSheet ref={addSheetRef} />

@@ -32,21 +32,27 @@ export default function EquipmentScreen() {
                     return (
                         <TouchableOpacity
                             key={item.id} onPress={() => toggle(item.id)}
-                            className={`bg-white p-4 rounded-2xl border-[1.5px] shadow-sm flex-row justify-between items-center ${isSel ? 'border-black' : 'border-transparent'}`}
+                            className={`flex-row items-center p-3 rounded-[16px] border ${isSel ? 'bg-[#15233A] border-[#38BDF8]' : 'bg-[#151E33] border-[#1E2D4A]'}`}
                         >
+                            <View className={`w-8 h-8 rounded-[8px] items-center justify-center mr-3 border ${isSel ? 'bg-[#38BDF8] border-[#38BDF8]' : 'bg-[#0F172A] border-[#1E2D4A]'}`}>
+                                {isSel && <Ionicons name="checkmark" size={18} color="#090D16" />}
+                            </View>
+
                             <View className="flex-1">
-                                <Text className="font-bold text-gray-900 text-[15px]">{item.name}</Text>
+                                <Text className={`font-semibold text-[15px] ${isSel ? 'text-[#F1F5F9]' : 'text-[#CBD5E1]'}`}>
+                                    {item.name}
+                                </Text>
                                 {item.details ? (
-                                    <Text className="text-gray-400 text-xs mt-1">
-                                        {item.details} <Text className="underline">Edit</Text>
-                                    </Text>
+                                    <View className="flex-row items-center mt-1 pr-2">
+                                        <Text className="text-[#64748B] text-[12px] flex-1 font-medium" numberOfLines={1}>
+                                            {item.details}
+                                        </Text>
+                                        <Text className="text-[#38BDF8] text-[12px] font-bold ml-2">Edit</Text>
+                                    </View>
                                 ) : null}
                             </View>
-                            <View className={`w-5 h-5 rounded items-center justify-center border ${isSel ? 'bg-black border-black' : 'bg-white border-gray-300'}`}>
-                                {isSel && <Ionicons name="checkmark" size={14} color="white" />}
-                            </View>
                         </TouchableOpacity>
-                    )
+                    );
                 })}
             </View>
         </StepLayout>

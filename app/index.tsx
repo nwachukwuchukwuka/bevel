@@ -22,25 +22,22 @@ export default function SplashScreen() {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // 1. Entrance Animation
     opacity.value = withTiming(1, { duration: 800 });
     scale.value = withTiming(1, {
       duration: 800,
       easing: Easing.out(Easing.exp)
     });
 
-    // 2. Determine target and start exit animation after delay
     const targetRoute = isAuthenticated ? '/(tabs)' : '/onboarding';
 
     const timeout = setTimeout(() => {
-      // Fade out and Zoom slightly
       scale.value = withTiming(1.05, { duration: 500 });
       opacity.value = withTiming(0, { duration: 500 }, (finished) => {
         if (finished) {
           runOnJS(router.replace)(targetRoute as any);
         }
       });
-    }, 2000); // reduced slightly for snappier feel
+    }, 2000);
 
     return () => clearTimeout(timeout);
   }, [isAuthenticated, router]);
@@ -51,24 +48,23 @@ export default function SplashScreen() {
   }));
 
   return (
-    <View className="flex-1 bg-white items-center justify-center">
-      <StatusBar style="dark" />
+    <View className="flex-1 bg-[#151E33] items-center justify-center">
+      <StatusBar style="light" />
 
       <Animated.View style={animatedStyle}>
-        <Logo width={80} height={80} color="#1A1A1A" />
+        <Logo width={80} height={80} color="#FFFFFF" />
       </Animated.View>
     </View>
   );
 }
 
-// --- Logo Component ---
 interface LogoProps {
   width?: number;
   height?: number;
   color?: string;
 }
 
-const Logo: React.FC<LogoProps> = ({ width = 64, height = 64, color = "black" }) => {
+const Logo: React.FC<LogoProps> = ({ width = 64, height = 64, color = "#FFFFFF" }) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 64 64" fill="none">
       {/* Top Part of the abstract 'B' */}

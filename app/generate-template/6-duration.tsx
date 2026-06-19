@@ -17,7 +17,7 @@ export default function DurationScreen() {
             onNext={() => router.push('/generate-template/7-muscles')}
             onRightIconPress={() => router.push('/generate-template/advanced-settings')}
         >
-            <View className="h-64 justify-center items-center mt-10 relative">
+            <View className="bg-[#151E33] border border-[#1E2D4A] rounded-[24px] overflow-hidden mt-6 relative h-[240px] justify-center">
                 <DateTimePicker
                     value={duration}
                     mode="time"
@@ -27,20 +27,21 @@ export default function DurationScreen() {
                     onChange={(event, selectedDate) => {
                         if (selectedDate) setDuration(selectedDate);
                     }}
-                    textColor="#111827"
+                    textColor="#F1F5F9"
                     style={{ width: '100%', height: 200 }}
                 />
 
-                {/* Overlay labels for "hr" and "mins" beside the native spinner columns */}
-                <View className="absolute w-full h-full flex-row justify-center items-center" pointerEvents="none">
-                    {/* Positioned roughly to the right of the hours and minutes number wheels */}
-                    <View className="w-1/2 items-end pr-20">
-                        <Text className=" text-lg text-gray-800 tracking-wide mt-1">hr</Text>
+                <View className="absolute w-full h-full flex-row justify-center items-center pointer-events-none">
+                    <View className="w-1/2 items-end pr-[25%]">
+                        <Text className="text-[16px] font-semibold text-[#64748B] mt-1">hr</Text>
                     </View>
-                    <View className="w-1/2 items-end pr-20">
-                        <Text className=" text-lg text-gray-800 tracking-wide mt-1">mins</Text>
+                    <View className="w-1/2 items-end pr-[15%]">
+                        <Text className="text-[16px] font-semibold text-[#64748B] mt-1">mins</Text>
                     </View>
                 </View>
+
+                {/* Center Highlight Bar */}
+                {/* <View className="absolute w-full h-[40px] top-[100px] bg-[#38BDF8]/10 pointer-events-none" /> */}
             </View>
         </StepLayout>
     );

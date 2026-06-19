@@ -13,7 +13,7 @@ export const SetExpirationSheet = forwardRef<BottomSheetModal, SetExpirationShee
     const [date, setDate] = useState(new Date());
 
     const renderBackdrop = useCallback(
-        (props: any) => <BottomSheetBackdrop {...props} opacity={0.4} appearsOnIndex={0} disappearsOnIndex={-1} />,
+        (props: any) => <BottomSheetBackdrop {...props} opacity={0.7} appearsOnIndex={0} disappearsOnIndex={-1} />,
         []
     );
 
@@ -23,7 +23,6 @@ export const SetExpirationSheet = forwardRef<BottomSheetModal, SetExpirationShee
 
     const handleSave = () => {
         if (activeItem) {
-            // Format options: 'Sep 15, 2025'
             const formattedDate = date.toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
@@ -37,41 +36,48 @@ export const SetExpirationSheet = forwardRef<BottomSheetModal, SetExpirationShee
     return (
         <BottomSheetModal
             ref={ref}
-            snapPoints={activeItem ? ['50%'] : ['55%']}
+            snapPoints={activeItem ? ['65%'] : ['65%']}
             backdropComponent={renderBackdrop}
-            handleIndicatorStyle={{ display: 'none' }}
+            backgroundStyle={{ backgroundColor: '#090D16' }}
+            handleIndicatorStyle={{ backgroundColor: '#1E293B', width: 40 }}
             enableDynamicSizing={false}
         >
-            <BottomSheetView className="flex-1 px-5 pt-2">
-                {/* Header */}
-                <View className="flex-row items-center justify-center mb-4 relative">
-                    <TouchableOpacity onPress={handleDismiss} className="absolute left-0">
-                        <Ionicons name="close" size={24} color="#9CA3AF" />
+            <BottomSheetView className="flex-1 px-5 pt-4 pb-8">
+                <View className="flex-row items-center justify-between mb-8">
+                    <View>
+                        <Text className="text-[24px] font-bold text-slate-100">Set expiration</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={handleDismiss}
+                        className="w-10 h-10 bg-[#151E33] border border-[#1E293B] rounded-[12px] items-center justify-center"
+                    >
+                        <Ionicons name="close" size={20} color="#94A3B8" />
                     </TouchableOpacity>
-                    <Text className="font-bold text-gray-900 text-base">Set expiration</Text>
                 </View>
 
-
-                {/* Actual Picker View */}
-                <View className="flex-1 items-center justify-center ">
-                    <DateTimePicker
-                        value={date}
-                        mode="date"
-                        display="spinner"
-                        onChange={(event, selectedDate) => {
-                            const currentDate = selectedDate || date;
-                            setDate(currentDate);
-                        }}
-                        textColor="#111827"
-                        style={{ width: '100%', height: 180 }}
-                    />
+                {/* Framed Data Container */}
+                <View className="flex-1">
+                    <View className="bg-[#151E33] border border-[#1E293B] rounded-[24px] items-center justify-center py-4">
+                        <DateTimePicker
+                            value={date}
+                            mode="date"
+                            display="spinner"
+                            onChange={(event, selectedDate) => {
+                                const currentDate = selectedDate || date;
+                                setDate(currentDate);
+                            }}
+                            textColor="#F8FAFC"
+                            themeVariant="dark"
+                            style={{ width: '100%', height: 180 }}
+                        />
+                    </View>
                 </View>
 
                 <TouchableOpacity
                     onPress={handleSave}
-                    className="bg-[#1A1A1A] py-4 rounded-full items-center mb-10 mt-4"
+                    className="bg-[#4DB9F2] py-4 rounded-[16px] items-center border border-[#4DB9F2] mt-6"
                 >
-                    <Text className="text-white font-bold text-base">Save</Text>
+                    <Text className="text-[#090D16] font-bold text-[16px]">Save</Text>
                 </TouchableOpacity>
             </BottomSheetView>
         </BottomSheetModal>
